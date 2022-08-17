@@ -1,6 +1,16 @@
 {
-  "name": "client",
+  "name": "gin-shopping-website",
+  "author": "HOANG_TUAN",
+  "description": "A website shopping bring value and quality of customer on first",
+  "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/jameheller98/gin-shopping-client.git",
+  "engines": {
+    "node": ">=16.0.0",
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
