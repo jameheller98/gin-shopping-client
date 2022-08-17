@@ -1,8 +1,6 @@
 import { TPrimaryLayout } from './PrimaryLayout';
 
-const base: TPrimaryLayout = {
-  sampleTextProp: 'Hello world!',
-};
+const base: TPrimaryLayout = { children: undefined };
 
 export const mockPrimaryLayoutProps = {
   base,
