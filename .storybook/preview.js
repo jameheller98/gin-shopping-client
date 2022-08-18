@@ -1,5 +1,7 @@
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 import * as NextImage from 'next/image';
 import '../pages/globals.css';
+import { DrawerProvider } from '../state/drawer/DrawerContext';
 
 const BREAKPOINTS_INT = {
   xs: 375,
@@ -11,7 +13,6 @@ const BREAKPOINTS_INT = {
 
 const customViewports = Object.fromEntries(
   Object.entries(BREAKPOINTS_INT).map(([key, val], idx) => {
-    console.log(val);
     return [
       key,
       {
@@ -25,7 +26,6 @@ const customViewports = Object.fromEntries(
   })
 );
 
-// Allow Storybook to handle Next's <Image> component
 const OriginalNextImage = NextImage.default;
 
 Object.defineProperty(NextImage, 'default', {
@@ -45,4 +45,13 @@ export const parameters = {
   nextRouter: {
     Provider: RouterContext.Provider,
   },
+  layout: 'fullscreen',
 };
+
+export const decorators = [
+  (Story) => (
+    <DrawerProvider>
+      <Story />
+    </DrawerProvider>
+  ),
+];

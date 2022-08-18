@@ -12,6 +12,11 @@ module.exports = {
       lg: '1200px',
       xl: '1536px',
     },
+    extend: {
+      fontFamily: {
+        body: ['Open Sans', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };

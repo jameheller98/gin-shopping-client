@@ -2,12 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .trans-horizon-active {
+    transition: transform 300ms, height 300ms ease-in 600ms;
+    @apply origin-top;
+  }
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  @apply font-body;
 }
 
 a {
