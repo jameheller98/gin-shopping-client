@@ -1,12 +1,28 @@
+import Image from 'next/image';
 import PrimaryLayout from '../components/layouts/primary/PrimaryLayout';
 import { NextPageWithLayout } from './page';
 
 const Home: NextPageWithLayout = () => {
   return (
-    <section className="bg-gradient-to-r from-cyan-500 to-blue-500">
-      <h1>
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
+    <section className="w-full">
+      <div className="h-[400px] overflow-hidden">
+        <Image
+          src="/home/slide/man-suit.jpg"
+          alt="Home logo"
+          height={1323}
+          width={880}
+          priority
+        />
+      </div>
+      <div className="h-[400px] overflow-hidden">
+        <Image
+          src="/home/slide/man-suit.jpg"
+          alt="Home logo"
+          height={1323}
+          width={880}
+          priority
+        />
+      </div>
     </section>
   );
 };

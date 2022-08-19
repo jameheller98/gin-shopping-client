@@ -16,6 +16,16 @@ module.exports = {
       fontFamily: {
         body: ['Open Sans', 'sans-serif'],
       },
+      keyframes: {
+        ['trans-vertical-active-menu']: {
+          '0%': { transform: 'scaleY(0)' },
+          '100%': { transform: 'scaleY(100%)' },
+        },
+        ['trans-vertical-active-menu-reverse']: {
+          '0%': { transform: 'scaleY(100%)' },
+          '100%': { transform: 'scaleY(0)' },
+        },
+      },
     },
   },
   plugins: [],

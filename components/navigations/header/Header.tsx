@@ -1,7 +1,6 @@
 import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline';
 import { useDrawerContext } from '../../../state/drawer/DrawerContext';
 import Brand from '../../common/brand/Brand';
-import Sidebar from '../sidebar/Sidebar';
 
 export type THeader = {} & React.ComponentPropsWithoutRef<'header'>;
 
@@ -9,8 +8,10 @@ const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
   const { onOpenDrawer } = useDrawerContext();
 
   return (
-    <header {...headerProps} className={`grid grid-cols-3 ${className}`}>
-      <Sidebar />
+    <header
+      {...headerProps}
+      className={`fixed top-0 z-[1] bg-white grid grid-cols-3 py-1 ${className}`}
+    >
       <MenuIcon
         className="h-7 w-7 self-center cursor-pointer ml-4"
         onClick={() => onOpenDrawer(true)}

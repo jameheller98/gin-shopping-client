@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .trans-horizon-active {
-    transition: transform 300ms, height 300ms ease-in 600ms;
-    @apply origin-top;
-  }
-}
-
 html,
 body {
   padding: 0;

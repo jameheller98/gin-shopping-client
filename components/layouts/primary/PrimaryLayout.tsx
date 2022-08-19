@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Footer from '../../navigations/footer/Footer';
 import Header from '../../navigations/header/Header';
+import Sidebar from '../../navigations/sidebar/Sidebar';
 
 export type TPrimaryLayout = { children: React.ReactNode };
 
@@ -12,7 +13,8 @@ const PrimaryLayout: React.FC<TPrimaryLayout> = ({ children }) => {
       </Head>
       <div className="min-h-screen flex flex-col items-center">
         <Header />
-        <main>{children}</main>
+        <Sidebar />
+        <main className="mt-[76.5px]">{children}</main>
         <div className="m-auto" />
         <Footer />
       </div>

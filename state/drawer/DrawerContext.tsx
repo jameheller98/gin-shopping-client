@@ -22,7 +22,7 @@ const DrawerContext = createContext<IDrawerContext>(initialValue);
 export const DrawerProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [openDrawer, setOpenDrawer] = useState(true);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const value = useMemo(() => {
     const onOpenDrawer = (openDrawer: boolean) => {
