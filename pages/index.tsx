@@ -1,19 +1,12 @@
-import Image from 'next/image';
 import PrimaryLayout from '../components/layouts/primary/PrimaryLayout';
+import Carousel from '../components/utilities/carousel/Carousel';
+import { mockCarouselProps } from '../components/utilities/carousel/Carousel.mocks';
 import { NextPageWithLayout } from './page';
 
 const Home: NextPageWithLayout = () => {
   return (
     <section className="w-full">
-      <div className="h-[400px] overflow-hidden">
-        <Image
-          src="/home/slide/man-suit.jpg"
-          alt="Home logo"
-          height={1323}
-          width={880}
-          priority
-        />
-      </div>
+      <Carousel {...mockCarouselProps.base} />
     </section>
   );
 };
