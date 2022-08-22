@@ -1,6 +1,5 @@
 import type { AppProps } from 'next/app';
-import { DrawerProvider } from '../state/drawer/DrawerContext';
-import { MenuProvider } from '../state/menu/MenuContext';
+import { RecoilRoot } from 'recoil';
 import './globals.css';
 import { NextPageWithLayout } from './page';
 
@@ -11,11 +10,7 @@ interface AppPropsWithLayout extends AppProps {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
 
-  return (
-    <DrawerProvider>
-      <MenuProvider>{getLayout(<Component {...pageProps} />)}</MenuProvider>
-    </DrawerProvider>
-  );
+  return <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>;
 }
 
 export default MyApp;

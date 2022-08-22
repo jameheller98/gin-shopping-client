@@ -16,14 +16,22 @@ module.exports = {
       fontFamily: {
         body: ['Open Sans', 'sans-serif'],
       },
+      animation: {
+        'trans-sub-menu-in': 'trans-sub-menu-in 2s ease-in-out',
+        'trans-sub-menu-out':
+          'trans-sub-menu-out 0.5s cubic-bezier(0, 1, 0, 1) both',
+      },
       keyframes: {
-        ['trans-vertical-active-menu']: {
-          '0%': { transform: 'scaleY(0)' },
-          '100%': { transform: 'scaleY(100%)' },
+        'trans-sub-menu-in': {
+          '0%': { maxHeight: 0, width: '0%' },
+          '20%': { maxHeight: 40 },
+          '35%': { width: '100%' },
+          '40%': { maxHeight: 40 },
+          '100%': { maxHeight: 1000 },
         },
-        ['trans-vertical-active-menu-reverse']: {
-          '0%': { transform: 'scaleY(100%)' },
-          '100%': { transform: 'scaleY(0)' },
+        'trans-sub-menu-out': {
+          '0%': { maxHeight: 1000 },
+          '100%': { maxHeight: 0 },
         },
       },
     },

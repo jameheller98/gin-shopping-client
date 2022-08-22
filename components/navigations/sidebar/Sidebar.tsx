@@ -1,12 +1,13 @@
 import { XIcon } from '@heroicons/react/outline';
 import classNames from 'classnames';
-import { useDrawerContext } from '../../../state/drawer/DrawerContext';
+import { useRecoilState } from 'recoil';
+import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import Navbar from '../navbar/Navbar';
 
 export type TSidebar = {} & React.ComponentPropsWithoutRef<'div'>;
 
 const Sidebar: React.FC<TSidebar> = ({ className, ...divProps }) => {
-  const { openDrawer, onOpenDrawer } = useDrawerContext();
+  const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
 
   const handleTransitionDrawerClass = (positionDrawer: 'left' | 'right') =>
     classNames({
@@ -30,7 +31,7 @@ const Sidebar: React.FC<TSidebar> = ({ className, ...divProps }) => {
       >
         <XIcon
           className="w-7 h-7 float-right cursor-pointer"
-          onClick={() => onOpenDrawer(false)}
+          onClick={() => setOpenDrawer(false)}
         />
         <Navbar className="mt-12" />
       </div>

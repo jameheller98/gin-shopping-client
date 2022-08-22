@@ -14,15 +14,6 @@ const Home: NextPageWithLayout = () => {
           priority
         />
       </div>
-      <div className="h-[400px] overflow-hidden">
-        <Image
-          src="/home/slide/man-suit.jpg"
-          alt="Home logo"
-          height={1323}
-          width={880}
-          priority
-        />
-      </div>
     </section>
   );
 };

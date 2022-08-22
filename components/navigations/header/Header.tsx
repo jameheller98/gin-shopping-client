@@ -1,11 +1,12 @@
 import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline';
-import { useDrawerContext } from '../../../state/drawer/DrawerContext';
+import { useSetRecoilState } from 'recoil';
+import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import Brand from '../../common/brand/Brand';
 
 export type THeader = {} & React.ComponentPropsWithoutRef<'header'>;
 
 const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
-  const { onOpenDrawer } = useDrawerContext();
+  const setOpenDrawer = useSetRecoilState(openDrawerState);
 
   return (
     <header
@@ -14,7 +15,7 @@ const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
     >
       <MenuIcon
         className="h-7 w-7 self-center cursor-pointer ml-4"
-        onClick={() => onOpenDrawer(true)}
+        onClick={() => setOpenDrawer(true)}
       />
       <div className="flex justify-center items-center">
         <Brand />

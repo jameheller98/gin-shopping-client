@@ -1,7 +1,6 @@
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import * as NextImage from 'next/image';
 import '../pages/globals.css';
-import { DrawerProvider } from '../state/drawer/DrawerContext';
 
 const BREAKPOINTS_INT = {
   xs: 375,
@@ -47,11 +46,3 @@ export const parameters = {
   },
   layout: 'fullscreen',
 };
-
-export const decorators = [
-  (Story) => (
-    <DrawerProvider>
-      <Story />
-    </DrawerProvider>
-  ),
-];

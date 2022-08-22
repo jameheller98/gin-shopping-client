@@ -6,6 +6,7 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     'storybook-addon-next-router',
+    'storybook-addon-recoil-flow',
     {
       name: '@storybook/addon-postcss',
       options: {
