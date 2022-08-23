@@ -1,7 +1,6 @@
 import { atom } from 'recoil';
-import { IImage } from '../../components/utilities/carousel/Carousel';
 
-const arrImageState = atom<IImage[]>({
+const arrImgSrcState = atom<string[]>({
   key: 'ArrImgSrc',
   default: [],
 });
@@ -21,9 +20,15 @@ const transitionPageState = atom({
   default: false,
 });
 
+const autoPlayPageState = atom({
+  key: 'AutoPlayPage',
+  default: false,
+});
+
 export {
-  arrImageState,
+  arrImgSrcState,
   currentPageState,
   animatePageState,
   transitionPageState,
+  autoPlayPageState,
 };

@@ -6,7 +6,8 @@
     "eslint:recommended"
   ],
   "globals": {
-    "React": "readonly"
+    "React": "readonly",
+    "NodeJS": true
   },
   "overrides": [
     {

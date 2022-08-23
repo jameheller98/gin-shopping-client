@@ -1,33 +1,40 @@
 import { useLayoutEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { arrImageState } from '../../../state/carousel/carouselAtoms';
+import {
+  arrImgSrcState,
+  autoPlayPageState,
+} from '../../../state/carousel/carouselAtoms';
+import { useOutSideClick } from '../../../state/common/commonHooks';
 import CarouselControl from './CarouselControl';
 import CarouselDisplay from './CarouselDisplay';
 
-export interface IImage {
-  src: string;
-  width: number;
-  height: number;
-  objectPosition: string;
-}
-
 export type TCarousel = {
-  arrImage: IImage[];
+  arrImgSrc: string[];
+  autoPlay?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 const Carousel: React.FC<TCarousel> = ({
-  arrImage,
+  arrImgSrc,
+  autoPlay = false,
   className,
   ...divProps
 }) => {
-  const setArrImage = useSetRecoilState(arrImageState);
+  const setArrImgSrc = useSetRecoilState(arrImgSrcState);
+  const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
+  const refDivEle = useOutSideClick(() => setAutoPlayPage(true));
 
   useLayoutEffect(() => {
-    setArrImage(arrImage);
-  }, [setArrImage, arrImage]);
+    setArrImgSrc(arrImgSrc);
+    setAutoPlayPage(autoPlay);
+  }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
 
   return (
-    <div {...divProps} className={`relative ${className}`}>
+    <div
+      {...divProps}
+      ref={refDivEle}
+      onClick={() => setAutoPlayPage(false)}
+      className={`relative ${className}`}
+    >
       <CarouselDisplay />
       <CarouselControl />
     </div>

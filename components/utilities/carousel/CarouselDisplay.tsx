@@ -7,7 +7,7 @@ import {
   transitionPageState,
 } from '../../../state/carousel/carouselAtoms';
 import {
-  arrImageCloneState,
+  arrImgSrcCloneState,
   sizePageState,
 } from '../../../state/carousel/carouselSelectors';
 
@@ -19,7 +19,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 }) => {
   const carouselDisplayRef = useRef<null | HTMLDivElement>(null);
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
-  const cloneArrImage = useRecoilValue(arrImageCloneState);
+  const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [animatePage, setAnimatePage] = useRecoilState(animatePageState);
   const [transitionPage, setTransitionPage] =
@@ -86,15 +86,21 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     <div
       ref={carouselDisplayRef}
       {...divProps}
-      className={`overflow-hidden ${className}`}
+      className={`overflow-hidden w-screen ${className}`}
     >
       <div
         ref={carouselWrapperItemsRef}
         className="flex flex-nowrap flex-row transition-transform"
       >
-        {cloneArrImage.map((image, idx) => (
-          <div className="h-[300px] w-full shrink-0" key={idx}>
-            <Image {...image} alt="Home logo" priority />
+        {cloneArrImgSrc.map((imgSrc, idx) => (
+          <div className="w-full shrink-0" key={idx}>
+            <Image
+              src={imgSrc}
+              width={500}
+              height={333}
+              alt="Home logo"
+              priority
+            />
           </div>
         ))}
       </div>

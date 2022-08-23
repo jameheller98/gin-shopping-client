@@ -8,8 +8,8 @@ const Brand: React.FC<TBrand> = () => {
       src="/icons/brand/brand.png"
       alt="Brand logo"
       className="cursor-pointer"
-      height={197}
       width={384}
+      height={197}
       priority
     />
   );

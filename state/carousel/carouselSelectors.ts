@@ -1,13 +1,13 @@
 import { selector } from 'recoil';
-import { arrImageState } from './carouselAtoms';
+import { arrImgSrcState } from './carouselAtoms';
 
-const arrImageCloneState = selector({
+const arrImgSrcCloneState = selector({
   key: 'ArrImgSrcClone',
   get: ({ get }) => {
-    const arrImage = get(arrImageState);
+    const arrImgSrc = get(arrImgSrcState);
 
-    return arrImage.length > 0
-      ? [arrImage[arrImage.length - 1], ...arrImage, arrImage[0]]
+    return arrImgSrc.length > 0
+      ? [arrImgSrc[arrImgSrc.length - 1], ...arrImgSrc, arrImgSrc[0]]
       : [];
   },
 });
@@ -15,10 +15,10 @@ const arrImageCloneState = selector({
 const sizePageState = selector({
   key: 'SizePage',
   get: ({ get }) => {
-    const arrImage = get(arrImageState);
+    const arrImgSrc = get(arrImgSrcState);
 
-    return arrImage.length;
+    return arrImgSrc.length;
   },
 });
 
-export { arrImageCloneState, sizePageState };
+export { arrImgSrcCloneState, sizePageState };
