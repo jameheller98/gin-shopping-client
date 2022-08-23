@@ -101,12 +101,13 @@ const CarouselControlIndicators: React.FC<{
   currentPage: number;
   handleMovePageSelected: (_pageSelected: number) => void;
 }> = ({ arrImgSrc, currentPage, handleMovePageSelected }) => (
-  <div className="flex items-end gap-4 mb-3 pointer-events-auto">
+  <div className="flex items-end gap-4 mb-3">
     {arrImgSrc.map((_, idx) => (
       <button
         key={idx}
         onClick={() => handleMovePageSelected(idx + 1)}
         aria-label={`Page ${idx + 1}`}
+        className="pointer-events-auto"
       >
         <span
           className={`h-3 w-3 bg-white block rounded-full${
