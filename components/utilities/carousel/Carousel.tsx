@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import {
   arrImgSrcState,
@@ -22,8 +22,10 @@ const Carousel: React.FC<TCarousel> = ({
   const setArrImgSrc = useSetRecoilState(arrImgSrcState);
   const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
   const refDivEle = useOutSideClick(() => setAutoPlayPage(true));
+  const useIsomorphicLayoutEffect =
+    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setArrImgSrc(arrImgSrc);
     setAutoPlayPage(autoPlay);
   }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);

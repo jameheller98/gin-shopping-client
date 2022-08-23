@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
-  animatePageState,
-  currentPageState,
-  transitionPageState,
+  autoPlayPageState,
+  touchablePageState,
 } from '../../../state/carousel/carouselAtoms';
 import {
+  animationPageState,
   arrImgSrcCloneState,
+  movePageState,
   sizePageState,
 } from '../../../state/carousel/carouselSelectors';
 
@@ -20,77 +21,152 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const carouselDisplayRef = useRef<null | HTMLDivElement>(null);
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
   const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
-  const [animatePage, setAnimatePage] = useRecoilState(animatePageState);
-  const [transitionPage, setTransitionPage] =
-    useRecoilState(transitionPageState);
+  const [{ pageSelected: currentPage }, setMovePage] =
+    useRecoilState(movePageState);
+  const [{ animatePage, transitionPage }, setAnimationPage] =
+    useRecoilState(animationPageState);
   const sizePage = useRecoilValue(sizePageState);
+  const [touchablePage, setTouchablePage] = useRecoilState(touchablePageState);
+  useRecoilState(touchablePageState);
+  const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
+  const useIsomorphicLayoutEffect =
+    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-  useLayoutEffect(() => {
-    if (carouselWrapperItemsRef.current && carouselDisplayRef.current) {
+  useIsomorphicLayoutEffect(() => {
+    const currentCarouselDisplay = carouselDisplayRef.current;
+    const currentCarouselWrapper = carouselWrapperItemsRef.current;
+
+    if (currentCarouselWrapper && currentCarouselDisplay) {
       const widthCarouselDisplay =
-        carouselDisplayRef.current.getBoundingClientRect().width;
+        currentCarouselDisplay.getBoundingClientRect().width;
 
-      carouselWrapperItemsRef.current.style.transitionDuration = `${animatePage}ms`;
+      currentCarouselWrapper.style.transitionDuration = `${animatePage}ms`;
 
       if (transitionPage && currentPage === sizePage) {
-        carouselWrapperItemsRef.current.style.transform = `translateX(-${
+        currentCarouselWrapper.style.transform = `translateX(-${
           widthCarouselDisplay * 0
         }px)`;
       } else if (transitionPage && currentPage === 1) {
-        carouselWrapperItemsRef.current.style.transform = `translateX(-${
+        currentCarouselWrapper.style.transform = `translateX(-${
           widthCarouselDisplay * (sizePage + 1)
         }px)`;
       } else if (!transitionPage) {
-        carouselWrapperItemsRef.current.style.transform = `translateX(-${
+        currentCarouselWrapper.style.transform = `translateX(-${
           widthCarouselDisplay * currentPage
         }px)`;
       }
     }
-  }, [currentPage, animatePage, transitionPage, sizePage]);
+  }, [currentPage, sizePage, animatePage, transitionPage]);
 
   useEffect(() => {
-    const currentCarouselDisplay = carouselWrapperItemsRef.current;
+    const currentCarouselDisplay = carouselDisplayRef.current;
+    const currentCarouselWrapper = carouselWrapperItemsRef.current;
+    const widthCarouselDisplay =
+      currentCarouselDisplay?.getBoundingClientRect().width;
 
     const handleTransitionEnd = () => {
-      if (transitionPage && currentPage === sizePage) {
-        setAnimatePage(0);
-        setTransitionPage(false);
-      } else if (transitionPage && currentPage === 1) {
-        setAnimatePage(0);
-        setTransitionPage(false);
+      if (
+        (transitionPage && currentPage === sizePage) ||
+        (transitionPage && currentPage === 1)
+      ) {
+        setAnimationPage({ animatePage: 0, transitionPage: false });
       }
     };
 
-    currentCarouselDisplay?.addEventListener(
+    const handleTouchStart = (event: TouchEvent) => {
+      setTouchablePage((touchablePage) => ({
+        ...touchablePage,
+        touchable: true,
+        posStartTouch: event.touches[0].clientX,
+      }));
+      setAutoPlayPage(false);
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (
+        currentCarouselWrapper &&
+        widthCarouselDisplay &&
+        touchablePage.touchable
+      ) {
+        currentCarouselWrapper.style.transitionDuration = `0ms`;
+        currentCarouselWrapper.style.transform = `translateX(-${
+          widthCarouselDisplay * currentPage +
+          (touchablePage.posStartTouch - event.touches[0].clientX)
+        }px)`;
+
+        setTouchablePage((touchablePage) => ({
+          ...touchablePage,
+          stepMove: touchablePage.posStartTouch - event.touches[0].clientX,
+        }));
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (widthCarouselDisplay && currentCarouselWrapper) {
+        if (touchablePage.stepMove > widthCarouselDisplay / 4) {
+          setMovePage((movePage) => ({
+            ...movePage,
+            typeMovePage: 'nextPage',
+          }));
+        } else if (touchablePage.stepMove < -widthCarouselDisplay / 4) {
+          setMovePage((movePage) => ({
+            ...movePage,
+            typeMovePage: 'prevPage',
+          }));
+        } else {
+          currentCarouselWrapper.style.transitionDuration = `700ms`;
+          currentCarouselWrapper.style.transform = `translateX(-${
+            widthCarouselDisplay * currentPage
+          }px)`;
+        }
+      }
+
+      setTouchablePage((touchablePage) => ({
+        ...touchablePage,
+        touchable: false,
+      }));
+    };
+
+    currentCarouselWrapper?.addEventListener(
       'transitionend',
       handleTransitionEnd
     );
+    currentCarouselWrapper?.addEventListener('touchstart', handleTouchStart);
+    currentCarouselWrapper?.addEventListener('touchmove', handleTouchMove);
+    currentCarouselWrapper?.addEventListener('touchend', handleTouchEnd);
 
     return () => {
-      currentCarouselDisplay?.removeEventListener(
+      currentCarouselWrapper?.removeEventListener(
         'transitionend',
         handleTransitionEnd
       );
+      currentCarouselWrapper?.removeEventListener(
+        'touchstart',
+        handleTouchStart
+      );
+      currentCarouselWrapper?.removeEventListener('touchmove', handleTouchMove);
+      currentCarouselWrapper?.removeEventListener('touchend', handleTouchEnd);
     };
   }, [
-    currentPage,
     transitionPage,
     sizePage,
-    setCurrentPage,
-    setAnimatePage,
-    setTransitionPage,
+    currentPage,
+    touchablePage,
+    setTouchablePage,
+    setAnimationPage,
+    setAutoPlayPage,
+    setMovePage,
   ]);
 
   return (
     <div
-      ref={carouselDisplayRef}
       {...divProps}
+      ref={carouselDisplayRef}
       className={`overflow-hidden w-screen ${className}`}
     >
       <div
         ref={carouselWrapperItemsRef}
-        className="flex flex-nowrap flex-row transition-transform"
+        className="h-full w-full flex flex-nowrap flex-row transition-transform"
       >
         {cloneArrImgSrc.map((imgSrc, idx) => (
           <div className="flex items-center h-full w-full shrink-0" key={idx}>

@@ -25,10 +25,22 @@ const autoPlayPageState = atom({
   default: false,
 });
 
+const typeMovePageState = atom<'nextPage' | 'prevPage' | 'selectPage'>({
+  key: 'TypeMovePage',
+  default: 'selectPage',
+});
+
+const touchablePageState = atom({
+  key: 'TouchablePage',
+  default: { touchable: false, posStartTouch: 0, stepMove: 0 },
+});
+
 export {
   arrImgSrcState,
   currentPageState,
   animatePageState,
   transitionPageState,
   autoPlayPageState,
+  typeMovePageState,
+  touchablePageState,
 };

@@ -1,14 +1,11 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import { useCallback, useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
-  animatePageState,
   arrImgSrcState,
   autoPlayPageState,
-  currentPageState,
-  transitionPageState,
 } from '../../../state/carousel/carouselAtoms';
-import { sizePageState } from '../../../state/carousel/carouselSelectors';
+import { movePageState } from '../../../state/carousel/carouselSelectors';
 
 export type TCarouselControl = {} & React.ComponentPropsWithoutRef<'div'>;
 
@@ -19,79 +16,52 @@ const CarouselControl: React.FC<TCarouselControl> = ({
   ...divProps
 }) => {
   const arrImgSrc = useRecoilValue(arrImgSrcState);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
-  const sizePage = useRecoilValue(sizePageState);
-  const setAnimatePage = useSetRecoilState(animatePageState);
-  const setTransitionPage = useSetRecoilState(transitionPageState);
   const autoPlayPage = useRecoilValue(autoPlayPageState);
-
-  const handleMovePrevPage = () => {
-    setAnimatePage(700);
-    setCurrentPage((currentPage) =>
-      currentPage > 1 ? currentPage - 1 : sizePage
-    );
-    if (currentPage > 1) {
-      setTransitionPage(false);
-    } else {
-      setTransitionPage(true);
-    }
-  };
-
-  const handleMoveNextPage = useCallback(() => {
-    setAnimatePage(700);
-    setCurrentPage((currentPage) =>
-      currentPage < sizePage ? currentPage + 1 : 1
-    );
-    if (currentPage < sizePage) {
-      setTransitionPage(false);
-    } else {
-      setTransitionPage(true);
-    }
-  }, [
-    currentPage,
-    sizePage,
-    setAnimatePage,
-    setCurrentPage,
-    setTransitionPage,
-  ]);
-
-  const handleMovePageSelected = (pageSelected: number) => {
-    setAnimatePage(700);
-    setCurrentPage(pageSelected);
-    if (
-      (currentPage === sizePage && pageSelected === 1) ||
-      (currentPage === 1 && pageSelected === sizePage)
-    ) {
-      setTransitionPage(true);
-    } else {
-      setTransitionPage(false);
-    }
-  };
+  const [movePage, setMovePage] = useRecoilState(movePageState);
 
   useEffect(() => {
     if (autoPlayPage) {
       interval = setInterval(() => {
-        handleMoveNextPage();
+        setMovePage(({ pageSelected }) => ({
+          typeMovePage: 'nextPage',
+          pageSelected,
+        }));
       }, 3000);
     }
 
     return () => {
       clearInterval(interval);
     };
-  }, [handleMoveNextPage, autoPlayPage]);
+  }, [setMovePage, autoPlayPage]);
 
   return (
     <div
       {...divProps}
-      className={`flex justify-between absolute top-0 w-full h-full ${className}`}
+      className={`flex justify-between absolute top-0 w-full h-full pointer-events-none ${className}`}
     >
-      <CarouselControlPrevious handleMovePrevPage={handleMovePrevPage} />
+      <CarouselControlPrevious
+        handleMovePrevPage={() =>
+          setMovePage(({ pageSelected }) => ({
+            typeMovePage: 'prevPage',
+            pageSelected,
+          }))
+        }
+      />
       <CarouselControlIndicators
         arrImgSrc={arrImgSrc}
-        currentPage={currentPage}
-        handleMovePageSelected={handleMovePageSelected}
+        currentPage={movePage.pageSelected}
+        handleMovePageSelected={(pageSelected) =>
+          setMovePage({ typeMovePage: 'selectPage', pageSelected })
+        }
       />
-      <CarouselControlNext handleMoveNextPage={handleMoveNextPage} />
+      <CarouselControlNext
+        handleMoveNextPage={() =>
+          setMovePage(({ pageSelected }) => ({
+            typeMovePage: 'nextPage',
+            pageSelected,
+          }))
+        }
+      />
     </div>
   );
 };
@@ -104,6 +74,7 @@ const CarouselControlPrevious: React.FC<{
       onClick={handleMovePrevPage}
       type="button"
       aria-label="Previous page"
+      className="pointer-events-auto"
     >
       <ChevronLeftIcon className="h-10 text-white text-opacity-80 active:text-opacity-80" />
     </button>
@@ -114,7 +85,12 @@ const CarouselControlNext: React.FC<{
   handleMoveNextPage: () => void;
 }> = ({ handleMoveNextPage }) => (
   <div className="h-full w-2/12 flex items-center justify-end shadow-[-50px_0_30px_-40px_rgba(0,0,0,0.6)_inset]">
-    <button onClick={handleMoveNextPage} type="button" aria-label="Next page">
+    <button
+      onClick={handleMoveNextPage}
+      type="button"
+      aria-label="Next page"
+      className="pointer-events-auto"
+    >
       <ChevronRightIcon className="h-10 text-white text-opacity-80 active:text-opacity-80" />
     </button>
   </div>
@@ -125,7 +101,7 @@ const CarouselControlIndicators: React.FC<{
   currentPage: number;
   handleMovePageSelected: (_pageSelected: number) => void;
 }> = ({ arrImgSrc, currentPage, handleMovePageSelected }) => (
-  <div className="flex items-end gap-4 mb-3">
+  <div className="flex items-end gap-4 mb-3 pointer-events-auto">
     {arrImgSrc.map((_, idx) => (
       <button
         key={idx}
