@@ -93,7 +93,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
         className="flex flex-nowrap flex-row transition-transform"
       >
         {cloneArrImgSrc.map((imgSrc, idx) => (
-          <div className="w-full shrink-0" key={idx}>
+          <div className="flex items-center h-full w-full shrink-0" key={idx}>
             <Image
               src={imgSrc}
               width={500}
