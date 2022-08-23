@@ -1,14 +1,29 @@
 import { atom } from 'recoil';
-import { mockCarouselProps } from '../../components/utilities/carousel/Carousel.mocks';
+import { IImage } from '../../components/utilities/carousel/Carousel';
+
+const arrImageState = atom<IImage[]>({
+  key: 'ArrImgSrc',
+  default: [],
+});
 
 const currentPageState = atom({
   key: 'CurrentPage',
   default: 1,
 });
 
-const sizePageState = atom({
-  key: 'SizePageState',
-  default: mockCarouselProps.base.arrImgSrc.length,
+const animatePageState = atom({
+  key: 'AnimatePage',
+  default: 0,
 });
 
-export { currentPageState, sizePageState };
+const transitionPageState = atom({
+  key: 'TransitionPage',
+  default: false,
+});
+
+export {
+  arrImageState,
+  currentPageState,
+  animatePageState,
+  transitionPageState,
+};

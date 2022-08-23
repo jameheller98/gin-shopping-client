@@ -1,31 +1,86 @@
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
-import { currentPageState } from '../../../state/carousel/carouselAtoms';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  animatePageState,
+  currentPageState,
+  transitionPageState,
+} from '../../../state/carousel/carouselAtoms';
+import {
+  arrImageCloneState,
+  sizePageState,
+} from '../../../state/carousel/carouselSelectors';
 
-export type TCarouselDisplay = {
-  arrImgSrc: string[];
-} & React.ComponentPropsWithoutRef<'div'>;
+export type TCarouselDisplay = {} & React.ComponentPropsWithoutRef<'div'>;
 
 const CarouselDisplay: React.FC<TCarouselDisplay> = ({
-  arrImgSrc,
   className,
   ...divProps
 }) => {
   const carouselDisplayRef = useRef<null | HTMLDivElement>(null);
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
-  const currentPage = useRecoilValue(currentPageState);
+  const cloneArrImage = useRecoilValue(arrImageCloneState);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [animatePage, setAnimatePage] = useRecoilState(animatePageState);
+  const [transitionPage, setTransitionPage] =
+    useRecoilState(transitionPageState);
+  const sizePage = useRecoilValue(sizePageState);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (carouselWrapperItemsRef.current && carouselDisplayRef.current) {
       const widthCarouselDisplay =
         carouselDisplayRef.current.getBoundingClientRect().width;
 
-      carouselWrapperItemsRef.current.style.transform = `translateX(-${
-        widthCarouselDisplay * (currentPage - 1)
-      }px)`;
+      carouselWrapperItemsRef.current.style.transitionDuration = `${animatePage}ms`;
+
+      if (transitionPage && currentPage === sizePage) {
+        carouselWrapperItemsRef.current.style.transform = `translateX(-${
+          widthCarouselDisplay * 0
+        }px)`;
+      } else if (transitionPage && currentPage === 1) {
+        carouselWrapperItemsRef.current.style.transform = `translateX(-${
+          widthCarouselDisplay * (sizePage + 1)
+        }px)`;
+      } else if (!transitionPage) {
+        carouselWrapperItemsRef.current.style.transform = `translateX(-${
+          widthCarouselDisplay * currentPage
+        }px)`;
+      }
     }
-  }, [currentPage]);
+  }, [currentPage, animatePage, transitionPage, sizePage]);
+
+  useEffect(() => {
+    const currentCarouselDisplay = carouselWrapperItemsRef.current;
+
+    const handleTransitionEnd = () => {
+      if (transitionPage && currentPage === sizePage) {
+        setAnimatePage(0);
+        setTransitionPage(false);
+      } else if (transitionPage && currentPage === 1) {
+        setAnimatePage(0);
+        setTransitionPage(false);
+      }
+    };
+
+    currentCarouselDisplay?.addEventListener(
+      'transitionend',
+      handleTransitionEnd
+    );
+
+    return () => {
+      currentCarouselDisplay?.removeEventListener(
+        'transitionend',
+        handleTransitionEnd
+      );
+    };
+  }, [
+    currentPage,
+    transitionPage,
+    sizePage,
+    setCurrentPage,
+    setAnimatePage,
+    setTransitionPage,
+  ]);
 
   return (
     <div
@@ -35,17 +90,11 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     >
       <div
         ref={carouselWrapperItemsRef}
-        className="flex flex-nowrap flex-row transition-transform duration-700"
+        className="flex flex-nowrap flex-row transition-transform"
       >
-        {arrImgSrc.map((imgSrc, idx) => (
+        {cloneArrImage.map((image, idx) => (
           <div className="h-[300px] w-full shrink-0" key={idx}>
-            <Image
-              src={imgSrc}
-              alt="Home logo"
-              height={1323}
-              width={880}
-              priority
-            />
+            <Image {...image} alt="Home logo" priority />
           </div>
         ))}
       </div>
