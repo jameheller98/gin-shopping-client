@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { TouchEvent, useEffect, useLayoutEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   autoPlayPageState,
@@ -19,6 +19,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   ...divProps
 }) => {
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
+  const itemRef = useRef<null | HTMLDivElement>(null);
   const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState);
   const [{ pageSelected: currentPage }, setMovePage] =
     useRecoilState(movePageState);
@@ -31,28 +32,38 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const currentCarouselWrapper = carouselWrapperItemsRef.current;
   const widthCarouselWrapper =
     currentCarouselWrapper?.getBoundingClientRect().width;
+  const widthItem = itemRef.current?.getBoundingClientRect().width;
   const useIsomorphicLayoutEffect =
     typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
+  const calTranlateXItem = useCallback(
+    (currentPage: number) =>
+      widthCarouselWrapper && widthItem
+        ? widthItem * currentPage - (widthCarouselWrapper - widthItem) / 2
+        : 0,
+
+    [widthCarouselWrapper, widthItem]
+  );
+
   useIsomorphicLayoutEffect(() => {
-    if (currentCarouselWrapper && widthCarouselWrapper) {
+    if (currentCarouselWrapper) {
       currentCarouselWrapper.style.transitionDuration = `${animatePage}ms`;
 
       if (transitionPage && currentPage === sizePage) {
-        currentCarouselWrapper.style.transform = `translateX(-${
-          widthCarouselWrapper * 0
-        }px)`;
+        currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
+          1
+        )}px)`;
       } else if (transitionPage && currentPage === 1) {
-        currentCarouselWrapper.style.transform = `translateX(-${
-          widthCarouselWrapper * (sizePage + 1)
-        }px)`;
+        currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
+          sizePage + 2
+        )}px)`;
       } else if (!transitionPage) {
-        currentCarouselWrapper.style.transform = `translateX(-${
-          widthCarouselWrapper * currentPage
-        }px)`;
+        currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
+          currentPage + 1
+        )}px)`;
       }
     }
-  }, [currentPage, sizePage, animatePage, transitionPage]);
+  }, [currentPage, sizePage, animatePage, transitionPage, calTranlateXItem]);
 
   const handleTransitionEnd = () => {
     if (
@@ -63,35 +74,31 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     }
   };
 
-  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+  const handleStartSlide = (clientX: number) => {
     setTouchablePage((touchablePage) => ({
       ...touchablePage,
       touchable: true,
-      posStartTouch: event.touches[0].clientX,
+      posStartTouch: clientX,
     }));
     setAutoPlayPage(false);
   };
 
-  const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
-    if (
-      currentCarouselWrapper &&
-      widthCarouselWrapper &&
-      touchablePage.touchable
-    ) {
+  const handleMoveSlide = (clientX: number) => {
+    if (currentCarouselWrapper && touchablePage.touchable) {
       currentCarouselWrapper.style.transitionDuration = `0ms`;
-      currentCarouselWrapper.style.transform = `translateX(-${
-        widthCarouselWrapper * currentPage +
-        (touchablePage.posStartTouch - event.touches[0].clientX)
-      }px)`;
+      currentCarouselWrapper.style.transform = `translateX(${-(
+        calTranlateXItem(currentPage + 1) +
+        (touchablePage.posStartTouch - clientX)
+      )}px)`;
 
       setTouchablePage((touchablePage) => ({
         ...touchablePage,
-        stepMove: touchablePage.posStartTouch - event.touches[0].clientX,
+        stepMove: touchablePage.posStartTouch - clientX,
       }));
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleEndSlide = () => {
     if (widthCarouselWrapper && currentCarouselWrapper) {
       if (touchablePage.stepMove > widthCarouselWrapper / 4) {
         setMovePage((movePage) => ({
@@ -105,9 +112,9 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
         }));
       } else {
         currentCarouselWrapper.style.transitionDuration = `700ms`;
-        currentCarouselWrapper.style.transform = `translateX(-${
-          widthCarouselWrapper * currentPage
-        }px)`;
+        currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
+          currentPage + 1
+        )}px)`;
       }
     }
 
@@ -119,22 +126,30 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
   return (
     <div {...divProps} className={`overflow-hidden w-screen ${className}`}>
+      <div ref={itemRef} className="w-[80%]" aria-hidden />
       <div
         ref={carouselWrapperItemsRef}
         className="h-full w-full flex flex-nowrap flex-row transition-transform"
         onTransitionEnd={handleTransitionEnd}
-        onTouchStart={(event) => handleTouchStart(event)}
-        onTouchMove={(event) => handleTouchMove(event)}
-        onTouchEnd={handleTouchEnd}
+        onTouchStart={(event) => handleStartSlide(event.touches[0].clientX)}
+        onTouchMove={(event) => handleMoveSlide(event.touches[0].clientX)}
+        onTouchEnd={handleEndSlide}
+        onMouseDown={(event) => handleStartSlide(event.clientX)}
+        onMouseMove={(event) => handleMoveSlide(event.clientX)}
+        onMouseUp={handleEndSlide}
       >
         {cloneArrImgSrc.map((imgSrc, idx) => (
-          <div className="flex items-center h-full w-full shrink-0" key={idx}>
+          <div
+            className="flex items-center h-full w-[80%] shrink-0 px-3"
+            key={idx}
+          >
             <Image
               src={imgSrc}
               width={720}
               height={480}
               alt="Home logo"
               priority
+              onDragStart={(event) => event.preventDefault()}
             />
           </div>
         ))}

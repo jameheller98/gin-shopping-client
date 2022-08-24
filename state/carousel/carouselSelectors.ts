@@ -23,7 +23,13 @@ const arrImgSrcCloneState = selector({
     const arrImgSrc = get(arrImgSrcState);
 
     return arrImgSrc.length > 0
-      ? [arrImgSrc[arrImgSrc.length - 1], ...arrImgSrc, arrImgSrc[0]]
+      ? [
+          arrImgSrc[arrImgSrc.length - 2],
+          arrImgSrc[arrImgSrc.length - 1],
+          ...arrImgSrc,
+          arrImgSrc[0],
+          arrImgSrc[1],
+        ]
       : [];
   },
 });
