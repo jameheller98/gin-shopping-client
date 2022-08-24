@@ -100,12 +100,12 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
   const handleEndSlide = () => {
     if (widthCarouselWrapper && currentCarouselWrapper) {
-      if (touchablePage.stepMove > widthCarouselWrapper / 4) {
+      if (touchablePage.stepMove > widthCarouselWrapper / 20) {
         setMovePage((movePage) => ({
           ...movePage,
           typeMovePage: 'nextPage',
         }));
-      } else if (touchablePage.stepMove < -widthCarouselWrapper / 4) {
+      } else if (touchablePage.stepMove < -widthCarouselWrapper / 20) {
         setMovePage((movePage) => ({
           ...movePage,
           typeMovePage: 'prevPage',
@@ -118,10 +118,11 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       }
     }
 
-    setTouchablePage((touchablePage) => ({
-      ...touchablePage,
+    setTouchablePage({
       touchable: false,
-    }));
+      posStartTouch: 0,
+      stepMove: 0,
+    });
   };
 
   return (
