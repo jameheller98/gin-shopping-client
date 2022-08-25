@@ -69,12 +69,12 @@ const CarouselControl: React.FC<TCarouselControl> = ({
 const CarouselControlPrevious: React.FC<{
   handleMovePrevPage: () => void;
 }> = ({ handleMovePrevPage }) => (
-  <div className="h-full w-2/12 flex items-center shadow-[50px_0_30px_-40px_rgba(255,255,255,0.6)_inset]">
+  <div className="h-full w-2/12 flex items-center shadow-[30px_0_40px_-25px_rgba(0,0,0,0.5)_inset]">
     <button
       onClick={handleMovePrevPage}
       type="button"
       aria-label="Previous page"
-      className="pointer-events-auto ml-4"
+      className="pointer-events-auto"
     >
       <ChevronLeftIcon className="h-10 text-white text-opacity-80 active:text-opacity-80" />
     </button>
@@ -84,12 +84,12 @@ const CarouselControlPrevious: React.FC<{
 const CarouselControlNext: React.FC<{
   handleMoveNextPage: () => void;
 }> = ({ handleMoveNextPage }) => (
-  <div className="h-full w-2/12 flex items-center justify-end shadow-[-50px_0_30px_-40px_rgba(255,255,255,0.6)_inset]">
+  <div className="h-full w-2/12 flex items-center justify-end shadow-[-30px_0_40px_-25px_rgba(0,0,0,0.5)_inset]">
     <button
       onClick={handleMoveNextPage}
       type="button"
       aria-label="Next page"
-      className="pointer-events-auto mr-4"
+      className="pointer-events-auto"
     >
       <ChevronRightIcon className="h-10 text-white text-opacity-80 active:text-opacity-80" />
     </button>

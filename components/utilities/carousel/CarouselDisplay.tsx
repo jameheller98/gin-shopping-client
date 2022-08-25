@@ -127,7 +127,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
   return (
     <div {...divProps} className={`overflow-hidden w-screen ${className}`}>
-      <div ref={itemRef} className="w-[80%]" aria-hidden />
+      <div ref={itemRef} className="w-[75%]" aria-hidden />
       <div
         ref={carouselWrapperItemsRef}
         className="h-full w-full flex flex-nowrap flex-row transition-transform"
@@ -141,7 +141,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       >
         {cloneArrImgSrc.map((imgSrc, idx) => (
           <div
-            className="flex items-center h-full w-[80%] shrink-0 px-3"
+            className="flex items-center h-full w-[75%] shrink-0 px-3"
             key={idx}
           >
             <Image
