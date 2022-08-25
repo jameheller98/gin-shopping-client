@@ -69,7 +69,7 @@ const CarouselControl: React.FC<TCarouselControl> = ({
 const CarouselControlPrevious: React.FC<{
   handleMovePrevPage: () => void;
 }> = ({ handleMovePrevPage }) => (
-  <div className="h-full w-2/12 flex items-center shadow-[30px_0_40px_-25px_rgba(0,0,0,0.5)_inset]">
+  <div className="h-full w-2/12 flex items-center shadow-[40px_0_30px_-30px_rgba(0,0,0,0.5)_inset]">
     <button
       onClick={handleMovePrevPage}
       type="button"
@@ -84,7 +84,7 @@ const CarouselControlPrevious: React.FC<{
 const CarouselControlNext: React.FC<{
   handleMoveNextPage: () => void;
 }> = ({ handleMoveNextPage }) => (
-  <div className="h-full w-2/12 flex items-center justify-end shadow-[-30px_0_40px_-25px_rgba(0,0,0,0.5)_inset]">
+  <div className="h-full w-2/12 flex items-center justify-end shadow-[-40px_0_30px_-30px_rgba(0,0,0,0.6)_inset]">
     <button
       onClick={handleMoveNextPage}
       type="button"
@@ -101,7 +101,7 @@ const CarouselControlIndicators: React.FC<{
   currentPage: number;
   handleMovePageSelected: (_pageSelected: number) => void;
 }> = ({ arrImgSrc, currentPage, handleMovePageSelected }) => (
-  <div className="flex items-end gap-4 mb-5">
+  <div className="flex items-end gap-5 mb-3">
     {arrImgSrc.map((_, idx) => (
       <button
         key={idx}
