@@ -11,15 +11,15 @@ const Home: NextPageWithLayout = () => {
       <Carousel {...mockCarouselProps.base} />
       <NewArrivalCard
         {...mockNewArrivalCardProps.base}
-        className="mt-5"
-        arrBgColor={['bg-red-100', 'bg-red-200', 'bg-red-300']}
+        className="mt-5 mx-5"
+        arrBgColor={['bg-red-100', 'bg-red-200']}
         shadowsColor="shadow-red-400"
       />
       <NewArrivalCard
         {...mockNewArrivalCardProps.base}
         reversePosition={true}
-        className="mt-5"
-        arrBgColor={['bg-orange-100', 'bg-orange-200', 'bg-orange-300']}
+        className="mt-5 mx-5"
+        arrBgColor={['bg-orange-100', 'bg-orange-200']}
         shadowsColor="shadow-orange-400"
       />
     </section>

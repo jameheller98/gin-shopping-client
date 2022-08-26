@@ -11,7 +11,7 @@ export type TNewArrivalCard = {
 const NewArrivalCard: React.FC<TNewArrivalCard> = ({
   title,
   description,
-  arrBgColor = ['bg-slate-100', 'bg-slate-200', 'bg-slate-300'],
+  arrBgColor = ['bg-slate-100', 'bg-slate-200'],
   shadowsColor = 'shadow-slate-400',
   reversePosition = false,
   className,
@@ -30,47 +30,44 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
         <Image
           src="/home/card/men-white-shirt.jpg"
           alt="Men white shirt"
-          width="200"
-          height="250"
+          width="360"
+          height="490"
+          priority
         />
       </section>
-      <section className="grid grid-flow-row max-h-[200px]">
+      <section className="grid grid-flow-row gap-1 max-h-[200px]">
         <h1 className="text-lg font-medium">{title}</h1>
         <p
-          className={`text-sm overflow-auto px-2 py-1 mt-1 rounded-sm shadow-[0_0_0_2px,3px_3px_0_2px] ${shadowsColor} ${arrBgColor[1]}`}
+          className={`text-sm overflow-auto h-[100%] px-2 py-1 rounded-sm shadow-[0_0_0_2px,3px_3px_0_2px] ${shadowsColor} ${arrBgColor[1]}`}
         >
           {description}
         </p>
-        <div className="mt-3 text-right">
-          <button
-            className={`text-xs px-3 py-1 text-white rounded-full ${arrBgColor[2]}`}
-          >
-            More info
-          </button>
+        <div className="mt-2 text-right">
+          <button className="text-md font-medium">More info</button>
         </div>
         <div className="grid grid-flow-col gap-3 overflow-hidden justify-center mt-2">
           <div className="overflow-hidden h-[50px] w-[50px]">
             <Image
               src="/home/card/men-white-shirt.jpg"
               alt="Men white shirt"
-              width="200"
-              height="250"
+              width="360"
+              height="490"
             />
           </div>
           <div className="overflow-hidden h-[50px] w-[50px]">
             <Image
               src="/home/card/men-white-shirt.jpg"
               alt="Men white shirt"
-              width="200"
-              height="250"
+              width="360"
+              height="490"
             />
           </div>
           <div className="overflow-hidden h-[50px] w-[50px]">
             <Image
               src="/home/card/men-white-shirt.jpg"
               alt="Men white shirt"
-              width="200"
-              height="250"
+              width="360"
+              height="490"
             />
           </div>
         </div>

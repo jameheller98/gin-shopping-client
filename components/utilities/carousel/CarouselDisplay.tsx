@@ -149,7 +149,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
               width={720}
               height={480}
               alt="Home logo"
-              priority
+              priority={idx <= 3 ? true : false}
               onDragStart={(event) => event.preventDefault()}
             />
           </div>
