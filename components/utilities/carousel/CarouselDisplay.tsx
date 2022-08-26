@@ -141,7 +141,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       >
         {cloneArrImgSrc.map((imgSrc, idx) => (
           <div
-            className="flex items-center h-full w-[75%] shrink-0 px-3"
+            className="flex items-center h-full w-[75%] shrink-0 px-2"
             key={idx}
           >
             <Image
@@ -149,7 +149,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
               width={720}
               height={480}
               alt="Home logo"
-              priority={idx <= 3 ? true : false}
+              priority={idx > 1 && idx < 6 ? true : false}
               onDragStart={(event) => event.preventDefault()}
             />
           </div>

@@ -1,10 +1,13 @@
+import { ArrowRightIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
+import CubeButton, { TCubeButton } from '../../buttons/CubeButton/CubeButton';
 
 export type TNewArrivalCard = {
   title: string;
   description: string;
   arrBgColor?: string[];
   shadowsColor?: string;
+  buttonStyle?: Pick<TCubeButton, 'bgColor' | 'fromEffect' | 'borderColor'>;
   reversePosition?: boolean;
 } & React.ComponentPropsWithoutRef<'article'>;
 
@@ -13,6 +16,7 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
   description,
   arrBgColor = ['bg-slate-100', 'bg-slate-200'],
   shadowsColor = 'shadow-slate-400',
+  buttonStyle,
   reversePosition = false,
   className,
   ...articleProps
@@ -43,33 +47,9 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
           {description}
         </p>
         <div className="mt-2 text-right">
-          <button className="text-md font-medium">More info</button>
-        </div>
-        <div className="grid grid-flow-col gap-3 overflow-hidden justify-center mt-2">
-          <div className="overflow-hidden h-[50px] w-[50px]">
-            <Image
-              src="/home/card/men-white-shirt.jpg"
-              alt="Men white shirt"
-              width="360"
-              height="490"
-            />
-          </div>
-          <div className="overflow-hidden h-[50px] w-[50px]">
-            <Image
-              src="/home/card/men-white-shirt.jpg"
-              alt="Men white shirt"
-              width="360"
-              height="490"
-            />
-          </div>
-          <div className="overflow-hidden h-[50px] w-[50px]">
-            <Image
-              src="/home/card/men-white-shirt.jpg"
-              alt="Men white shirt"
-              width="360"
-              height="490"
-            />
-          </div>
+          <CubeButton {...buttonStyle} className="text-sm">
+            More info <ArrowRightIcon className="inline h-4" />
+          </CubeButton>
         </div>
       </section>
     </article>
