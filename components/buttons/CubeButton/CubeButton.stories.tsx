@@ -3,7 +3,7 @@ import CubeButton, { TCubeButton } from './CubeButton';
 import { mockCubeButtonProps } from './CubeButton.mocks';
 
 export default {
-  title: 'templates/CubeButton',
+  title: 'buttons/CubeButton',
   component: CubeButton,
   argTypes: {},
 } as ComponentMeta<typeof CubeButton>;

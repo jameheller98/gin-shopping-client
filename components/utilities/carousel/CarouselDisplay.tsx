@@ -1,5 +1,6 @@
+import { Transition } from '@headlessui/react';
 import Image from 'next/image';
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   autoPlayPageState,
@@ -11,6 +12,7 @@ import {
   movePageState,
   sizePageState,
 } from '../../../state/carousel/carouselSelectors';
+import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 
 export type TCarouselDisplay = {} & React.ComponentPropsWithoutRef<'div'>;
 
@@ -33,8 +35,6 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const widthCarouselWrapper =
     currentCarouselWrapper?.getBoundingClientRect().width;
   const widthItem = itemRef.current?.getBoundingClientRect().width;
-  const useIsomorphicLayoutEffect =
-    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
   const calTranlateXItem = useCallback(
     (currentPage: number) =>
@@ -128,16 +128,26 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   return (
     <div {...divProps} className={`overflow-hidden w-screen ${className}`}>
       <div ref={itemRef} className="w-[75%]" aria-hidden />
-      <div
+      <Transition.Child
+        as="div"
         ref={carouselWrapperItemsRef}
         className="h-full w-full flex flex-nowrap flex-row transition-transform"
         onTransitionEnd={handleTransitionEnd}
-        onTouchStart={(event) => handleStartSlide(event.touches[0].clientX)}
-        onTouchMove={(event) => handleMoveSlide(event.touches[0].clientX)}
+        onTouchStart={(event: any) =>
+          handleStartSlide((event as TouchEvent).touches[0].clientX)
+        }
+        onTouchMove={(event: any) =>
+          handleMoveSlide((event as TouchEvent).touches[0].clientX)
+        }
         onTouchEnd={handleEndSlide}
-        onMouseDown={(event) => handleStartSlide(event.clientX)}
-        onMouseMove={(event) => handleMoveSlide(event.clientX)}
+        onMouseDown={(event: any) =>
+          handleStartSlide((event as MouseEvent).clientX)
+        }
+        onMouseMove={(event: any) =>
+          handleMoveSlide((event as MouseEvent).clientX)
+        }
         onMouseUp={handleEndSlide}
+        enter="-translate-x-[calc(75%*2-(25%/2))] transition-transform duration-[700ms]"
       >
         {cloneArrImgSrc.map((imgSrc, idx) => (
           <div
@@ -154,7 +164,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
             />
           </div>
         ))}
-      </div>
+      </Transition.Child>
     </div>
   );
 };
