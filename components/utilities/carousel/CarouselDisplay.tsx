@@ -135,8 +135,8 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       <div ref={itemRef} className="w-[75%]" aria-hidden />
       <Transition
         show={isVisible}
-        enter="transition-[transform,opacity] duration-[1200ms] ease-out"
-        enterFrom="scale-[0.2] opacity-0"
+        enter="transition-[transform,opacity] duration-[1000ms]"
+        enterFrom="scale-50 opacity-0"
         enterTo="scale-1 opacity-100"
       >
         <div
