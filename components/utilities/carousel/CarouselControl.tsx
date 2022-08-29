@@ -88,7 +88,7 @@ const CarouselControlPrevious: React.FC<{
       aria-label="Previous page"
       className="pointer-events-auto"
       enter="transition-transform duration-[1200ms] ease-out delay-200"
-      enterFrom="scale-[1.5]"
+      enterFrom="scale-50"
       enterTo="scale-1"
     >
       <ChevronLeftIcon className="h-10 text-white text-opacity-80 active:text-opacity-80" />
@@ -113,7 +113,7 @@ const CarouselControlNext: React.FC<{
       aria-label="Next page"
       className="pointer-events-auto"
       enter="transition-transform duration-[1200ms] ease-out delay-200"
-      enterFrom="scale-[1.5]"
+      enterFrom="scale-50"
       enterTo="scale-1"
     >
       <ChevronRightIcon className="h-10 text-white text-opacity-80 active:text-opacity-80" />

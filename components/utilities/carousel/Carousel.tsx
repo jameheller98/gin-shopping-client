@@ -34,13 +34,13 @@ const Carousel: React.FC<TCarousel> = ({
     return () => clearTimeout(setTimeOutAutoPlay);
   }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
 
-  useOnClickOutSide(refCarousel, () => setAutoPlayPage(true));
+  useOnClickOutSide(refCarousel, () => autoPlay && setAutoPlayPage(true));
 
   return (
     <div
       {...divProps}
       ref={refCarousel}
-      onClick={() => setAutoPlayPage(false)}
+      onClick={() => autoPlay && setAutoPlayPage(false)}
       className={`relative ${className}`}
     >
       <CarouselDisplay />
