@@ -1,0 +1,40 @@
+import { ParsedUrlQuery } from 'querystring';
+import { selectorFamily } from 'recoil';
+import { IMenuObject } from '../../components/navigations/menu/Menu';
+import { mockMenuProps } from '../../components/navigations/menu/Menu.mocks';
+
+const idMenuActiveFromQueryState = selectorFamily({
+  key: 'IdMenuActiveFromQueryState',
+  get: (query: ParsedUrlQuery) => () => {
+    let arrIdActive: string[] = [];
+    const objectArray = Object.entries(query);
+    const findParent = mockMenuProps.base.arrMenu.find(
+      (menu) => menu.id === '2'
+    );
+
+    const findIdLastQuery = (
+      objectArray: [string, string | string[] | undefined][],
+      parent: IMenuObject,
+      count = 0
+    ) => {
+      const object = objectArray[count];
+      const findObject = parent.children.find(
+        (menu) =>
+          object?.length > 0 &&
+          menu.href.replace(/^.*[a-z,0-9,A-Z]\//g, '') === object[1]
+      );
+
+      if (findObject) {
+        findIdLastQuery(objectArray, findObject, count + 1);
+
+        arrIdActive.push(findObject.id);
+      }
+    };
+
+    if (findParent) findIdLastQuery(objectArray, findParent);
+
+    return arrIdActive.concat('2');
+  },
+});
+
+export { idMenuActiveFromQueryState };

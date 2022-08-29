@@ -25,7 +25,7 @@ const Sidebar: React.FC<TSidebar> = ({ className, ...divProps }) => {
     <>
       <div
         {...divProps}
-        className={`w-9/12 h-screen p-4 fixed top-0 left-0 z-[2] bg-white transition duration-300 overflow-auto ${handleTransitionDrawerClass(
+        className={`w-9/12 h-screen p-4 fixed top-0 left-0 z-[4] bg-white transition duration-300 overflow-auto ${handleTransitionDrawerClass(
           'left'
         )} ${className}`}
       >
@@ -36,7 +36,7 @@ const Sidebar: React.FC<TSidebar> = ({ className, ...divProps }) => {
         <Navbar className="mt-12" />
       </div>
       <div
-        className={`w-3/12 h-screen fixed top-0 right-0 z-[1] bg-black bg-opacity-40 transition duration-300 ${handleTransitionDrawerClass(
+        className={`w-3/12 h-screen fixed top-0 right-0 z-[3] bg-black bg-opacity-40 transition duration-300 ${handleTransitionDrawerClass(
           'right'
         )}`}
       />

@@ -1,4 +1,5 @@
 import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline';
+import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import Brand from '../../common/brand/Brand';
@@ -17,9 +18,11 @@ const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
         className="h-7 w-7 self-center cursor-pointer ml-4"
         onClick={() => setOpenDrawer(true)}
       />
-      <div className="flex justify-center items-center">
-        <Brand />
-      </div>
+      <Link href="/">
+        <a className="flex justify-center items-center">
+          <Brand />
+        </a>
+      </Link>
       <ShoppingBagIcon className="h-7 w-7 self-center cursor-pointer justify-self-end mr-4" />
     </header>
   );

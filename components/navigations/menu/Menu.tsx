@@ -1,13 +1,19 @@
 import { MinusSmIcon, PlusSmIcon } from '@heroicons/react/solid';
 import classNames from 'classnames';
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { MouseEvent, useCallback, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
+import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 import { idMenuActiveState } from '../../../state/menu/menuAtoms';
+import { idMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
 
 export interface IMenuObject {
   id: string;
   name: string;
+  href: string;
+  tagParam: string;
   bgColorChild: string;
   children: IMenuObject[];
 }
@@ -17,19 +23,23 @@ export type TMenu = {
 } & React.ComponentPropsWithoutRef<'ul'>;
 
 const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
-  const openDrawer = useRecoilValue(openDrawerState);
+  const router = useRouter();
+  const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
   const [arrIdMenuOpen, setArrIdMenuOpen] = useState<IMenuObject['id'][]>([]);
+  const idMenuActiveFromQuery = useRecoilValue(
+    idMenuActiveFromQueryState(router.query)
+  );
   const transitionTextClass = classNames({
     'opacity-100 translate-x-0': openDrawer,
     'opacity-0 -translate-x-4': !openDrawer,
   });
 
-  useEffect(() => {
-    if (!openDrawer) {
-      setArrIdMenuOpen([]);
-    }
-  }, [openDrawer]);
+  useIsomorphicLayoutEffect(() => {
+    const [first, ...rest] = idMenuActiveFromQuery;
+    setIdMenuActive(first);
+    setArrIdMenuOpen(rest);
+  }, [setIdMenuActive, idMenuActiveFromQuery]);
 
   const handleClickItem = (
     event: MouseEvent<HTMLSpanElement>,
@@ -37,6 +47,7 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
   ) => {
     event.stopPropagation();
     setIdMenuActive(idMenu);
+    setOpenDrawer(false);
   };
 
   const handleToggleMenuItems = useCallback(
@@ -64,7 +75,7 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
 
   return (
     <ul {...ulProps} className={`flex flex-col gap-5 relative ${className}`}>
-      {arrMenu.map(({ id, name, bgColorChild, children }, index) => {
+      {arrMenu.map(({ id, name, href, bgColorChild, children }, index) => {
         const delaySequenceClass = classNames({
           'delay-[300ms]': index === 0 || index === 4,
           'delay-[400ms]': index === 1 || index === 3,
@@ -78,12 +89,21 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
               id
             )} ${delaySequenceClass} ${transitionTextClass}`}
           >
-            <span
-              className="pl-2 cursor-pointer"
-              onClick={(e) => handleClickItem(e, id)}
-            >
-              {name}
-            </span>
+            <Link href={href}>
+              <a
+                id="login"
+                className={`pl-2 ${
+                  idMenuActive !== id
+                    ? 'pointer-events-auto'
+                    : 'pointer-events-none'
+                }`}
+                onClick={(e) => {
+                  if (idMenuActive !== id) handleClickItem(e, id);
+                }}
+              >
+                {name}
+              </a>
+            </Link>
             {children.length > 0 &&
               (arrIdMenuOpen.includes(id) ? (
                 <MinusSmIcon
