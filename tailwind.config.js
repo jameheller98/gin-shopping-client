@@ -33,6 +33,20 @@ module.exports = {
           '0%': { maxHeight: 1000 },
           '100%': { maxHeight: 0 },
         },
+        'wave-button': {
+          '0%': {
+            transform: 'scale(1)',
+          },
+          '20%': {
+            transform: 'scale(2)',
+          },
+          '80%': {
+            transform: 'scale(0.5)',
+          },
+          '100%': {
+            transform: 'scale(1)',
+          },
+        },
       },
     },
   },

@@ -1,5 +1,4 @@
-import { Transition } from '@headlessui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
 import {
   arrImgSrcState,
@@ -15,6 +14,8 @@ export type TCarousel = {
   autoPlay?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
 
+let setTimeOutAutoPlay: NodeJS.Timeout;
+
 const Carousel: React.FC<TCarousel> = ({
   arrImgSrc,
   autoPlay = false,
@@ -22,36 +23,29 @@ const Carousel: React.FC<TCarousel> = ({
   ...divProps
 }) => {
   const refCarousel = useRef<null | HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const setArrImgSrc = useSetRecoilState(arrImgSrcState);
   const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
 
   useIsomorphicLayoutEffect(() => {
     setArrImgSrc(arrImgSrc);
-    setAutoPlayPage(autoPlay);
-  }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+    setTimeOutAutoPlay = setTimeout(() => setAutoPlayPage(autoPlay), 1500);
+
+    return () => clearTimeout(setTimeOutAutoPlay);
+  }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
 
   useOnClickOutSide(refCarousel, () => setAutoPlayPage(true));
 
   return (
-    <Transition
+    <div
       {...divProps}
-      as="div"
       ref={refCarousel}
       onClick={() => setAutoPlayPage(false)}
       className={`relative ${className}`}
-      show={isVisible}
-      enter="transition-[transform,opacity] duration-[1200ms] ease-out"
-      enterFrom="scale-0 opacity-0"
-      enterTo="scale-1 opacity-100"
     >
       <CarouselDisplay />
       <CarouselControl />
-    </Transition>
+    </div>
   );
 };
 

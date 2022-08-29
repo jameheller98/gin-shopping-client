@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   autoPlayPageState,
@@ -22,6 +22,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 }) => {
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
   const itemRef = useRef<null | HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState);
   const [{ pageSelected: currentPage }, setMovePage] =
     useRecoilState(movePageState);
@@ -64,6 +65,10 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       }
     }
   }, [currentPage, sizePage, animatePage, transitionPage, calTranlateXItem]);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const handleTransitionEnd = () => {
     if (
@@ -128,43 +133,40 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   return (
     <div {...divProps} className={`overflow-hidden w-screen ${className}`}>
       <div ref={itemRef} className="w-[75%]" aria-hidden />
-      <Transition.Child
-        as="div"
-        ref={carouselWrapperItemsRef}
-        className="h-full w-full flex flex-nowrap flex-row transition-transform"
-        onTransitionEnd={handleTransitionEnd}
-        onTouchStart={(event: any) =>
-          handleStartSlide((event as TouchEvent).touches[0].clientX)
-        }
-        onTouchMove={(event: any) =>
-          handleMoveSlide((event as TouchEvent).touches[0].clientX)
-        }
-        onTouchEnd={handleEndSlide}
-        onMouseDown={(event: any) =>
-          handleStartSlide((event as MouseEvent).clientX)
-        }
-        onMouseMove={(event: any) =>
-          handleMoveSlide((event as MouseEvent).clientX)
-        }
-        onMouseUp={handleEndSlide}
-        enter="-translate-x-[calc(75%*2-(25%/2))] transition-transform duration-[700ms]"
+      <Transition
+        show={isVisible}
+        enter="transition-[transform,opacity] duration-[1200ms] ease-out"
+        enterFrom="scale-[0.2] opacity-0"
+        enterTo="scale-1 opacity-100"
       >
-        {cloneArrImgSrc.map((imgSrc, idx) => (
-          <div
-            className="flex items-center h-full w-[75%] shrink-0 px-2"
-            key={idx}
-          >
-            <Image
-              src={imgSrc}
-              width={720}
-              height={480}
-              alt="Home logo"
-              priority={idx > 1 && idx < 6 ? true : false}
-              onDragStart={(event) => event.preventDefault()}
-            />
-          </div>
-        ))}
-      </Transition.Child>
+        <div
+          ref={carouselWrapperItemsRef}
+          className="h-full w-full flex flex-nowrap flex-row -translate-x-[calc(75%*2-(25%/2))] transition-transform"
+          onTransitionEnd={handleTransitionEnd}
+          onTouchStart={(event) => handleStartSlide(event.touches[0].clientX)}
+          onTouchMove={(event) => handleMoveSlide(event.touches[0].clientX)}
+          onTouchEnd={handleEndSlide}
+          onMouseDown={(event: any) => handleStartSlide(event.clientX)}
+          onMouseMove={(event: any) => handleMoveSlide(event.clientX)}
+          onMouseUp={handleEndSlide}
+        >
+          {cloneArrImgSrc.map((imgSrc, idx) => (
+            <div
+              className="flex items-center h-full w-[75%] shrink-0 px-2"
+              key={idx}
+            >
+              <Image
+                src={imgSrc}
+                width={720}
+                height={480}
+                alt="Home logo"
+                priority={idx > 1 && idx < 6 ? true : false}
+                onDragStart={(event) => event.preventDefault()}
+              />
+            </div>
+          ))}
+        </div>
+      </Transition>
     </div>
   );
 };

@@ -52,9 +52,6 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
         enter="transition-[transform,opacity] duration-1000 origin-bottom"
         enterFrom="scale-[0.2] opacity-0"
         enterTo="scale-1 opacity-100"
-        leave="transition-[transform,opacity] duration-1000 origin-top"
-        leaveFrom="scale-1 opacity-100"
-        leaveTo="scale-[0.2] opacity-0"
       >
         <Transition.Child
           as="section"
