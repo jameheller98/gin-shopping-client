@@ -21,7 +21,7 @@ const NewArrivalCardContent: React.FC<TNewArrivalCardContent> = ({
   return (
     <section
       {...sectionProps}
-      className={`grid grid-flow-row gap-1 max-h-[200px] ${className}`}
+      className={`grid grid-rows-[minmax(min-content,30px)_minmax(90px,120px)_40px] gap-1 max-h-[200px] ${className}`}
     >
       <Transition.Child
         as={Fragment}

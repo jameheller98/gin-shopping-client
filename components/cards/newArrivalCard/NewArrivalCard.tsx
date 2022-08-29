@@ -36,18 +36,24 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
   className,
   ...articleProps
 }) => {
-  const refNewArrivalCard = useRef<null | HTMLDivElement>(null);
+  const refNewArrivalCard = useRef<null | HTMLElement>(null);
   const entry = useIntersectionObserver(refNewArrivalCard, {
-    threshold: 1,
+    threshold: 0.5,
     freezeOnceVisible: true,
   });
   const isVisible = !!entry?.isIntersecting;
 
   return (
-    <div {...articleProps} className="min-h-[224px]" ref={refNewArrivalCard}>
+    <article
+      {...articleProps}
+      className={`min-h-[224px] ${className} ${styleProps?.arrBgColor[0]}`}
+      ref={refNewArrivalCard}
+    >
       <Transition
-        as="article"
-        className={`grid grid-flow-col p-3 gap-3 ${styleProps?.arrBgColor[0]} ${className}`}
+        as="div"
+        className={`grid grid-flow-col p-3 ${
+          reversePosition ? 'gap-4' : 'gap-3'
+        }`}
         show={isVisible}
         enter="transition-[transform,opacity] duration-1000 origin-bottom"
         enterFrom="scale-[0.2] opacity-0"
@@ -72,13 +78,7 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
             reversePosition ? 'translate-x-5' : '-translate-x-5'
           } opacity-0`}
         >
-          <Image
-            src={imgSrc}
-            alt="Men white shirt"
-            width="360"
-            height="490"
-            priority
-          />
+          <Image src={imgSrc} alt="Men white shirt" width="360" height="490" />
         </Transition.Child>
         <NewArrivalCardContent
           title={title}
@@ -86,7 +86,7 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
           styleProps={styleProps}
         />
       </Transition>
-    </div>
+    </article>
   );
 };
 

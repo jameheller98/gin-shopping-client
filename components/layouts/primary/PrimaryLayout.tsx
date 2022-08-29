@@ -14,7 +14,7 @@ const PrimaryLayout: React.FC<TPrimaryLayout> = ({ children }) => {
       <div className="min-h-screen flex flex-col items-center">
         <Header />
         <Sidebar />
-        <main className="mt-[78px]">{children}</main>
+        <main className="my-20">{children}</main>
         <div className="m-auto" />
         <Footer />
       </div>

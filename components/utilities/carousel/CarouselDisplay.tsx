@@ -137,7 +137,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
         show={isVisible}
         enter="transition-[transform,opacity] duration-[1000ms]"
         enterFrom="scale-50 opacity-0"
-        enterTo="scale-1 opacity-100"
+        enterTo="scale-100 opacity-100"
       >
         <div
           ref={carouselWrapperItemsRef}

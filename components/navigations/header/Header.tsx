@@ -11,7 +11,7 @@ const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
   return (
     <header
       {...headerProps}
-      className={`fixed top-0 z-[1] bg-white grid grid-cols-3 py-1 ${className}`}
+      className={`fixed top-0 z-[3] bg-white grid grid-cols-3 py-1 ${className}`}
     >
       <MenuIcon
         className="h-7 w-7 self-center cursor-pointer ml-4"
