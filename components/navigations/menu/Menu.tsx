@@ -28,7 +28,10 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
   const [arrIdMenuOpen, setArrIdMenuOpen] = useState<IMenuObject['id'][]>([]);
   const idMenuActiveFromQuery = useRecoilValue(
-    idMenuActiveFromQueryState(router.query)
+    idMenuActiveFromQueryState({
+      query: router.query,
+      parentName: router.route.split('/').filter((route) => Boolean(route))[0],
+    })
   );
   const transitionTextClass = classNames({
     'opacity-100 translate-x-0': openDrawer,
@@ -37,9 +40,10 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
 
   useIsomorphicLayoutEffect(() => {
     const [first, ...rest] = idMenuActiveFromQuery;
+
     setIdMenuActive(first);
     setArrIdMenuOpen(rest);
-  }, [setIdMenuActive, idMenuActiveFromQuery]);
+  }, [setIdMenuActive, setArrIdMenuOpen, idMenuActiveFromQuery]);
 
   const handleClickItem = (
     event: MouseEvent<HTMLSpanElement>,
@@ -91,7 +95,6 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
           >
             <Link href={href}>
               <a
-                id="login"
                 className={`pl-2 ${
                   idMenuActive !== id
                     ? 'pointer-events-auto'

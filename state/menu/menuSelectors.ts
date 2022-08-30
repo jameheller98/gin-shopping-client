@@ -5,11 +5,11 @@ import { mockMenuProps } from '../../components/navigations/menu/Menu.mocks';
 
 const idMenuActiveFromQueryState = selectorFamily({
   key: 'IdMenuActiveFromQueryState',
-  get: (query: ParsedUrlQuery) => () => {
+  get: (params: { query: ParsedUrlQuery; parentName: string }) => () => {
     let arrIdActive: string[] = [];
-    const objectArray = Object.entries(query);
+    const objectArray = Object.entries(params.query);
     const findParent = mockMenuProps.base.arrMenu.find(
-      (menu) => menu.id === '2'
+      (menu) => menu.href.search(params.parentName) >= 0
     );
 
     const findIdLastQuery = (
@@ -33,7 +33,7 @@ const idMenuActiveFromQueryState = selectorFamily({
 
     if (findParent) findIdLastQuery(objectArray, findParent);
 
-    return arrIdActive.concat('2');
+    return arrIdActive.concat(findParent?.id || '');
   },
 });
 
