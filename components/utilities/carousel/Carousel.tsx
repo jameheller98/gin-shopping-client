@@ -12,13 +12,19 @@ import CarouselDisplay from './CarouselDisplay';
 export type TCarousel = {
   arrImgSrc: string[];
   autoPlay?: boolean;
+  numberItems?: number;
+  distanceBetweenImgs?: number;
+  ratioDisplayImgBothSide?: number;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 let setTimeOutAutoPlay: NodeJS.Timeout;
 
 const Carousel: React.FC<TCarousel> = ({
   arrImgSrc,
-  autoPlay = false,
+  autoPlay = true,
+  numberItems = 1,
+  distanceBetweenImgs = 8,
+  ratioDisplayImgBothSide = 0.25,
   className,
   ...divProps
 }) => {
@@ -43,7 +49,11 @@ const Carousel: React.FC<TCarousel> = ({
       onClick={() => autoPlay && setAutoPlayPage(false)}
       className={`relative ${className}`}
     >
-      <CarouselDisplay />
+      <CarouselDisplay
+        numberItems={numberItems}
+        distanceBetweenImgs={distanceBetweenImgs}
+        ratioDisplayImgBothSide={ratioDisplayImgBothSide}
+      />
       <CarouselControl />
     </div>
   );

@@ -14,9 +14,16 @@ import {
 } from '../../../state/carousel/carouselSelectors';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 
-export type TCarouselDisplay = {} & React.ComponentPropsWithoutRef<'div'>;
+export type TCarouselDisplay = {
+  numberItems: number;
+  distanceBetweenImgs: number;
+  ratioDisplayImgBothSide: number;
+} & React.ComponentPropsWithoutRef<'div'>;
 
 const CarouselDisplay: React.FC<TCarouselDisplay> = ({
+  numberItems,
+  distanceBetweenImgs,
+  ratioDisplayImgBothSide,
   className,
   ...divProps
 }) => {
@@ -36,14 +43,24 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const widthCarouselWrapper =
     currentCarouselWrapper?.getBoundingClientRect().width;
   const widthItem = itemRef.current?.getBoundingClientRect().width;
+  const distanceEachImgShouldMinus =
+    (distanceBetweenImgs * (numberItems - 1)) / numberItems;
+  const percentDisplayImgBothSide = ratioDisplayImgBothSide * 100;
+  const percentDisplayImgCenter =
+    (100 - percentDisplayImgBothSide) / numberItems;
 
   const calTranlateXItem = useCallback(
     (currentPage: number) =>
       widthCarouselWrapper && widthItem
-        ? widthItem * currentPage - (widthCarouselWrapper - widthItem) / 2
+        ? (widthItem + distanceBetweenImgs) * currentPage -
+          (widthCarouselWrapper * ratioDisplayImgBothSide) / 2
         : 0,
-
-    [widthCarouselWrapper, widthItem]
+    [
+      widthCarouselWrapper,
+      widthItem,
+      distanceBetweenImgs,
+      ratioDisplayImgBothSide,
+    ]
   );
 
   useIsomorphicLayoutEffect(() => {
@@ -132,7 +149,13 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
   return (
     <div {...divProps} className={`overflow-hidden w-screen ${className}`}>
-      <div ref={itemRef} className="w-[75%]" aria-hidden />
+      <div
+        ref={itemRef}
+        style={{
+          width: `calc(${percentDisplayImgCenter}% - ${distanceEachImgShouldMinus}px)`,
+        }}
+        aria-hidden
+      />
       <Transition
         show={isVisible}
         enter="transition-[transform,opacity] duration-[1000ms]"
@@ -141,7 +164,15 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       >
         <div
           ref={carouselWrapperItemsRef}
-          className="h-full w-full flex flex-nowrap flex-row -translate-x-[calc(75%*2-(25%/2))] transition-transform"
+          className="h-full w-full flex flex-nowrap flex-row transition-transform"
+          style={{
+            transform: `translateX(calc(${
+              percentDisplayImgCenter * 2 * -1 + percentDisplayImgBothSide / 2
+            }% - ${distanceBetweenImgs * 2}px + ${
+              2 * distanceEachImgShouldMinus
+            }px))`,
+            gap: distanceBetweenImgs,
+          }}
           onTransitionEnd={handleTransitionEnd}
           onTouchStart={(event) => handleStartSlide(event.touches[0].clientX)}
           onTouchMove={(event) => handleMoveSlide(event.touches[0].clientX)}
@@ -152,8 +183,11 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
         >
           {cloneArrImgSrc.map((imgSrc, idx) => (
             <div
-              className="flex items-center h-full w-[75%] shrink-0 px-2"
+              className="flex items-center h-full w-[50%] shrink-0"
               key={idx}
+              style={{
+                width: `calc(${percentDisplayImgCenter}% - ${distanceEachImgShouldMinus}px`,
+              }}
             >
               <Image
                 src={imgSrc}

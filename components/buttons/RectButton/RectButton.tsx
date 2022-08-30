@@ -17,7 +17,7 @@ const RectButton: React.FC<TRectButton> = ({
     <Transition
       {...Buttonprops}
       as="button"
-      className={`border-[3px] border-white text-white px-4 py-2 transition-[padding,letter-spacing,background-color,color,border-color,opacity] duration-500 tracking-wide hover:px-5 hover:py-3 hover:tracking-wider hover:bg-slate-900 hover:bg-opacity-30 active:bg-opacity-40 active:duration-75 active:text-opacity-90 active:border-opacity-90 ${className}`}
+      className={`border-[3px] border-white text-white px-4 py-2 transition-[padding,letter-spacing,background-color,color,border-color,opacity] duration-500 tracking-wide max-w-[160px] w-max hover:px-5 hover:py-3 hover:tracking-wider hover:bg-slate-900 hover:bg-opacity-30 active:bg-opacity-40 active:duration-75 active:text-opacity-90 active:border-opacity-90 ${className}`}
       show={isVisible}
       enter="delay-500"
       enterFrom="opacity-0"
@@ -25,7 +25,7 @@ const RectButton: React.FC<TRectButton> = ({
     >
       <Transition.Child
         as="span"
-        className="inline-block"
+        className="inline-block w-full"
         enter="transition-[transform,opacity] delay-700 duration-1000"
         enterFrom="scale-50 opacity-0"
         enterTo="scale-100 opacity-100"

@@ -5,12 +5,11 @@ import CubeButton from '../../buttons/CubeButton/CubeButton';
 import { TNewArrivalCard } from './NewArrivalCard';
 
 export type TNewArrivalCardContent = Required<
-  Pick<TNewArrivalCard, 'title' | 'description' | 'styleProps'>
+  Pick<TNewArrivalCard, 'description' | 'styleProps'>
 > &
   React.ComponentPropsWithoutRef<'section'>;
 
 const NewArrivalCardContent: React.FC<TNewArrivalCardContent> = ({
-  title,
   description,
   styleProps,
   className,
@@ -21,27 +20,13 @@ const NewArrivalCardContent: React.FC<TNewArrivalCardContent> = ({
   return (
     <section
       {...sectionProps}
-      className={`grid grid-rows-[minmax(min-content,30px)_minmax(90px,120px)_40px] gap-1 max-h-[200px] ${className}`}
+      className={`grid grid-rows-[minmax(20px,110px)_50px] gap-1 max-h-[160px] self-end ${className}`}
     >
-      <Transition.Child
-        as={Fragment}
-        enter="transition-[transform,opacity] duration-1000 delay-1000"
-        enterFrom="translate-x-5 opacity-0"
-        enterTo="translate-x-0 opacity-100"
-        leave="transition-[transform,opacity] duration-1000"
-        leaveFrom="translate-x-0 opacity-100"
-        leaveTo="translate-x-5 opacity-0"
-      >
-        <h1 className="text-lg font-medium">{title}</h1>
-      </Transition.Child>
       <Transition.Child
         as={Fragment}
         enter="transition-[transform,opacity] duration-1000 delay-[1200ms]"
         enterFrom="translate-x-5 opacity-0"
         enterTo="translate-x-0 opacity-100"
-        leave="transition-[transform,opacity] duration-1000"
-        leaveFrom="translate-x-0 opacity-100"
-        leaveTo="translate-x-5 opacity-0"
       >
         <p
           className={`text-sm overflow-auto h-[100%] px-2 py-1 rounded-sm shadow-[0_0_0_2px,3px_3px_0_2px] ${shadowsColor} ${arrBgColor[1]}`}
@@ -54,9 +39,6 @@ const NewArrivalCardContent: React.FC<TNewArrivalCardContent> = ({
         enter="transition-[transform,opacity] duration-1000 delay-[1400ms]"
         enterFrom="translate-x-5 opacity-0"
         enterTo="translate-x-0 opacity-100"
-        leave="transition-[transform,opacity] duration-1000"
-        leaveFrom="translate-x-0 opacity-100"
-        leaveTo="translate-x-5 opacity-0"
       >
         <div className="mt-2 text-right">
           <CubeButton

@@ -23,10 +23,8 @@ const BreadCrumb: React.FC<TBreadCrumb> = ({ className, ...divProps }) => {
       className={`py-1 bg-slate-200 bg-opacity-60 w-screen flex items-center justify-center ${className}`}
     >
       {arrPath.map((path, idx) => (
-        <span key={idx}>
-          <span className="text-xl relative top-[1.5px] mx-2">
-            {idx > 0 && '/'}
-          </span>
+        <span key={idx} className="flex items-center">
+          {idx > 0 && <span className="text-lg mx-2">/</span>}
           <Link href={hrefMenuActive[idx]}>
             <a
               className={`${

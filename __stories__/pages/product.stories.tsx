@@ -12,13 +12,3 @@ const Template: ComponentStory<typeof Product> = (args) => (
 );
 
 export const Base = Template.bind({});
-
-Base.story = {
-  parameters: {
-    nextRouter: {
-      asPath: '/product',
-      pathname: '/product',
-      route: '/product',
-    },
-  },
-};

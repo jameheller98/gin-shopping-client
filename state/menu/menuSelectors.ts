@@ -4,7 +4,7 @@ import { IMenuObject } from '../../components/navigations/menu/Menu';
 import { mockMenuProps } from '../../components/navigations/menu/Menu.mocks';
 
 const arrMenuActiveFromQueryState = selectorFamily({
-  key: 'IdMenuActiveFromQueryState',
+  key: 'ArrMenuActiveFromQueryState',
   get:
     (params: {
       query: ParsedUrlQuery;

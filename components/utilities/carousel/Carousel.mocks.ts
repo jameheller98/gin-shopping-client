@@ -8,7 +8,6 @@ const base: TCarousel = {
     '/home/slide/girl-skirt.jpg',
     '/home/slide/women-halter-top.jpg',
   ],
-  autoPlay: true,
 };
 
 export const mockCarouselProps = {
