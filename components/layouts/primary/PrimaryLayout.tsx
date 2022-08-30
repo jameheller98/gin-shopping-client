@@ -2,8 +2,11 @@ import Head from 'next/head';
 import Footer from '../../navigations/footer/Footer';
 import Header from '../../navigations/header/Header';
 import Sidebar from '../../navigations/sidebar/Sidebar';
+import BreadCrumb from '../../utilities/breadcrumb/BreadCrumb';
 
-export type TPrimaryLayout = { children: React.ReactNode };
+export type TPrimaryLayout = {
+  children: React.ReactNode;
+};
 
 const PrimaryLayout: React.FC<TPrimaryLayout> = ({ children }) => {
   return (
@@ -14,7 +17,10 @@ const PrimaryLayout: React.FC<TPrimaryLayout> = ({ children }) => {
       <div className="min-h-screen flex flex-col items-center">
         <Header />
         <Sidebar />
-        <main className="my-20">{children}</main>
+        <main className="my-20">
+          <BreadCrumb />
+          {children}
+        </main>
         <div className="m-auto" />
         <Footer />
       </div>

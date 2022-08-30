@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 import { idMenuActiveState } from '../../../state/menu/menuAtoms';
-import { idMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
+import { arrMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
 
 export interface IMenuObject {
   id: string;
@@ -27,10 +27,11 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
   const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
   const [arrIdMenuOpen, setArrIdMenuOpen] = useState<IMenuObject['id'][]>([]);
-  const idMenuActiveFromQuery = useRecoilValue(
-    idMenuActiveFromQueryState({
+  const idMenuActiveQuery = useRecoilValue(
+    arrMenuActiveFromQueryState({
       query: router.query,
       parentName: router.route.split('/').filter((route) => Boolean(route))[0],
+      fieldName: 'id',
     })
   );
   const transitionTextClass = classNames({
@@ -39,11 +40,9 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
   });
 
   useIsomorphicLayoutEffect(() => {
-    const [first, ...rest] = idMenuActiveFromQuery;
-
-    setIdMenuActive(first);
-    setArrIdMenuOpen(rest);
-  }, [setIdMenuActive, setArrIdMenuOpen, idMenuActiveFromQuery]);
+    setIdMenuActive(idMenuActiveQuery[idMenuActiveQuery.length - 1]);
+    setArrIdMenuOpen(idMenuActiveQuery.slice(0, idMenuActiveQuery.length - 1));
+  }, [setIdMenuActive, setArrIdMenuOpen, idMenuActiveQuery]);
 
   const handleClickItem = (
     event: MouseEvent<HTMLSpanElement>,
