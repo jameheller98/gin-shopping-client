@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -13,26 +14,41 @@ import {
   sizePageState,
 } from '../../../state/carousel/carouselSelectors';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
+import { arrMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
 
 export type TCarouselDisplay = {
+  width: number;
+  height: number;
   numberItems: number;
   distanceBetweenImgs: number;
   ratioDisplayImgBothSide: number;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 const CarouselDisplay: React.FC<TCarouselDisplay> = ({
+  width,
+  height,
   numberItems,
   distanceBetweenImgs,
   ratioDisplayImgBothSide,
   className,
   ...divProps
 }) => {
+  const router = useRouter();
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
   const itemRef = useRef<null | HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState);
-  const [{ pageSelected: currentPage }, setMovePage] =
-    useRecoilState(movePageState);
+  const amountCloneImgSrc = numberItems + (ratioDisplayImgBothSide > 0 ? 1 : 0);
+  const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState(amountCloneImgSrc));
+  const hrefMenuActive = useRecoilValue(
+    arrMenuActiveFromQueryState({
+      query: router.query,
+      parentName: router.route.split('/').filter((route) => Boolean(route))[0],
+      fieldName: 'id',
+    })
+  );
+  const [{ pageSelected: currentPage }, setMovePage] = useRecoilState(
+    movePageState(hrefMenuActive[hrefMenuActive.length - 1])
+  );
   const [{ animatePage, transitionPage }, setAnimationPage] =
     useRecoilState(animationPageState);
   const sizePage = useRecoilValue(sizePageState);
@@ -45,7 +61,11 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const widthItem = itemRef.current?.getBoundingClientRect().width;
   const distanceEachImgShouldMinus =
     (distanceBetweenImgs * (numberItems - 1)) / numberItems;
-  const percentDisplayImgBothSide = ratioDisplayImgBothSide * 100;
+  const amountFrameBasicOfImg = 1 / ratioDisplayImgBothSide || 1;
+  const frameNeededAddBothSide = 2;
+  const amountFrameSplitedOfImgs =
+    amountFrameBasicOfImg * numberItems + frameNeededAddBothSide;
+  const percentDisplayImgBothSide = (100 / amountFrameSplitedOfImgs) * 2;
   const percentDisplayImgCenter =
     (100 - percentDisplayImgBothSide) / numberItems;
 
@@ -53,13 +73,13 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     (currentPage: number) =>
       widthCarouselWrapper && widthItem
         ? (widthItem + distanceBetweenImgs) * currentPage -
-          (widthCarouselWrapper * ratioDisplayImgBothSide) / 2
+          (widthCarouselWrapper * percentDisplayImgBothSide) / 100 / 2
         : 0,
     [
       widthCarouselWrapper,
       widthItem,
+      percentDisplayImgBothSide,
       distanceBetweenImgs,
-      ratioDisplayImgBothSide,
     ]
   );
 
@@ -69,15 +89,15 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
       if (transitionPage && currentPage === sizePage) {
         currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
-          1
+          amountCloneImgSrc - 1
         )}px)`;
       } else if (transitionPage && currentPage === 1) {
         currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
-          sizePage + 2
+          sizePage + amountCloneImgSrc
         )}px)`;
       } else if (!transitionPage) {
         currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
-          currentPage + 1
+          currentPage + amountCloneImgSrc - 1
         )}px)`;
       }
     }
@@ -109,7 +129,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     if (currentCarouselWrapper && touchablePage.touchable) {
       currentCarouselWrapper.style.transitionDuration = `0ms`;
       currentCarouselWrapper.style.transform = `translateX(${-(
-        calTranlateXItem(currentPage + 1) +
+        calTranlateXItem(currentPage + amountCloneImgSrc - 1) +
         (touchablePage.posStartTouch - clientX)
       )}px)`;
 
@@ -135,7 +155,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       } else {
         currentCarouselWrapper.style.transitionDuration = `700ms`;
         currentCarouselWrapper.style.transform = `translateX(${-calTranlateXItem(
-          currentPage + 1
+          currentPage + amountCloneImgSrc - 1
         )}px)`;
       }
     }
@@ -167,8 +187,11 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
           className="h-full w-full flex flex-nowrap flex-row transition-transform"
           style={{
             transform: `translateX(calc(${
-              percentDisplayImgCenter * 2 * -1 + percentDisplayImgBothSide / 2
-            }% - ${distanceBetweenImgs * 2}px + ${
+              percentDisplayImgCenter *
+                (amountCloneImgSrc + currentPage - 1) *
+                -1 +
+              percentDisplayImgBothSide / 2
+            }% - ${distanceBetweenImgs * amountCloneImgSrc}px + ${
               2 * distanceEachImgShouldMinus
             }px))`,
             gap: distanceBetweenImgs,
@@ -183,7 +206,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
         >
           {cloneArrImgSrc.map((imgSrc, idx) => (
             <div
-              className="flex items-center h-full w-[50%] shrink-0"
+              className="flex items-center shrink-0"
               key={idx}
               style={{
                 width: `calc(${percentDisplayImgCenter}% - ${distanceEachImgShouldMinus}px`,
@@ -191,8 +214,8 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
             >
               <Image
                 src={imgSrc}
-                width={720}
-                height={480}
+                width={width}
+                height={height}
                 alt="Home logo"
                 priority={idx > 1 && idx < 6 ? true : false}
                 onDragStart={(event) => event.preventDefault()}

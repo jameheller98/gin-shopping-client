@@ -1,11 +1,11 @@
-import { atom } from 'recoil';
+import { atom, atomFamily } from 'recoil';
 
 const arrImgSrcState = atom<string[]>({
   key: 'ArrImgSrc',
   default: [],
 });
 
-const currentPageState = atom({
+const currentPageState = atomFamily({
   key: 'CurrentPage',
   default: 1,
 });

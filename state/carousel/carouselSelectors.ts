@@ -1,4 +1,4 @@
-import { selector } from 'recoil';
+import { selector, selectorFamily } from 'recoil';
 import {
   animatePageState,
   arrImgSrcState,
@@ -17,21 +17,23 @@ interface IAnimationPageState {
   transitionPage: boolean;
 }
 
-const arrImgSrcCloneState = selector({
+const arrImgSrcCloneState = selectorFamily({
   key: 'ArrImgSrcClone',
-  get: ({ get }) => {
-    const arrImgSrc = get(arrImgSrcState);
+  get:
+    (amountClone: number) =>
+    ({ get }) => {
+      const arrImgSrc = get(arrImgSrcState);
 
-    return arrImgSrc.length > 0
-      ? [
-          arrImgSrc[arrImgSrc.length - 2],
-          arrImgSrc[arrImgSrc.length - 1],
-          ...arrImgSrc,
-          arrImgSrc[0],
-          arrImgSrc[1],
-        ]
-      : [];
-  },
+      return arrImgSrc.length > 0
+        ? [
+            ...arrImgSrc.filter(
+              (_, idx) => idx > arrImgSrc.length - amountClone - 1
+            ),
+            ...arrImgSrc,
+            ...arrImgSrc.filter((_, idx) => idx < amountClone),
+          ]
+        : [];
+    },
 });
 
 const sizePageState = selector({
@@ -43,57 +45,61 @@ const sizePageState = selector({
   },
 });
 
-const movePageState = selector<IMovePageState>({
+const movePageState = selectorFamily<IMovePageState, string>({
   key: 'MovePage',
-  get: ({ get }) => {
-    const currentPage = get(currentPageState);
-    const typeMovePage = get(typeMovePageState);
+  get:
+    (keyCurrentPage) =>
+    ({ get }) => {
+      const currentPage = get(currentPageState(keyCurrentPage));
+      const typeMovePage = get(typeMovePageState);
 
-    return {
-      typeMovePage,
-      pageSelected: currentPage,
-    };
-  },
-  set: ({ get, set }, newValue) => {
-    const { typeMovePage, pageSelected = 1 } = newValue as IMovePageState;
-    const sizePage = get(sizePageState);
-    const currentPage = get(currentPageState);
+      return {
+        typeMovePage,
+        pageSelected: currentPage,
+      };
+    },
+  set:
+    (keyCurrentPage) =>
+    ({ get, set }, newValue) => {
+      const { typeMovePage, pageSelected = 1 } = newValue as IMovePageState;
+      const sizePage = get(sizePageState);
+      const currentPage = get(currentPageState(keyCurrentPage));
 
-    set(animatePageState, 700);
+      set(animatePageState, 700);
 
-    switch (typeMovePage) {
-      case 'prevPage':
-        set(transitionPageState, currentPage > 1 ? false : true);
-        set(currentPageState, (currentPage) =>
-          currentPage > 1 ? currentPage - 1 : sizePage
-        );
-        set(typeMovePageState, 'prevPage');
-        break;
-      case 'nextPage':
-        set(transitionPageState, currentPage < sizePage ? false : true);
-        set(currentPageState, (currentPage) =>
-          currentPage < sizePage ? currentPage + 1 : 1
-        );
-        set(typeMovePageState, 'nextPage');
-        break;
-      case 'selectPage':
-        set(
-          transitionPageState,
-          (currentPage === sizePage && pageSelected === 1) ||
-            (currentPage === 1 && pageSelected === sizePage)
-            ? true
-            : false
-        );
-        set(currentPageState, pageSelected);
-        set(typeMovePageState, 'selectPage');
-        break;
-      default:
-        set(transitionPageState, false);
-        set(currentPageState, currentPage);
-        set(typeMovePageState, 'selectPage');
-        break;
-    }
-  },
+      switch (typeMovePage) {
+        case 'prevPage':
+          set(transitionPageState, currentPage > 1 ? false : true);
+          set(currentPageState(keyCurrentPage), (currentPage) =>
+            currentPage > 1 ? currentPage - 1 : sizePage
+          );
+          set(typeMovePageState, 'prevPage');
+          break;
+        case 'nextPage':
+          set(transitionPageState, currentPage < sizePage ? false : true);
+          set(currentPageState(keyCurrentPage), (currentPage) =>
+            currentPage < sizePage ? currentPage + 1 : 1
+          );
+          set(typeMovePageState, 'nextPage');
+          break;
+        case 'selectPage':
+          set(
+            transitionPageState,
+            (currentPage === sizePage && pageSelected === 1) ||
+              (currentPage === 1 && pageSelected === sizePage)
+              ? true
+              : false
+          );
+          set(currentPageState(keyCurrentPage), pageSelected);
+          set(typeMovePageState, 'selectPage');
+          break;
+        default:
+          set(transitionPageState, false);
+          set(currentPageState(keyCurrentPage), currentPage);
+          set(typeMovePageState, 'selectPage');
+          break;
+      }
+    },
 });
 
 const animationPageState = selector({

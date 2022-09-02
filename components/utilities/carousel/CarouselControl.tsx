@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -7,6 +8,7 @@ import {
   autoPlayPageState,
 } from '../../../state/carousel/carouselAtoms';
 import { movePageState } from '../../../state/carousel/carouselSelectors';
+import { arrMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
 
 export type TCarouselControl = {} & React.ComponentPropsWithoutRef<'div'>;
 
@@ -16,10 +18,20 @@ const CarouselControl: React.FC<TCarouselControl> = ({
   className,
   ...divProps
 }) => {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const arrImgSrc = useRecoilValue(arrImgSrcState);
   const autoPlayPage = useRecoilValue(autoPlayPageState);
-  const [movePage, setMovePage] = useRecoilState(movePageState);
+  const hrefMenuActive = useRecoilValue(
+    arrMenuActiveFromQueryState({
+      query: router.query,
+      parentName: router.route.split('/').filter((route) => Boolean(route))[0],
+      fieldName: 'id',
+    })
+  );
+  const [movePage, setMovePage] = useRecoilState(
+    movePageState(hrefMenuActive[hrefMenuActive.length - 1])
+  );
 
   useEffect(() => {
     if (autoPlayPage) {

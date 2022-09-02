@@ -11,6 +11,8 @@ import CarouselDisplay from './CarouselDisplay';
 
 export type TCarousel = {
   arrImgSrc: string[];
+  width: number;
+  height: number;
   autoPlay?: boolean;
   numberItems?: number;
   distanceBetweenImgs?: number;
@@ -21,7 +23,9 @@ let setTimeOutAutoPlay: NodeJS.Timeout;
 
 const Carousel: React.FC<TCarousel> = ({
   arrImgSrc,
-  autoPlay = true,
+  width,
+  height,
+  autoPlay = false,
   numberItems = 1,
   distanceBetweenImgs = 8,
   ratioDisplayImgBothSide = 0.25,
@@ -50,6 +54,8 @@ const Carousel: React.FC<TCarousel> = ({
       className={`relative ${className}`}
     >
       <CarouselDisplay
+        width={width}
+        height={height}
         numberItems={numberItems}
         distanceBetweenImgs={distanceBetweenImgs}
         ratioDisplayImgBothSide={ratioDisplayImgBothSide}
