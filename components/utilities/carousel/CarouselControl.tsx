@@ -8,7 +8,8 @@ import {
   autoPlayPageState,
 } from '../../../state/carousel/carouselAtoms';
 import { movePageState } from '../../../state/carousel/carouselSelectors';
-import { arrMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
+import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
+import { mockMenuProps } from '../../navigations/menu/Menu.mocks';
 
 export type TCarouselControl = {} & React.ComponentPropsWithoutRef<'div'>;
 
@@ -22,13 +23,11 @@ const CarouselControl: React.FC<TCarouselControl> = ({
   const [isVisible, setIsVisible] = useState(false);
   const arrImgSrc = useRecoilValue(arrImgSrcState);
   const autoPlayPage = useRecoilValue(autoPlayPageState);
-  const hrefMenuActive = useRecoilValue(
-    arrMenuActiveFromQueryState({
-      query: router.query,
-      parentName: router.route.split('/').filter((route) => Boolean(route))[0],
-      fieldName: 'id',
-    })
-  );
+  const hrefMenuActive = findArrObjMenuActive(
+    mockMenuProps.base.arrMenu,
+    router.asPath.split('/').filter((path) => Boolean(path)),
+    'id'
+  ) as string[];
   const [movePage, setMovePage] = useRecoilState(
     movePageState(hrefMenuActive[hrefMenuActive.length - 1])
   );

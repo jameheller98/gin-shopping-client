@@ -1,19 +1,17 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
-import { arrMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
-import { capitalize } from '../../../utils/utilitiesHelper';
+import { capitalize } from '../../../utils/common/textHelper';
+import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
+import { mockMenuProps } from '../../navigations/menu/Menu.mocks';
 
 export type TBreadCrumb = {} & React.ComponentPropsWithoutRef<'div'>;
 
 const BreadCrumb: React.FC<TBreadCrumb> = ({ className, ...divProps }) => {
   const router = useRouter();
-  const hrefMenuActive = useRecoilValue(
-    arrMenuActiveFromQueryState({
-      query: router.query,
-      parentName: router.route.split('/').filter((route) => Boolean(route))[0],
-      fieldName: 'href',
-    })
+  const hrefMenuActive = findArrObjMenuActive(
+    mockMenuProps.base.arrMenu,
+    router.asPath.split('/').filter((path) => Boolean(path)),
+    'href'
   );
   const arrPath = router.asPath.split('/').filter((route) => Boolean(route));
 

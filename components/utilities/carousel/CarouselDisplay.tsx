@@ -14,7 +14,8 @@ import {
   sizePageState,
 } from '../../../state/carousel/carouselSelectors';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
-import { arrMenuActiveFromQueryState } from '../../../state/menu/menuSelectors';
+import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
+import { mockMenuProps } from '../../navigations/menu/Menu.mocks';
 
 export type TCarouselDisplay = {
   width: number;
@@ -39,13 +40,11 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const [isVisible, setIsVisible] = useState(false);
   const amountCloneImgSrc = numberItems + (ratioDisplayImgBothSide > 0 ? 1 : 0);
   const cloneArrImgSrc = useRecoilValue(arrImgSrcCloneState(amountCloneImgSrc));
-  const hrefMenuActive = useRecoilValue(
-    arrMenuActiveFromQueryState({
-      query: router.query,
-      parentName: router.route.split('/').filter((route) => Boolean(route))[0],
-      fieldName: 'id',
-    })
-  );
+  const hrefMenuActive = findArrObjMenuActive(
+    mockMenuProps.base.arrMenu,
+    router.asPath.split('/').filter((path) => Boolean(path)),
+    'id'
+  ) as string[];
   const [{ pageSelected: currentPage }, setMovePage] = useRecoilState(
     movePageState(hrefMenuActive[hrefMenuActive.length - 1])
   );
