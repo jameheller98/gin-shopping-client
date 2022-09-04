@@ -1,6 +1,7 @@
 import { TCarousel } from './Carousel';
 
 const base: TCarousel = {
+  keyCarousel: 'home_carousel_1',
   arrImgSrc: [
     '/home/slide/women-jean.jpg',
     '/home/slide/student-shirt.jpg',

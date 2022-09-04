@@ -1,6 +1,5 @@
 import { Transition } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -8,29 +7,22 @@ import {
   autoPlayPageState,
 } from '../../../state/carousel/carouselAtoms';
 import { movePageState } from '../../../state/carousel/carouselSelectors';
-import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
-import { mockMenuProps } from '../../navigations/menu/Menu.mocks';
 
-export type TCarouselControl = {} & React.ComponentPropsWithoutRef<'div'>;
+export type TCarouselControl = {
+  keyCarousel: string;
+} & React.ComponentPropsWithoutRef<'div'>;
 
 let interval: NodeJS.Timer;
 
 const CarouselControl: React.FC<TCarouselControl> = ({
+  keyCarousel,
   className,
   ...divProps
 }) => {
-  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const arrImgSrc = useRecoilValue(arrImgSrcState);
   const autoPlayPage = useRecoilValue(autoPlayPageState);
-  const hrefMenuActive = findArrObjMenuActive(
-    mockMenuProps.base.arrMenu,
-    router.asPath.split('/').filter((path) => Boolean(path)),
-    'id'
-  ) as string[];
-  const [movePage, setMovePage] = useRecoilState(
-    movePageState(hrefMenuActive[hrefMenuActive.length - 1])
-  );
+  const [movePage, setMovePage] = useRecoilState(movePageState(keyCarousel));
 
   useEffect(() => {
     if (autoPlayPage) {

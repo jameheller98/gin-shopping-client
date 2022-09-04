@@ -2,11 +2,14 @@ import { MinusSmIcon, PlusSmIcon } from '@heroicons/react/solid';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
-import { idMenuActiveState } from '../../../state/menu/menuAtoms';
+import {
+  arrIdMenuOpenState,
+  idMenuActiveState,
+} from '../../../state/menu/menuAtoms';
 import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
 import { mockMenuProps } from './Menu.mocks';
 
@@ -27,7 +30,7 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
   const router = useRouter();
   const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
-  const [arrIdMenuOpen, setArrIdMenuOpen] = useState<IMenuObject['id'][]>([]);
+  const [arrIdMenuOpen, setArrIdMenuOpen] = useRecoilState(arrIdMenuOpenState);
   const transitionTextClass = classNames({
     'opacity-100 translate-x-0': openDrawer,
     'opacity-0 -translate-x-4': !openDrawer,
@@ -63,7 +66,7 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
         setArrIdMenuOpen(arrIdMenuOpen.concat(idMenu));
       }
     },
-    [arrIdMenuOpen]
+    [arrIdMenuOpen, setArrIdMenuOpen]
   );
 
   const handleActiveMenuItem = (idMenu: string) => {

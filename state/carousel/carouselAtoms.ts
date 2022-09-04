@@ -35,6 +35,11 @@ const touchablePageState = atom({
   default: { touchable: false, posStartTouch: 0, stepMove: 0 },
 });
 
+const listIdUniqueCarouselState = atom({
+  key: 'ListIdCarouselState',
+  default: new Set(),
+});
+
 export {
   arrImgSrcState,
   currentPageState,
@@ -43,4 +48,5 @@ export {
   autoPlayPageState,
   typeMovePageState,
   touchablePageState,
+  listIdUniqueCarouselState,
 };

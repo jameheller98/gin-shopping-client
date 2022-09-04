@@ -14,11 +14,12 @@ const Product: NextPageWithLayout = () => {
   return (
     <section>
       <Carousel
+        keyCarousel="product_carousel_1"
         arrImgSrc={arrImgSrc}
         width={480}
         height={480}
         numberItems={2}
-        ratioDisplayImgBothSide={0.5}
+        ratioDisplayImgBothSide={0}
       />
     </section>
   );

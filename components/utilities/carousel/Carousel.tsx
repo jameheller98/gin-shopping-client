@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
 import {
   arrImgSrcState,
   autoPlayPageState,
+  listIdUniqueCarouselState,
 } from '../../../state/carousel/carouselAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 import useOnClickOutSide from '../../../state/hooks/useOnClickOutSide';
@@ -10,6 +11,7 @@ import CarouselControl from './CarouselControl';
 import CarouselDisplay from './CarouselDisplay';
 
 export type TCarousel = {
+  keyCarousel: string;
   arrImgSrc: string[];
   width: number;
   height: number;
@@ -17,24 +19,28 @@ export type TCarousel = {
   numberItems?: number;
   distanceBetweenImgs?: number;
   ratioDisplayImgBothSide?: number;
+  sensitivityTouchAnimateSlide?: number;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 let setTimeOutAutoPlay: NodeJS.Timeout;
 
 const Carousel: React.FC<TCarousel> = ({
+  keyCarousel,
   arrImgSrc,
   width,
   height,
-  autoPlay = false,
+  autoPlay = true,
   numberItems = 1,
   distanceBetweenImgs = 8,
-  ratioDisplayImgBothSide = 0.25,
+  ratioDisplayImgBothSide = 0.2,
+  sensitivityTouchAnimateSlide = 20,
   className,
   ...divProps
 }) => {
   const refCarousel = useRef<null | HTMLDivElement>(null);
   const setArrImgSrc = useSetRecoilState(arrImgSrcState);
   const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
+  const setListIdUniqueCarousel = useSetRecoilState(listIdUniqueCarouselState);
 
   useIsomorphicLayoutEffect(() => {
     setArrImgSrc(arrImgSrc);
@@ -43,6 +49,10 @@ const Carousel: React.FC<TCarousel> = ({
 
     return () => clearTimeout(setTimeOutAutoPlay);
   }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
+
+  useEffect(() => {
+    setListIdUniqueCarousel((setId) => setId.add(keyCarousel));
+  }, [keyCarousel, setListIdUniqueCarousel]);
 
   useOnClickOutSide(refCarousel, () => autoPlay && setAutoPlayPage(true));
 
@@ -54,13 +64,15 @@ const Carousel: React.FC<TCarousel> = ({
       className={`relative ${className}`}
     >
       <CarouselDisplay
+        keyCarousel={keyCarousel}
         width={width}
         height={height}
         numberItems={numberItems}
         distanceBetweenImgs={distanceBetweenImgs}
         ratioDisplayImgBothSide={ratioDisplayImgBothSide}
+        sensitivityTouchAnimateSlide={sensitivityTouchAnimateSlide}
       />
-      <CarouselControl />
+      <CarouselControl keyCarousel={keyCarousel} />
     </div>
   );
 };
