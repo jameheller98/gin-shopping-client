@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "imgSrc": ["/product/gallery/product-1.jpg"],
+    "sex": "unisex",
+    "cat": "t-shirts",
+    "price": 200000,
+    "sizeIds": ["1", "2", "3"]
+  },
+  {
+    "id": "2",
+    "imgSrc": ["/product/gallery/product-2.jpg"],
+    "sex": "men",
+    "cat": "shirts",
+    "price": 180000,
+    "sizeIds": ["1", "2"]
+  },
+  {
+    "id": "3",
+    "imgSrc": ["/product/gallery/product-3.jpg"],
+    "sex": "unisex",
+    "cat": "shirts",
+    "price": 240000,
+    "sizeIds": ["1", "2", "3"]
+  },
+  {
+    "id": "4",
+    "imgSrc": ["/product/gallery/product-4.jpg"],
+    "sex": "men",
+    "cat": "pants",
+    "price": 300000,
+    "sizeIds": ["3"]
+  },
+  {
+    "id": "5",
+    "imgSrc": ["/product/gallery/product-5.jpg"],
+    "sex": "unisex",
+    "cat": "shirts",
+    "price": 100000,
+    "sizeIds": ["1", "3"]
+  },
+  {
+    "id": "6",
+    "imgSrc": ["/product/gallery/product-6.jpg"],
+    "sex": "unisex",
+    "cat": "shirts",
+    "price": 400000,
+    "sizeIds": ["1"]
+  }
+]

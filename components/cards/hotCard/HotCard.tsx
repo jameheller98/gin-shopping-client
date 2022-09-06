@@ -7,8 +7,12 @@ import RectButton from '../../buttons/RectButton/RectButton';
 
 export type THotCard = {
   srcImg: string;
-  directionTransition?: 'origin-top-left' | 'origin-top-right';
+  directionTransition?:
+    | 'origin-top-left'
+    | 'origin-top-right'
+    | 'origin-center';
   textButton: string;
+  themeCard?: 'light' | 'dark';
 } & React.ComponentPropsWithoutRef<'article'>;
 
 const HotCard: React.FC<THotCard> = ({
@@ -16,6 +20,7 @@ const HotCard: React.FC<THotCard> = ({
   directionTransition = 'origin-top-left',
   className,
   textButton,
+  themeCard = 'dark',
   ...articleProps
 }) => {
   const hotCardRef = useRef<null | HTMLElement>(null);
@@ -24,6 +29,8 @@ const HotCard: React.FC<THotCard> = ({
     freezeOnceVisible: true,
   });
   const isVisible = !!entry?.isIntersecting;
+  const themeClassName =
+    themeCard === 'dark' ? 'before:bg-opacity-60' : 'before:bg-opacity-0';
 
   useIsomorphicLayoutEffect(() => {
     const currentHotCardRef = hotCardRef.current;
@@ -38,7 +45,7 @@ const HotCard: React.FC<THotCard> = ({
     <article
       {...articleProps}
       ref={hotCardRef}
-      className={`mt-4 mx-10 relative overflow-hidden before:content before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-slate-600 before:bg-opacity-60 before:z-[1] before:transition-transform before:duration-500 ease-in-out ${
+      className={`relative overflow-hidden before:content before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-slate-600 before:z-[1] before:transition-transform before:duration-500 ease-in-out ${themeClassName} ${
         isVisible ? 'before:translate-y-0' : 'before:-translate-y-full'
       } ${className}`}
     >
@@ -57,7 +64,10 @@ const HotCard: React.FC<THotCard> = ({
             priority
           />
         </Transition.Child>
-        <RectButton className="absolute z-[2] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg none-tap-highlight-color">
+        <RectButton
+          className={`absolute z-[2] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg none-tap-highlight-color`}
+          themeButton={themeCard}
+        >
           {textButton}
         </RectButton>
       </Transition>

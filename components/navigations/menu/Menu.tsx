@@ -49,10 +49,11 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
 
   const handleClickItem = (
     event: MouseEvent<HTMLSpanElement>,
-    idMenu: string
+    idMenu: string,
+    hasLink: boolean
   ) => {
     event.stopPropagation();
-    setIdMenuActive(idMenu);
+    if (hasLink) setIdMenuActive(idMenu);
     setOpenDrawer(false);
   };
 
@@ -87,6 +88,20 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
           'delay-[400ms]': index === 1 || index === 3,
           'delay-[500ms]': index === 2,
         });
+        const LinkHref = (hasLink: boolean) => (
+          <a
+            className={`pl-2 ${
+              idMenuActive !== id
+                ? 'pointer-events-auto'
+                : 'pointer-events-none'
+            }`}
+            onClick={(e) => {
+              if (idMenuActive !== id) handleClickItem(e, id, hasLink);
+            }}
+          >
+            {name}
+          </a>
+        );
 
         return (
           <li
@@ -95,20 +110,11 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
               id
             )} ${delaySequenceClass} ${transitionTextClass}`}
           >
-            <Link href={href}>
-              <a
-                className={`pl-2 ${
-                  idMenuActive !== id
-                    ? 'pointer-events-auto'
-                    : 'pointer-events-none'
-                }`}
-                onClick={(e) => {
-                  if (idMenuActive !== id) handleClickItem(e, id);
-                }}
-              >
-                {name}
-              </a>
-            </Link>
+            {href.search(/#/g) >= 0 ? (
+              LinkHref(false)
+            ) : (
+              <Link href={href}>{LinkHref(true)}</Link>
+            )}
             {children.length > 0 &&
               (arrIdMenuOpen.includes(id) ? (
                 <MinusSmIcon

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "productId": "1",
+    "productSizeId": "1",
+    "numberInStock": 50
+  },
+  {
+    "id": "2",
+    "productId": "1",
+    "productSizeId": "2",
+    "numberInStock": 10
+  },
+  {
+    "id": "3",
+    "productId": "1",
+    "productSizeId": "3",
+    "numberInStock": 20
+  },
+  {
+    "id": "4",
+    "productId": "2",
+    "productSizeId": "1",
+    "numberInStock": 15
+  },
+  {
+    "id": "5",
+    "productId": "2",
+    "productSizeId": "2",
+    "numberInStock": 60
+  },
+  {
+    "id": "6",
+    "productId": "3",
+    "productSizeId": "1",
+    "numberInStock": 80
+  },
+  {
+    "id": "7",
+    "productId": "3",
+    "productSizeId": "2",
+    "numberInStock": 100
+  },
+  {
+    "id": "8",
+    "productId": "3",
+    "productSizeId": "3",
+    "numberInStock": 0
+  },
+  {
+    "id": "9",
+    "productId": "4",
+    "productSizeId": "3",
+    "numberInStock": 4
+  },
+  {
+    "id": "10",
+    "productId": "5",
+    "productSizeId": "1",
+    "numberInStock": 0
+  },
+  {
+    "id": "11",
+    "productId": "5",
+    "productSizeId": "3",
+    "numberInStock": 70
+  },
+  {
+    "id": "12",
+    "productId": "6",
+    "productSizeId": "1",
+    "numberInStock": 0
+  }
+]
