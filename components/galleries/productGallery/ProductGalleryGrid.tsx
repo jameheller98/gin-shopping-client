@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useRef } from 'react';
 import { GalleryGrid } from '../../../utils/common/commonClass';
 import { TProductGallery } from './ProductGallery';
 import ProductGalleryBox, { TProductGalleryBox } from './ProductGalleryBox';
@@ -13,7 +13,7 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = ({
   options,
   ...divProps
 }) => {
-  const galleryGrid = useMemo(() => new GalleryGrid(), []);
+  const galleryGrid = useRef(new GalleryGrid());
 
   const OptionComponent = (side: 'left' | 'right', node: ReactNode) => {
     if (node)
@@ -36,7 +36,7 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = ({
       {...divProps}
       className={`grid grid-cols-3 gap-3 ${className}`}
       style={{
-        gridTemplateRows: `repeat(${galleryGrid.calTotalRow(
+        gridTemplateRows: `repeat(${galleryGrid.current.calTotalRow(
           products.length
         )},80px)`,
       }}
@@ -45,8 +45,8 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = ({
       {OptionComponent('right', options?.right)}
       {products.map(({ imgSrc, price }, idx) => {
         const { gridRowStart, gridRowEnd } =
-          galleryGrid.calNumberColAndRowPresent();
-        const positionItem = galleryGrid.positionItemFollowCol();
+          galleryGrid.current.calNumberColAndRowPresent();
+        const positionItem = galleryGrid.current.positionItemFollowCol();
         const positionItemClassName = classNames({
           'origin-center': positionItem === 'center',
           'origin-left': positionItem === 'left',

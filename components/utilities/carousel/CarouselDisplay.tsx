@@ -178,7 +178,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   };
 
   return (
-    <div {...divProps} className={`overflow-hidden w-screen ${className}`}>
+    <div {...divProps} className={`overflow-hidden w-full ${className}`}>
       <CarouselDisplayItemFake
         percentDisplayImgCenter={percentDisplayImgCenter}
         distanceEachImgShouldMinus={distanceEachImgShouldMinus}

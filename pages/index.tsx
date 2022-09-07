@@ -11,7 +11,7 @@ import { NextPageWithLayout } from './page';
 
 const Home: NextPageWithLayout = () => {
   return (
-    <section className="w-full flex flex-col">
+    <section className="flex flex-col">
       <Carousel {...mockCarouselProps.base} />
       <TitleCard {...mockTitleCardProps.base} />
       <HotCard {...mockHotCardProps.base} className="mt-4 mx-10 mb-6" />

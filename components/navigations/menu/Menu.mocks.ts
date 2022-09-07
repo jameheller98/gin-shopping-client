@@ -144,6 +144,14 @@ const base: TMenu = {
     },
     {
       id: '18',
+      name: 'CONTACT',
+      href: '/contact',
+      tagParam: '',
+      bgColorChild: '',
+      children: [],
+    },
+    {
+      id: '19',
       name: 'LOGIN',
       href: '/#',
       tagParam: '',

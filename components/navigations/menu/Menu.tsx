@@ -88,8 +88,9 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
           'delay-[400ms]': index === 1 || index === 3,
           'delay-[500ms]': index === 2,
         });
-        const LinkHref = (hasLink: boolean) => (
+        const LinkHref = (hasLink: boolean, href: string) => (
           <a
+            href={href}
             className={`pl-2 ${
               idMenuActive !== id
                 ? 'pointer-events-auto'
@@ -111,9 +112,9 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
             )} ${delaySequenceClass} ${transitionTextClass}`}
           >
             {href.search(/#/g) >= 0 ? (
-              LinkHref(false)
+              LinkHref(false, '#')
             ) : (
-              <Link href={href}>{LinkHref(true)}</Link>
+              <Link href={href}>{LinkHref(true, href)}</Link>
             )}
             {children.length > 0 &&
               (arrIdMenuOpen.includes(id) ? (

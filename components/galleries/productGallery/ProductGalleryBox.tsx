@@ -22,6 +22,12 @@ const ProductGalleryBox: React.FC<TProductGalleryBox> = ({
   className,
   ...divProps
 }) => {
+  const formatCurrency = useRef(
+    new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    })
+  );
   const galleryBoxRef = useRef<null | HTMLDivElement>(null);
   const entry = useIntersectionObserver(galleryBoxRef, {
     threshold: 0.5,
@@ -53,10 +59,7 @@ const ProductGalleryBox: React.FC<TProductGalleryBox> = ({
         </Transition>
       </div>
       <div className="rounded-b-md flex items-center justify-center text-sm">
-        {new Intl.NumberFormat('de-DE', {
-          style: 'currency',
-          currency: 'VND',
-        }).format(priceProduct)}
+        {formatCurrency.current.format(priceProduct)}
       </div>
     </div>
   );
