@@ -72,12 +72,11 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
 
   const handleActiveMenuItem = (idMenu: string) => {
     const activeParentMenuItemClass = classNames({
-      'before:scale-y-1 before:origin-top before:h-6': idMenuActive === idMenu,
-      'before:scale-y-0 before:origin-bottom before:h-6':
-        idMenuActive !== idMenu,
+      'before:scale-y-1': idMenuActive === idMenu,
+      'before:scale-y-0': idMenuActive !== idMenu,
     });
 
-    return `before:absolute before:top-0 before:w-[2px] before:bg-slate-600 before:transition-transform before:duration-300 ${activeParentMenuItemClass}`;
+    return `before:absolute before:top-0 before:w-[2px] before:bg-slate-600 before:h-6 ${activeParentMenuItemClass}`;
   };
 
   return (
