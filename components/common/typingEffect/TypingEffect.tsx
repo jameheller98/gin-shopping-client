@@ -2,6 +2,7 @@ import {
   ComponentPropsWithoutRef,
   forwardRef,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -42,9 +43,9 @@ const TypingEffect = forwardRef<HTMLAnchorElement, TTypingEffect>(
     const [wordEffect, setWordEffect] = useState('');
     const [reverse, setReverse] = useState(false);
     const [delayTyping, setDelayTyping] = useState(0);
+    const arrText = useMemo(() => text.split(''), [text]);
 
     useEffect(() => {
-      const arrText = text.split('');
       if (isVisible)
         timeTypingInterval.current = setInterval(
           () => {
@@ -52,7 +53,7 @@ const TypingEffect = forwardRef<HTMLAnchorElement, TTypingEffect>(
               setWordEffect((wordEffect) => {
                 const wordTyping = wordEffect + arrText[wordEffect.length];
 
-                if (wordTyping.length === text.length && !reverse) {
+                if (wordTyping.length === arrText.length && !reverse) {
                   setReverse(true);
                   setDelayTyping(timeDelayTyping);
                 }
@@ -66,7 +67,7 @@ const TypingEffect = forwardRef<HTMLAnchorElement, TTypingEffect>(
                   setDelayTyping(timeTyping * 2);
                 }
 
-                return wordEffect.length < text.length && !reverse
+                return wordEffect.length < arrText.length && !reverse
                   ? wordTyping
                   : wordEffect.slice(0, wordEffect.length - 1);
               });
@@ -77,14 +78,12 @@ const TypingEffect = forwardRef<HTMLAnchorElement, TTypingEffect>(
           !reverse ? timeTyping : timeDelete
         );
 
-      return () => {
-        clearInterval(timeTypingInterval.current);
-      };
+      return () => clearInterval(timeTypingInterval.current);
     }, [
       isVisible,
       reverse,
       delayTyping,
-      text,
+      arrText,
       timeTyping,
       timeDelete,
       timeDelayDelete,

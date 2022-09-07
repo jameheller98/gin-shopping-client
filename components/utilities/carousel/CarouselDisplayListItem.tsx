@@ -77,7 +77,7 @@ const CarouselDisplayListItem = forwardRef<
       onMouseUp={handleEndSlide}
     >
       {cloneArrImgSrc.map((imgSrc, idx) => (
-        <CarouselDisplayItem key={idx} propsImg={{ ...propsImg, imgSrc }} />
+        <CarouselDisplayItem key={idx} propsImg={propsImg} imgSrc={imgSrc} />
       ))}
     </div>
   );

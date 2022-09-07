@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   autoPlayPageState,
@@ -38,7 +38,6 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const carouselWrapperItemsRef = useRef<null | HTMLDivElement>(null);
   const itemRef = useRef<null | HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const amountCloneImgSrc = numberItems + (ratioDisplayImgBothSide > 0 ? 1 : 0);
   const [{ pageSelected: currentPage }, setMovePage] = useRecoilState(
     movePageState(keyCarousel)
   );
@@ -52,22 +51,45 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   const widthCarouselWrapper =
     currentCarouselWrapper?.getBoundingClientRect().width;
   const widthItem = itemRef.current?.getBoundingClientRect().width;
-  const distanceEachImgShouldMinus =
-    (distanceBetweenImgs * (numberItems - 1)) / numberItems;
-  const amountFrameBasicOfImg = 1 / ratioDisplayImgBothSide || 1;
-  const frameNeededAddBothSide = 2;
-  const amountFrameSplitedOfImgs =
-    amountFrameBasicOfImg * numberItems + frameNeededAddBothSide;
-  const percentDisplayImgBothSide = (100 / amountFrameSplitedOfImgs) * 2;
-  const percentDisplayImgCenter =
-    (100 - percentDisplayImgBothSide) / numberItems;
+
+  const propsImg = useMemo(() => {
+    const amountCloneImgSrc =
+      numberItems + (ratioDisplayImgBothSide > 0 ? 1 : 0);
+    const distanceEachImgShouldMinus =
+      (distanceBetweenImgs * (numberItems - 1)) / numberItems;
+    const amountFrameBasicOfImg = 1 / ratioDisplayImgBothSide || 1;
+    const frameNeededAddBothSide = 2;
+    const amountFrameSplitedOfImgs =
+      amountFrameBasicOfImg * numberItems + frameNeededAddBothSide;
+    const percentDisplayImgBothSide = (100 / amountFrameSplitedOfImgs) * 2;
+    const percentDisplayImgCenter =
+      (100 - percentDisplayImgBothSide) / numberItems;
+
+    return {
+      width,
+      height,
+      distanceBetweenImgs,
+      distanceEachImgShouldMinus,
+      percentDisplayImgCenter,
+      percentDisplayImgBothSide,
+      amountCloneImgSrc,
+    };
+  }, [
+    width,
+    height,
+    numberItems,
+    ratioDisplayImgBothSide,
+    distanceBetweenImgs,
+  ]);
 
   const stringTranlateXCalculated = useCallback(
     (currentPage: number, valueCanAdded = 0) => {
       const valueTranlateX =
         widthCarouselWrapper && widthItem
           ? ((widthItem + distanceBetweenImgs) * currentPage -
-              (widthCarouselWrapper * percentDisplayImgBothSide) / 100 / 2 +
+              (widthCarouselWrapper * propsImg.percentDisplayImgBothSide) /
+                100 /
+                2 +
               valueCanAdded) *
             -1
           : 0;
@@ -76,8 +98,8 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     [
       widthCarouselWrapper,
       widthItem,
-      percentDisplayImgBothSide,
       distanceBetweenImgs,
+      propsImg.percentDisplayImgBothSide,
     ]
   );
 
@@ -87,15 +109,15 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
       if (transitionPage && currentPage === sizePage) {
         currentCarouselWrapper.style.transform = stringTranlateXCalculated(
-          amountCloneImgSrc - 1
+          propsImg.amountCloneImgSrc - 1
         );
       } else if (transitionPage && currentPage === 1) {
         currentCarouselWrapper.style.transform = stringTranlateXCalculated(
-          sizePage + amountCloneImgSrc
+          sizePage + propsImg.amountCloneImgSrc
         );
       } else if (!transitionPage) {
         currentCarouselWrapper.style.transform = stringTranlateXCalculated(
-          currentPage + amountCloneImgSrc - 1
+          currentPage + propsImg.amountCloneImgSrc - 1
         );
       }
     }
@@ -104,6 +126,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     sizePage,
     animatePage,
     transitionPage,
+    propsImg.amountCloneImgSrc,
     stringTranlateXCalculated,
   ]);
 
@@ -133,7 +156,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     if (currentCarouselWrapper && touchablePage.touchable) {
       currentCarouselWrapper.style.transitionDuration = `0ms`;
       currentCarouselWrapper.style.transform = stringTranlateXCalculated(
-        currentPage + amountCloneImgSrc - 1,
+        currentPage + propsImg.amountCloneImgSrc - 1,
         touchablePage.posStartTouch - clientX
       );
 
@@ -165,7 +188,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
       } else {
         currentCarouselWrapper.style.transitionDuration = `700ms`;
         currentCarouselWrapper.style.transform = stringTranlateXCalculated(
-          currentPage + amountCloneImgSrc - 1
+          currentPage + propsImg.amountCloneImgSrc - 1
         );
       }
     }
@@ -180,8 +203,8 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
   return (
     <div {...divProps} className={`overflow-hidden w-full ${className}`}>
       <CarouselDisplayItemFake
-        percentDisplayImgCenter={percentDisplayImgCenter}
-        distanceEachImgShouldMinus={distanceEachImgShouldMinus}
+        percentDisplayImgCenter={propsImg.percentDisplayImgCenter}
+        distanceEachImgShouldMinus={propsImg.distanceEachImgShouldMinus}
         ref={itemRef}
       />
       <Transition
@@ -193,15 +216,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
         <CarouselDisplayListItem
           ref={carouselWrapperItemsRef}
           keyCarousel={keyCarousel}
-          propsImg={{
-            width,
-            height,
-            distanceBetweenImgs,
-            distanceEachImgShouldMinus,
-            percentDisplayImgCenter,
-            percentDisplayImgBothSide,
-            amountCloneImgSrc,
-          }}
+          propsImg={propsImg}
           propsFuncAnimate={{
             handleTransitionEnd,
             handleStartSlide,

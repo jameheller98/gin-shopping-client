@@ -28,7 +28,7 @@ export const getServerSideProps = async () => {
 
 const Product: NextPageWithLayout<IProduct> = ({ dataProduct }) => {
   return (
-    <section className="flex flex-col">
+    <section className="w-screen flex flex-col">
       <HotCard
         srcImg="/product/card/denim-cloth.jpg"
         textButton="Shopping now"

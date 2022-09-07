@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   arrImgSrcState,
@@ -12,32 +12,36 @@ export type TCarouselControl = {
   keyCarousel: string;
 } & React.ComponentPropsWithoutRef<'div'>;
 
-let interval: NodeJS.Timer;
-
 const CarouselControl: React.FC<TCarouselControl> = ({
   keyCarousel,
   className,
   ...divProps
 }) => {
+  const intervalAutoPlay = useRef<NodeJS.Timer>();
   const [isVisible, setIsVisible] = useState(false);
   const arrImgSrc = useRecoilValue(arrImgSrcState);
   const autoPlayPage = useRecoilValue(autoPlayPageState);
   const [movePage, setMovePage] = useRecoilState(movePageState(keyCarousel));
 
+  const handleMovePageSelected = useCallback(
+    (pageSelected: number) =>
+      setMovePage({ typeMovePage: 'selectPage', pageSelected }),
+    [setMovePage]
+  );
+
   useEffect(() => {
     if (autoPlayPage) {
-      interval = setInterval(() => {
+      intervalAutoPlay.current = setInterval(() => {
         setMovePage(({ pageSelected }) => ({
           typeMovePage: 'nextPage',
           pageSelected,
         }));
       }, 3000);
     }
+
     setIsVisible(true);
 
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(intervalAutoPlay.current);
   }, [setMovePage, autoPlayPage]);
 
   return (
@@ -58,9 +62,7 @@ const CarouselControl: React.FC<TCarouselControl> = ({
       <CarouselControlIndicators
         arrImgSrc={arrImgSrc}
         currentPage={movePage.pageSelected}
-        handleMovePageSelected={(pageSelected) =>
-          setMovePage({ typeMovePage: 'selectPage', pageSelected })
-        }
+        handleMovePageSelected={handleMovePageSelected}
       />
       <CarouselControlNext
         handleMoveNextPage={() =>
@@ -128,7 +130,8 @@ const CarouselControlIndicators: React.FC<{
   arrImgSrc: string[];
   currentPage: number;
   handleMovePageSelected: (_pageSelected: number) => void;
-}> = ({ arrImgSrc, currentPage, handleMovePageSelected }) => (
+  // eslint-disable-next-line react/display-name
+}> = memo(({ arrImgSrc, currentPage, handleMovePageSelected }) => (
   <div className="flex items-end gap-5 mb-3">
     {arrImgSrc.map((_, idx) => (
       <button
@@ -147,6 +150,6 @@ const CarouselControlIndicators: React.FC<{
       </button>
     ))}
   </div>
-);
+));
 
 export default CarouselControl;

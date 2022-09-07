@@ -22,8 +22,6 @@ export type TCarousel = {
   sensitivityTouchAnimateSlide?: number;
 } & React.ComponentPropsWithoutRef<'div'>;
 
-let setTimeOutAutoPlay: NodeJS.Timeout;
-
 const Carousel: React.FC<TCarousel> = ({
   keyCarousel,
   arrImgSrc,
@@ -38,6 +36,7 @@ const Carousel: React.FC<TCarousel> = ({
   ...divProps
 }) => {
   const refCarousel = useRef<null | HTMLDivElement>(null);
+  const timeOutAutoPlay = useRef<NodeJS.Timeout>();
   const setArrImgSrc = useSetRecoilState(arrImgSrcState);
   const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
   const setListIdUniqueCarousel = useSetRecoilState(listIdUniqueCarouselState);
@@ -45,9 +44,9 @@ const Carousel: React.FC<TCarousel> = ({
   useIsomorphicLayoutEffect(() => {
     setArrImgSrc(arrImgSrc);
 
-    setTimeOutAutoPlay = setTimeout(() => setAutoPlayPage(autoPlay), 1500);
+    timeOutAutoPlay.current = setTimeout(() => setAutoPlayPage(autoPlay), 1500);
 
-    return () => clearTimeout(setTimeOutAutoPlay);
+    return () => clearTimeout(timeOutAutoPlay.current);
   }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
 
   useEffect(() => {
