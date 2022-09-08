@@ -1,12 +1,14 @@
 import { XIcon } from '@heroicons/react/outline';
 import classNames from 'classnames';
+import { memo } from 'react';
 import { useRecoilState } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import Navbar from '../navbar/Navbar';
 
 export type TSidebar = {} & React.ComponentPropsWithoutRef<'div'>;
 
-const Sidebar: React.FC<TSidebar> = ({ className, ...divProps }) => {
+// eslint-disable-next-line react/display-name
+const Sidebar: React.FC<TSidebar> = memo(({ className, ...divProps }) => {
   const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
 
   const handleTransitionDrawerClass = (positionDrawer: 'left' | 'right') =>
@@ -42,6 +44,6 @@ const Sidebar: React.FC<TSidebar> = ({ className, ...divProps }) => {
       />
     </>
   );
-};
+});
 
 export default Sidebar;

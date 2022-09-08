@@ -45,7 +45,6 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
     useRecoilState(animationPageState);
   const sizePage = useRecoilValue(sizePageState);
   const [touchablePage, setTouchablePage] = useRecoilState(touchablePageState);
-  useRecoilState(touchablePageState);
   const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
   const currentCarouselWrapper = carouselWrapperItemsRef.current;
   const widthCarouselWrapper =
@@ -154,15 +153,17 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
 
   const handleMoveSlide = (clientX: number) => {
     if (currentCarouselWrapper && touchablePage.touchable) {
-      currentCarouselWrapper.style.transitionDuration = `0ms`;
+      const stepMove = touchablePage.posStartTouch - clientX;
+
+      currentCarouselWrapper.style.transitionDuration = '0ms';
       currentCarouselWrapper.style.transform = stringTranlateXCalculated(
         currentPage + propsImg.amountCloneImgSrc - 1,
-        touchablePage.posStartTouch - clientX
+        stepMove
       );
 
       setTouchablePage((touchablePage) => ({
         ...touchablePage,
-        stepMove: touchablePage.posStartTouch - clientX,
+        stepMove,
       }));
     }
   };
@@ -186,7 +187,7 @@ const CarouselDisplay: React.FC<TCarouselDisplay> = ({
           typeMovePage: 'prevPage',
         }));
       } else {
-        currentCarouselWrapper.style.transitionDuration = `700ms`;
+        currentCarouselWrapper.style.transitionDuration = `${animatePage}ms`;
         currentCarouselWrapper.style.transform = stringTranlateXCalculated(
           currentPage + propsImg.amountCloneImgSrc - 1
         );

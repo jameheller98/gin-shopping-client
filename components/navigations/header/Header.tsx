@@ -2,14 +2,12 @@ import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
-import { idMenuActiveState } from '../../../state/menu/menuAtoms';
 import Brand from '../../common/brand/Brand';
 
 export type THeader = {} & React.ComponentPropsWithoutRef<'header'>;
 
 const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
   const setOpenDrawer = useSetRecoilState(openDrawerState);
-  const setIdMenuActive = useSetRecoilState(idMenuActiveState);
 
   return (
     <header
@@ -21,12 +19,7 @@ const Header: React.FC<THeader> = ({ className, ...headerProps }) => {
         onClick={() => setOpenDrawer(true)}
       />
       <Link href="/">
-        <a
-          className="flex justify-center items-center"
-          onClick={() => {
-            setIdMenuActive('1');
-          }}
-        >
+        <a className="flex justify-center items-center">
           <Brand />
         </a>
       </Link>

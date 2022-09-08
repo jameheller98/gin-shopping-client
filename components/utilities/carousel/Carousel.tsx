@@ -1,9 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
 import {
   arrImgSrcState,
   autoPlayPageState,
-  listIdUniqueCarouselState,
 } from '../../../state/carousel/carouselAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 import useOnClickOutSide from '../../../state/hooks/useOnClickOutSide';
@@ -39,7 +38,6 @@ const Carousel: React.FC<TCarousel> = ({
   const timeOutAutoPlay = useRef<NodeJS.Timeout>();
   const setArrImgSrc = useSetRecoilState(arrImgSrcState);
   const setAutoPlayPage = useSetRecoilState(autoPlayPageState);
-  const setListIdUniqueCarousel = useSetRecoilState(listIdUniqueCarouselState);
 
   useIsomorphicLayoutEffect(() => {
     setArrImgSrc(arrImgSrc);
@@ -48,10 +46,6 @@ const Carousel: React.FC<TCarousel> = ({
 
     return () => clearTimeout(timeOutAutoPlay.current);
   }, [setArrImgSrc, setAutoPlayPage, arrImgSrc, autoPlay]);
-
-  useEffect(() => {
-    setListIdUniqueCarousel((setId) => setId.add(keyCarousel));
-  }, [keyCarousel, setListIdUniqueCarousel]);
 
   useOnClickOutSide(refCarousel, () => autoPlay && setAutoPlayPage(true));
 

@@ -2,7 +2,7 @@ import { MinusSmIcon, PlusSmIcon } from '@heroicons/react/solid';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { MouseEvent, useCallback } from 'react';
+import { memo, MouseEvent, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
@@ -26,7 +26,8 @@ export type TMenu = {
   arrMenu: IMenuObject[];
 } & React.ComponentPropsWithoutRef<'ul'>;
 
-const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
+// eslint-disable-next-line react/display-name
+const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
   const router = useRouter();
   const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
@@ -42,10 +43,12 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
       router.asPath.split('/').filter((path) => Boolean(path)),
       'id'
     ) as string[];
+    const menuActive = arrMenu.find((menu) => menu.href === router.asPath);
 
-    setIdMenuActive(idMenuActiveQuery[idMenuActiveQuery.length - 1]);
+    if (menuActive) setIdMenuActive(menuActive.id);
+
     setArrIdMenuOpen(idMenuActiveQuery.slice(0, idMenuActiveQuery.length - 1));
-  }, [setIdMenuActive, setArrIdMenuOpen]);
+  }, [arrMenu, router, setIdMenuActive, setArrIdMenuOpen]);
 
   const handleClickItem = (
     event: MouseEvent<HTMLSpanElement>,
@@ -146,6 +149,6 @@ const Menu: React.FC<TMenu> = ({ arrMenu, className, ...ulProps }) => {
       })}
     </ul>
   );
-};
+});
 
 export default Menu;
