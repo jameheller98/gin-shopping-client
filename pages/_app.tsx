@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useEffect(() => {
     const scrollbarWidth = window.innerWidth - document.body.clientWidth;
-    const documentMain = document.querySelector('main');
+    const documentMain = document.querySelector<HTMLElement>('main');
 
     if (documentMain)
       documentMain.style.width = `calc(100vw - ${scrollbarWidth}px)`;
