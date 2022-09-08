@@ -32,9 +32,10 @@ const Product: NextPageWithLayout<IProduct> = ({ dataProduct }) => {
       <HotCard
         srcImg="/product/card/denim-cloth.jpg"
         textButton="Shopping now"
-        className="mt-0 mx-0"
         themeCard="light"
         directionTransition="origin-center"
+        paddingSide={0}
+        className="mt-0"
       />
       <Carousel
         keyCarousel="product_carousel_1"

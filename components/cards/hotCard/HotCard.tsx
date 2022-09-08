@@ -13,14 +13,16 @@ export type THotCard = {
     | 'origin-center';
   textButton: string;
   themeCard?: 'light' | 'dark';
+  paddingSide?: number;
 } & React.ComponentPropsWithoutRef<'article'>;
 
 const HotCard: React.FC<THotCard> = ({
   srcImg,
   directionTransition = 'origin-top-left',
-  className,
   textButton,
   themeCard = 'dark',
+  paddingSide = 40,
+  className,
   ...articleProps
 }) => {
   const hotCardRef = useRef<null | HTMLElement>(null);
@@ -34,8 +36,12 @@ const HotCard: React.FC<THotCard> = ({
 
   useIsomorphicLayoutEffect(() => {
     const currentHotCardRef = hotCardRef.current;
+    const scrollbarWidth = window.innerWidth - document.body.clientWidth;
 
     if (currentHotCardRef) {
+      currentHotCardRef.style.width = `calc(100vw - ${scrollbarWidth}px - ${
+        paddingSide * 2
+      }px)`;
       currentHotCardRef.style.height =
         currentHotCardRef.getBoundingClientRect().width + 'px';
     }
@@ -45,7 +51,7 @@ const HotCard: React.FC<THotCard> = ({
     <article
       {...articleProps}
       ref={hotCardRef}
-      className={`relative overflow-hidden before:content before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-slate-600 before:z-[1] before:transition-transform before:duration-500 ease-in-out ${themeClassName} ${
+      className={`m-auto w-screen relative overflow-hidden before:content before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-slate-600 before:z-[1] before:transition-transform before:duration-500 ease-in-out ${themeClassName} ${
         isVisible ? 'before:translate-y-0' : 'before:-translate-y-full'
       } ${className}`}
     >

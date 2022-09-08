@@ -14,12 +14,13 @@ const Home: NextPageWithLayout = () => {
     <section className="flex flex-col">
       <Carousel {...mockCarouselProps.base} />
       <TitleCard {...mockTitleCardProps.base} />
-      <HotCard {...mockHotCardProps.base} className="mt-4 mx-10 mb-6" />
+      <HotCard {...mockHotCardProps.base} className="mt-4 mb-6" />
+
       <HotCard
         srcImg="/home/card/accessories.jpg"
         directionTransition="origin-top-right"
         textButton="Accessories"
-        className="mt-4 mx-10"
+        className="mt-4"
       />
       <TitleCard title="New arrival" />
       <NewArrivalCard

@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { useEffect } from 'react';
 import Footer from '../../navigations/footer/Footer';
 import Header from '../../navigations/header/Header';
 import Sidebar from '../../navigations/sidebar/Sidebar';
@@ -10,14 +9,6 @@ export type TPrimaryLayout = {
 };
 
 const PrimaryLayout: React.FC<TPrimaryLayout> = ({ children }) => {
-  useEffect(() => {
-    const scrollbarWidth = window.innerWidth - document.body.clientWidth;
-    const documentMain = document.querySelector<HTMLElement>('main');
-
-    if (documentMain)
-      documentMain.style.width = `calc(100vw - ${scrollbarWidth}px)`;
-  }, []);
-
   return (
     <>
       <Head>
