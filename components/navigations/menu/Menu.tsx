@@ -49,6 +49,8 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
 
     if (menuActive) setIdMenuActive(menuActive.id);
 
+    if (router.query.productId) setIdMenuActive('0');
+
     setArrIdMenuOpen(idMenuActiveQuery.slice(0, idMenuActiveQuery.length - 1));
   }, [arrMenu, router, setIdMenuActive, setArrIdMenuOpen]);
 
