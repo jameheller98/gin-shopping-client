@@ -17,6 +17,7 @@ export type TNewArrivalCard = {
   imgSrc: string;
   reversePosition?: boolean;
   styleProps?: INewArrivalCardStyles;
+  href?: string;
 } & React.ComponentPropsWithoutRef<'article'>;
 
 const NewArrivalCard: React.FC<TNewArrivalCard> = ({
@@ -33,6 +34,7 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
       borderColor: 'border-slate-200',
     },
   },
+  href = '#',
   className,
   ...articleProps
 }) => {
@@ -109,6 +111,7 @@ const NewArrivalCard: React.FC<TNewArrivalCard> = ({
           title={title}
           description={description}
           styleProps={styleProps}
+          href={href}
         />
       </Transition>
     </article>

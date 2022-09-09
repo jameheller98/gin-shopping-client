@@ -1,11 +1,12 @@
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRef } from 'react';
+import { IProductData } from '../../../libs/product/interfaces';
 import useIntersectionObserver from '../../../state/hooks/useIntersectionObserver';
 
 export type TProductGalleryBox = {
-  imgSrc: string;
-  priceProduct: number;
+  product: IProductData;
   gridColumnStart?: number;
   gridRowStart?: number;
   gridRowEnd?: number;
@@ -13,8 +14,7 @@ export type TProductGalleryBox = {
 } & React.ComponentPropsWithoutRef<'div'>;
 
 const ProductGalleryBox: React.FC<TProductGalleryBox> = ({
-  imgSrc,
-  priceProduct,
+  product,
   gridColumnStart,
   gridRowStart,
   gridRowEnd,
@@ -22,6 +22,7 @@ const ProductGalleryBox: React.FC<TProductGalleryBox> = ({
   className,
   ...divProps
 }) => {
+  const { imgSrc, price, sex, cat, id } = product;
   const formatCurrency = useRef(
     new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -36,32 +37,34 @@ const ProductGalleryBox: React.FC<TProductGalleryBox> = ({
   const isVisible = !!entry?.isIntersecting;
 
   return (
-    <div
-      className="grid grid-rows-[140px_auto] shadow-xl rounded-md"
-      ref={galleryBoxRef}
-      style={{
-        gridColumnStart,
-        gridRowStart,
-        gridRowEnd,
-      }}
-    >
+    <Link href={`product/${sex}/${cat}/${id}`}>
       <div
-        {...divProps}
-        className={`overflow-hidden flex items-center justify-center rounded-t-md ${className}`}
+        className="grid grid-rows-[140px_auto] shadow-xl rounded-md"
+        ref={galleryBoxRef}
+        style={{
+          gridColumnStart,
+          gridRowStart,
+          gridRowEnd,
+        }}
       >
-        <Transition
-          show={isVisible}
-          enter={`transition-transform duration-1000 ${positionScale}`}
-          enterFrom="scale-0"
-          enterTo="scale-1"
+        <div
+          {...divProps}
+          className={`overflow-hidden flex items-center justify-center rounded-t-md ${className}`}
         >
-          <Image src={imgSrc} alt={imgSrc} width="350" height="525" />
-        </Transition>
+          <Transition
+            show={isVisible}
+            enter={`transition-transform duration-1000 ${positionScale}`}
+            enterFrom="scale-0"
+            enterTo="scale-1"
+          >
+            <Image src={imgSrc[0]} alt={imgSrc[0]} width="350" height="525" />
+          </Transition>
+        </div>
+        <div className="rounded-b-md flex items-center justify-center text-sm">
+          {formatCurrency.current.format(price)}
+        </div>
       </div>
-      <div className="rounded-b-md flex items-center justify-center text-sm">
-        {formatCurrency.current.format(priceProduct)}
-      </div>
-    </div>
+    </Link>
   );
 };
 

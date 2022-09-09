@@ -43,7 +43,9 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
       router.asPath.split('/').filter((path) => Boolean(path)),
       'id'
     ) as string[];
-    const menuActive = arrMenu.find((menu) => menu.href === router.asPath);
+    const menuActive = arrMenu.find(
+      (menu) => menu.href === router.asPath.replace(/\?(.*)/g, '')
+    );
 
     if (menuActive) setIdMenuActive(menuActive.id);
 

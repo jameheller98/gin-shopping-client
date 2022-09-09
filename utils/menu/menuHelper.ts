@@ -19,7 +19,7 @@ const findLastObjMenu = (
   fieldName: keyof IMenuObject | undefined,
   count = 1
 ) => {
-  const currentPath = arrPath[count];
+  const currentPath = arrPath[count]?.replace(/\?(.*)/g, '');
   const currentMenu = menu.children.find(
     (menu) => menu.href.replace(/^.*[a-z,0-9,A-Z]\//g, '') === currentPath
   );

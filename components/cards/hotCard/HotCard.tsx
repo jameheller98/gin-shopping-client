@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRef } from 'react';
 import useIntersectionObserver from '../../../state/hooks/useIntersectionObserver';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
@@ -12,6 +13,7 @@ export type THotCard = {
     | 'origin-top-right'
     | 'origin-center';
   textButton: string;
+  href?: string;
   themeCard?: 'light' | 'dark';
   paddingSide?: number;
 } & React.ComponentPropsWithoutRef<'article'>;
@@ -20,6 +22,7 @@ const HotCard: React.FC<THotCard> = ({
   srcImg,
   directionTransition = 'origin-top-left',
   textButton,
+  href = '#',
   themeCard = 'dark',
   paddingSide = 40,
   className,
@@ -70,12 +73,16 @@ const HotCard: React.FC<THotCard> = ({
             priority
           />
         </Transition.Child>
-        <RectButton
-          className={`absolute z-[2] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg none-tap-highlight-color`}
-          themeButton={themeCard}
-        >
-          {textButton}
-        </RectButton>
+        <Link href={href}>
+          <a className={`${href === '#' ? 'pointer-events-none' : ''}`}>
+            <RectButton
+              className={`absolute z-[2] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg none-tap-highlight-color`}
+              themeButton={themeCard}
+            >
+              {textButton}
+            </RectButton>
+          </a>
+        </Link>
       </Transition>
     </article>
   );

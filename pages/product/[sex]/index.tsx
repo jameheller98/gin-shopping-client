@@ -1,5 +1,9 @@
 import PrimaryLayout from '../../../components/layouts/primary/PrimaryLayout';
-import { getAllLevelLinkHrefs } from '../../../libs/product/product';
+import { IProductData } from '../../../libs/product/interfaces';
+import {
+  getAllLevelLinkHrefs,
+  getAllProductBySex,
+} from '../../../libs/product/product';
 import { NextPageWithLayout } from '../../page';
 
 export async function getStaticPaths() {
@@ -9,11 +13,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { sex: string } }) {
-  console.log(params);
-  return { props: {} };
+  const listProduct = getAllProductBySex(params.sex);
+  return { props: { listProduct } };
 }
 
-const Sex: NextPageWithLayout = () => {
+const Sex: NextPageWithLayout<{ listProduct: IProductData[] }> = ({
+  listProduct,
+}) => {
+  console.log(listProduct);
   return <section></section>;
 };
 

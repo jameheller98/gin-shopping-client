@@ -43,7 +43,7 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = ({
     >
       {OptionComponent('left', options?.left)}
       {OptionComponent('right', options?.right)}
-      {products.map(({ imgSrc, price }, idx) => {
+      {products.map((product, idx) => {
         const { gridRowStart, gridRowEnd } =
           galleryGrid.current.calNumberColAndRowPresent();
         const positionItem = galleryGrid.current.positionItemFollowCol();
@@ -55,9 +55,8 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = ({
 
         return (
           <ProductGalleryBox
-            key={idx}
-            imgSrc={imgSrc[0]}
-            priceProduct={price}
+            key={product.id}
+            product={product}
             gridColumnStart={idx === 0 ? 2 : undefined}
             gridRowStart={gridRowStart}
             gridRowEnd={gridRowEnd}

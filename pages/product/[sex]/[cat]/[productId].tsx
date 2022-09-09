@@ -1,13 +1,13 @@
 import PrimaryLayout from '../../../../components/layouts/primary/PrimaryLayout';
 import { IProductData } from '../../../../libs/product/interfaces';
 import {
-  getAllLevelLinkHrefs,
-  getAllProductBySexAndCategory,
+  getAllProduct,
+  getProductById,
 } from '../../../../libs/product/product';
 import { NextPageWithLayout } from '../../../page';
 
 export async function getStaticPaths() {
-  const paths = getAllLevelLinkHrefs('2', 2);
+  const paths = getAllProduct();
 
   return { paths, fallback: false };
 }
@@ -15,22 +15,22 @@ export async function getStaticPaths() {
 export async function getStaticProps({
   params,
 }: {
-  params: { sex: string; cat: string };
+  params: { sex: string; cat: string; productId: string };
 }) {
-  const listProduct = getAllProductBySexAndCategory(params.sex, params.cat);
+  const product = getProductById(params.productId);
 
-  return { props: { listProduct } };
+  return { props: { product } };
 }
 
-const Category: NextPageWithLayout<{ listProduct: IProductData[] }> = ({
-  listProduct,
+const ProductDetail: NextPageWithLayout<{ product: IProductData }> = ({
+  product,
 }) => {
-  console.log(listProduct);
+  console.log(product);
   return <section></section>;
 };
 
-export default Category;
+export default ProductDetail;
 
-Category.getLayout = (page) => {
+ProductDetail.getLayout = (page) => {
   return <PrimaryLayout>{page}</PrimaryLayout>;
 };

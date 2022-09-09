@@ -1,17 +1,19 @@
 import { Transition } from '@headlessui/react';
 import { ArrowRightIcon } from '@heroicons/react/solid';
+import Link from 'next/link';
 import { Fragment } from 'react';
 import CubeButton from '../../buttons/CubeButton/CubeButton';
 import { TNewArrivalCard } from './NewArrivalCard';
 
 export type TNewArrivalCardContent = Required<
-  Pick<TNewArrivalCard, 'description' | 'styleProps'>
+  Pick<TNewArrivalCard, 'description' | 'styleProps' | 'href'>
 > &
   React.ComponentPropsWithoutRef<'section'>;
 
 const NewArrivalCardContent: React.FC<TNewArrivalCardContent> = ({
   description,
   styleProps,
+  href,
   className,
   ...sectionProps
 }) => {
@@ -41,12 +43,16 @@ const NewArrivalCardContent: React.FC<TNewArrivalCardContent> = ({
         enterTo="translate-x-0 opacity-100"
       >
         <div className="mt-2 text-right">
-          <CubeButton
-            {...buttonStyle}
-            className="text-sm none-tap-highlight-color"
-          >
-            More info <ArrowRightIcon className="inline h-4" />
-          </CubeButton>
+          <Link href={href}>
+            <a className={`${href === '#' ? 'pointer-events-none' : ''}`}>
+              <CubeButton
+                {...buttonStyle}
+                className="text-sm none-tap-highlight-color"
+              >
+                More info <ArrowRightIcon className="inline h-4" />
+              </CubeButton>
+            </a>
+          </Link>
         </div>
       </Transition.Child>
     </section>

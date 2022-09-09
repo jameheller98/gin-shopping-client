@@ -3,7 +3,7 @@ import { IMenuObject } from '../../components/navigations/menu/Menu';
 
 const idMenuActiveState = atom({
   key: 'IdMenuActiveState',
-  default: '1',
+  default: '0',
 });
 
 const arrIdMenuOpenState = atom<IMenuObject['id'][]>({

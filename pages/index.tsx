@@ -15,11 +15,11 @@ const Home: NextPageWithLayout = () => {
       <Carousel {...mockCarouselProps.base} />
       <TitleCard {...mockTitleCardProps.base} />
       <HotCard {...mockHotCardProps.base} className="mt-4 mb-6" />
-
       <HotCard
         srcImg="/home/card/accessories.jpg"
         directionTransition="origin-top-right"
         textButton="Accessories"
+        href="/product/accessories"
         className="mt-4"
       />
       <TitleCard title="New arrival" />
@@ -35,6 +35,7 @@ const Home: NextPageWithLayout = () => {
             borderColor: 'border-red-200',
           },
         }}
+        href="/product/men/shirts"
       />
       <NewArrivalCard
         title="Black shirt men"
@@ -51,6 +52,7 @@ const Home: NextPageWithLayout = () => {
             borderColor: 'border-orange-200',
           },
         }}
+        href="/product/men/shirts?color=white"
       />
     </section>
   );
