@@ -1,3 +1,4 @@
+import SexGallery from '../../../components/galleries/sexGallery/SexGallery';
 import PrimaryLayout from '../../../components/layouts/primary/PrimaryLayout';
 import { IProductData } from '../../../libs/product/interfaces';
 import {
@@ -20,8 +21,11 @@ export async function getStaticProps({ params }: { params: { sex: string } }) {
 const Sex: NextPageWithLayout<{ listProduct: IProductData[] }> = ({
   listProduct,
 }) => {
-  console.log(listProduct);
-  return <section></section>;
+  return (
+    <section className="flex flex-col p-5">
+      <SexGallery listProduct={listProduct} />
+    </section>
+  );
 };
 
 export default Sex;
