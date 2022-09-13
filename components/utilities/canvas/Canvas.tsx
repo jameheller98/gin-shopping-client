@@ -5,7 +5,7 @@ export type TCanvas = {
   width: number;
   height: number;
   draw: (_context: CanvasRenderingContext2D) => void;
-  shapeObj: Shape;
+  shapeObj?: Shape;
 } & React.ComponentPropsWithoutRef<'canvas'>;
 
 const Canvas: React.FC<TCanvas> = ({

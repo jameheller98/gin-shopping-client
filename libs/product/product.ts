@@ -1,6 +1,9 @@
 import { IMenuObject } from '../../components/navigations/menu/Menu';
 import { mockMenuProps } from '../../components/navigations/menu/Menu.mocks';
 import dataProduct from './dataProduct.json';
+import dataProductSize from './dataProductSize.json';
+import dataProductStock from './dataProductStock.json';
+import { IProductStock } from './interfaces';
 
 export function getAllLevelLinkHrefs(idMenu: string, level = 1) {
   let results: { params: Record<string, string> }[] = [];
@@ -56,4 +59,14 @@ export function getAllProductBySex(sexName: string) {
 
 export function getProductById(productId: string) {
   return dataProduct.find((data) => data.id === productId);
+}
+
+export function getSizesByIds(sizeIds: string[]) {
+  return dataProductSize.filter((data) => sizeIds.includes(data.id));
+}
+
+export function getProductStockByProductId(productId: string): IProductStock[] {
+  return dataProductStock
+    .filter((data) => data.productId === productId)
+    .map((data) => ({ ...data, isStock: data.numberInStock > 0 }));
 }

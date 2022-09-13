@@ -24,9 +24,10 @@ const ProductGalleryBox: React.FC<TProductGalleryBox> = ({
 }) => {
   const { imgSrc, price, sex, cat, id } = product;
   const formatCurrency = useRef(
-    new Intl.NumberFormat('vi-VN', {
+    new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'VND',
+      currency: 'USD',
+      currencyDisplay: 'narrowSymbol',
     })
   );
   const galleryBoxRef = useRef<null | HTMLDivElement>(null);

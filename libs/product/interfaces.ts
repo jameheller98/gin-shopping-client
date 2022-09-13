@@ -16,6 +16,7 @@ interface IProductSize {
 
 interface IProductData {
   id: string;
+  name: string;
   imgSrc: string[];
   sex: 'men' | 'woman' | 'unisex';
   cat: 'shirts' | 't-shirts' | 'pants';

@@ -1,50 +1,56 @@
 [
   {
     "id": "1",
+    "name": "T-shirt a",
     "imgSrc": ["/product/gallery/product-1.jpg"],
     "sex": "unisex",
     "cat": "t-shirts",
-    "price": 200000,
+    "price": 100,
     "sizeIds": ["1", "2", "3"]
   },
   {
     "id": "2",
+    "name": "Shirt a",
     "imgSrc": ["/product/gallery/product-2.jpg"],
     "sex": "men",
     "cat": "shirts",
-    "price": 180000,
+    "price": 200,
     "sizeIds": ["1", "2"]
   },
   {
     "id": "3",
+    "name": "Shirt b",
     "imgSrc": ["/product/gallery/product-3.jpg"],
     "sex": "unisex",
     "cat": "shirts",
-    "price": 240000,
+    "price": 100.1,
     "sizeIds": ["1", "2", "3"]
   },
   {
     "id": "4",
+    "name": "Pants a",
     "imgSrc": ["/product/gallery/product-4.jpg"],
     "sex": "men",
     "cat": "pants",
-    "price": 300000,
+    "price": 300,
     "sizeIds": ["3"]
   },
   {
     "id": "5",
+    "name": "Shirt c",
     "imgSrc": ["/product/gallery/product-5.jpg"],
     "sex": "unisex",
     "cat": "shirts",
-    "price": 100000,
+    "price": 160,
     "sizeIds": ["1", "3"]
   },
   {
     "id": "6",
+    "name": "Shirt d",
     "imgSrc": ["/product/gallery/product-6.jpg"],
     "sex": "unisex",
     "cat": "shirts",
-    "price": 400000,
+    "price": 400,
     "sizeIds": ["1"]
   }
 ]

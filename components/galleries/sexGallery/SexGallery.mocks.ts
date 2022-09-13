@@ -4,6 +4,7 @@ const base: TSexGallery = {
   listProduct: [
     {
       id: '1',
+      name: 'T-shirt a',
       imgSrc: ['/product/gallery/product-1.jpg'],
       sex: 'unisex',
       cat: 't-shirts',
@@ -12,6 +13,7 @@ const base: TSexGallery = {
     },
     {
       id: '2',
+      name: 'Shirt a',
       imgSrc: ['/product/gallery/product-2.jpg'],
       sex: 'men',
       cat: 'shirts',

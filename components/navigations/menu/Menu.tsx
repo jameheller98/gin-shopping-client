@@ -29,7 +29,10 @@ export type TMenu = {
 // eslint-disable-next-line react/display-name
 const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
   const router = useRouter();
-  const [openDrawer, setOpenDrawer] = useRecoilState(openDrawerState);
+  const [openDrawer, setOpenDrawer] = useRecoilState(
+    openDrawerState('menuSideBar')
+  );
+
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
   const [arrIdMenuOpen, setArrIdMenuOpen] = useRecoilState(arrIdMenuOpenState);
   const transitionTextClass = classNames({

@@ -1,6 +1,6 @@
-import { atom } from 'recoil';
+import { atomFamily } from 'recoil';
 
-const openDrawerState = atom({
+const openDrawerState = atomFamily({
   key: 'OpenDrawer',
   default: false,
 });

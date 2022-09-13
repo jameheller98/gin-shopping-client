@@ -3,18 +3,18 @@ import { Shape } from '../../utils/common/commonClass';
 
 const useCanvas = (
   draw: (_context: CanvasRenderingContext2D) => void,
-  shapeObj: Shape
+  shapeObj?: Shape
 ) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleMouseDown = (event: MouseEvent<HTMLCanvasElement>) => {
-    shapeObj.down(event);
+    shapeObj?.down(event);
   };
 
   const handleMouseMove = (event: MouseEvent<HTMLCanvasElement>) => {
     const ctx = canvasRef.current?.getContext('2d')!;
 
-    shapeObj.move(
+    shapeObj?.move(
       event,
       ctx,
       canvasRef.current?.clientWidth,
@@ -23,7 +23,7 @@ const useCanvas = (
   };
 
   const handleMouseUp = (event: MouseEvent<HTMLCanvasElement>) => {
-    shapeObj.up(event);
+    shapeObj?.up(event);
   };
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { ShoppingCartIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
@@ -14,27 +13,33 @@ const SexGallery: React.FC<TSexGallery> = ({
   ...propsDiv
 }) => {
   const formatCurrency = useRef(
-    new Intl.NumberFormat('vi-VN', {
+    new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'VND',
+      currency: 'USD',
+      currencyDisplay: 'narrowSymbol',
     })
   );
 
   return (
-    <div {...propsDiv} className={`grid grid-cols-2 gap-5 ${className}`}>
-      {listProduct.map(({ id, imgSrc, sex, cat, price }) => (
-        <figure key={id} className="border-4 border-dashed border-slate-400">
-          <div className="flex p-4">
+    <div {...propsDiv} className={`grid grid-cols-2 gap-4 ${className}`}>
+      {listProduct.map(({ id, imgSrc, sex, cat, price, name }) => (
+        <figure key={id}>
+          <div className="rounded-2xl overflow-hidden">
             <Link href={`/product/${sex}/${cat}/${id}`}>
-              <Image src={imgSrc[0]} alt={imgSrc[0]} width="350" height="525" />
+              <a className="flex">
+                <Image
+                  src={imgSrc[0]}
+                  alt={imgSrc[0]}
+                  width="350"
+                  height="525"
+                />
+              </a>
             </Link>
           </div>
-          <figcaption className="text-xl border-t-4 border-dashed border-slate-400">
-            <div className="float-left p-2">
+          <figcaption className="text-center text-slate-700">
+            <div className="pt-2 pb-1 font-medium text-sm">{name}</div>
+            <div className="font-bold">
               {formatCurrency.current.format(price)}
-            </div>
-            <div className="float-right border-l-4 border-dashed border-slate-400 p-2">
-              <ShoppingCartIcon className="w-7" />
             </div>
           </figcaption>
         </figure>
