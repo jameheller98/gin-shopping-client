@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { ArrowRightIcon } from '@heroicons/react/solid';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import CubeButton from '../../buttons/CubeButton/CubeButton';

@@ -1,4 +1,4 @@
-import { ShoppingCartIcon } from '@heroicons/react/outline';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { TProductDetail } from '../../../pages/product/[sex]/[cat]/[productId]';

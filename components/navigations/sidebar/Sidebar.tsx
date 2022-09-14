@@ -1,4 +1,4 @@
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { memo, ReactNode } from 'react';
 import { useRecoilState } from 'recoil';
@@ -63,7 +63,7 @@ const Sidebar: React.FC<TSidebar> = memo(
             directionAnimate === 'left' ? 'left' : 'right'
           )} ${className}`}
         >
-          <XIcon
+          <XMarkIcon
             className={`w-7 h-7 cursor-pointer ${
               directionAnimate === 'left' ? 'float-right' : 'float-left'
             }`}

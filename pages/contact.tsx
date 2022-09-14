@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { InboxIcon, PhoneIcon } from '@heroicons/react/outline';
+import { InboxIcon, PhoneIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import TitleCard from '../components/common/titleCard/TitleCard';

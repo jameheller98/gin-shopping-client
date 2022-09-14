@@ -1,10 +1,17 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Footer from '../../navigations/footer/Footer';
-import Header from '../../navigations/header/Header';
 import Navbar from '../../navigations/navbar/Navbar';
 import Sidebar from '../../navigations/sidebar/Sidebar';
 import BreadCrumb from '../../utilities/breadcrumb/BreadCrumb';
-import Cart from '../../utilities/cart/Cart';
+
+const Header = dynamic(() => import('../../navigations/header/Header'), {
+  ssr: false,
+});
+
+const Cart = dynamic(() => import('../../utilities/cart/Cart'), {
+  ssr: false,
+});
 
 export type TPrimaryLayout = {
   children: React.ReactNode;

@@ -13,7 +13,8 @@ const cartManagerState = selector<ICartManagerState>({
 
     return { typeHandle: undefined, cartList: cart };
   },
-  set: ({ set }, newValue) => {
+  set: ({ set, get, reset }, newValue) => {
+    const cart = get(cartState);
     const { typeHandle, cartList } = newValue as ICartManagerState;
 
     if (typeHandle) {
@@ -42,6 +43,7 @@ const cartManagerState = selector<ICartManagerState>({
             return [...cart, ...cartList];
           });
         case 'removeOne':
+          if (cart.length <= 1 && cart[0].amount <= 1) return reset(cartState);
           return set(cartState, (cart) => {
             const cartExistIndex = cart.findIndex(
               (item) =>
@@ -70,6 +72,7 @@ const cartManagerState = selector<ICartManagerState>({
             );
           });
         case 'removeItem':
+          if (cart.length <= 1) return reset(cartState);
           return set(cartState, (cart) => {
             return cart.filter(
               (item) =>
@@ -78,7 +81,7 @@ const cartManagerState = selector<ICartManagerState>({
             );
           });
         case 'removeAll':
-          return set(cartState, []);
+          return reset(cartState);
         default:
       }
     }

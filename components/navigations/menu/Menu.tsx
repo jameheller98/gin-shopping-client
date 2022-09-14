@@ -1,4 +1,4 @@
-import { MinusSmIcon, PlusSmIcon } from '@heroicons/react/solid';
+import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -127,13 +127,13 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
             )}
             {children.length > 0 &&
               (arrIdMenuOpen.includes(id) ? (
-                <MinusSmIcon
-                  className="h-7 w-7 ml-1 inline cursor-pointer"
+                <MinusSmallIcon
+                  className="h-6 w-6 ml-1 inline cursor-pointer"
                   onClick={() => handleToggleMenuItems(id)}
                 />
               ) : (
-                <PlusSmIcon
-                  className="h-7 w-7 ml-1 inline cursor-pointer"
+                <PlusSmallIcon
+                  className="h-6 w-6 ml-1 inline cursor-pointer"
                   onClick={() => handleToggleMenuItems(id)}
                 />
               ))}

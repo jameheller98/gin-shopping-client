@@ -1,4 +1,4 @@
-import { MenuIcon, ShoppingBagIcon } from '@heroicons/react/outline';
+import { Bars3Icon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { memo } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -23,7 +23,7 @@ const Header: React.FC<THeader> = memo(({ className, ...headerProps }) => {
         className="self-center justify-self-start cursor-pointer ml-4 p-1"
         onClick={() => setOpenDrawerMenu(true)}
       >
-        <MenuIcon className="h-7 w-7" />
+        <Bars3Icon className="h-7 w-7" />
       </div>
       <Link href="/">
         <a className="flex justify-center items-center">
