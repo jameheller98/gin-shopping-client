@@ -5,6 +5,16 @@ class GalleryGrid {
   private countNumberItemIsSet = 0;
   private maxNumberItem = 3;
 
+  constructor(
+    countNumberRowPresent: number,
+    countNumberItemIsSet: number,
+    maxNumberItem: number
+  ) {
+    this.countNumberRowPresent = countNumberRowPresent;
+    this.countNumberItemIsSet = countNumberItemIsSet;
+    this.maxNumberItem = maxNumberItem;
+  }
+
   calNumberColAndRowPresent() {
     let gridRowStart = 0,
       gridRowEnd = 0;
@@ -49,6 +59,12 @@ class GalleryGrid {
     }
 
     return 'right';
+  }
+
+  resetProperty() {
+    this.countNumberRowPresent = 1;
+    this.countNumberItemIsSet = 0;
+    this.maxNumberItem = 3;
   }
 }
 

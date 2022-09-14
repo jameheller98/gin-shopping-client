@@ -11,7 +11,7 @@ const CartList: React.FC<TCartList> = ({ className, ...divProps }) => {
   const setOpenDrawerCart = useSetRecoilState(openDrawerState('cartSideBar'));
 
   return (
-    <div {...divProps} className={`h-[55vh] overflow-auto ${className}`}>
+    <div {...divProps} className={`h-[45vh] overflow-auto ${className}`}>
       {cartList?.map((cart, index) => (
         <CartCard key={index} cart={cart} className="my-4" />
       ))}

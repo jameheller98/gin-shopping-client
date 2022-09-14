@@ -18,9 +18,9 @@ const CartCheckout: React.FC<TCartCheckout> = ({ className, ...divProps }) => {
   return (
     <div
       {...divProps}
-      className={`flex flex-col justify-between w-full h-[30vh] mt-3 ${className}`}
+      className={`flex flex-col justify-between w-full h-[29vh] mt-3 ${className}`}
     >
-      <div className="flex flex-col text-slate-500 font-medium gap-3">
+      <div className="flex flex-col text-slate-500 font-medium gap-2">
         <div className="flex justify-between items-center">
           <h2 className="text-sm">Sub Total</h2>
           <span className="text-xl font-bold text-slate-900">
@@ -33,7 +33,7 @@ const CartCheckout: React.FC<TCartCheckout> = ({ className, ...divProps }) => {
             {formatCurrency.current.format(shippingPrice)}
           </span>
         </div>
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-3">
           <h1 className="text-sm">Total</h1>
           <span className="text-xl font-bold text-slate-900">
             {formatCurrency.current.format(cartTotalPrice + shippingPrice)}
@@ -41,7 +41,7 @@ const CartCheckout: React.FC<TCartCheckout> = ({ className, ...divProps }) => {
         </div>
       </div>
       <button
-        className={`w-full py-4 px-10 mt-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center bg-slate-800 ${
+        className={`w-full py-4 px-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center bg-slate-800 ${
           cartTotalPrice ? 'opacity-100' : 'opacity-50'
         }`}
         disabled={!cartTotalPrice}
