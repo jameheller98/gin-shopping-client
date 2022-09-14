@@ -2,7 +2,7 @@ import { selector } from 'recoil';
 import { cartState, TCartState } from './cartAtoms';
 
 interface ICartManagerState {
-  typeHandle?: 'addOne' | 'removeOne' | 'removeItem';
+  typeHandle?: 'addOne' | 'removeOne' | 'removeItem' | 'removeAll';
   cartList: TCartState[];
 }
 
@@ -77,6 +77,8 @@ const cartManagerState = selector<ICartManagerState>({
                 item.size.id !== cartList[0].size.id
             );
           });
+        case 'removeAll':
+          return set(cartState, []);
         default:
       }
     }

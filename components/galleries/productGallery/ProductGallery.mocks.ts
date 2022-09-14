@@ -4,6 +4,7 @@ const base: TProductGallery = {
   products: [
     {
       id: '1',
+      name: 'shirt',
       imgSrc: ['/product/gallery/product-1.jpg'],
       sex: 'unisex',
       cat: 't-shirts',

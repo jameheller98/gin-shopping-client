@@ -33,6 +33,7 @@ const base: TProductCard = {
       avgWeight: 6200,
     },
   ],
+  productStock: [],
 };
 
 export const mockProductCardProps = {

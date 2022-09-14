@@ -13,6 +13,7 @@ const CartCheckout: React.FC<TCartCheckout> = ({ className, ...divProps }) => {
     })
   );
   const cartTotalPrice = useRecoilValue(cartTotalPriceState);
+  const shippingPrice = cartTotalPrice ? 10.5 : 0;
 
   return (
     <div
@@ -29,17 +30,22 @@ const CartCheckout: React.FC<TCartCheckout> = ({ className, ...divProps }) => {
         <div className="flex justify-between items-center">
           <h3 className="text-sm">Shipping</h3>
           <span className="text-xl font-bold text-slate-900">
-            {formatCurrency.current.format(10.5)}
+            {formatCurrency.current.format(shippingPrice)}
           </span>
         </div>
         <div className="flex justify-between items-center mt-4">
           <h1 className="text-sm">Total</h1>
           <span className="text-xl font-bold text-slate-900">
-            {formatCurrency.current.format(cartTotalPrice + 10.5)}
+            {formatCurrency.current.format(cartTotalPrice + shippingPrice)}
           </span>
         </div>
       </div>
-      <button className="w-full py-4 px-10 mt-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center bg-slate-800">
+      <button
+        className={`w-full py-4 px-10 mt-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center bg-slate-800 ${
+          cartTotalPrice ? 'opacity-100' : 'opacity-50'
+        }`}
+        disabled={!cartTotalPrice}
+      >
         Checkout
       </button>
     </div>
