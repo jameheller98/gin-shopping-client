@@ -2,7 +2,7 @@ import { TCartCard } from './CartCard';
 
 const base: TCartCard = {
   cart: {
-    id: '1',
+    stockId: '1',
     name: 'T-shirt a',
     imgSrc: ['/product/gallery/product-1.jpg'],
     sex: 'unisex',
@@ -16,6 +16,7 @@ const base: TCartCard = {
       avgWeight: 5000,
     },
     amount: 1,
+    productId: '1',
   },
 };
 
