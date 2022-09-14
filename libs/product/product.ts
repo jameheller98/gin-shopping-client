@@ -1,5 +1,5 @@
-import { IMenuObject } from '../../components/navigations/menu/Menu';
 import { mockMenuProps } from '../../components/navigations/menu/Menu.mocks';
+import { IMenuData } from '../menu/interfaces';
 import dataProduct from './dataProduct.json';
 import dataProductSize from './dataProductSize.json';
 import dataProductStock from './dataProductStock.json';
@@ -13,7 +13,7 @@ export function getAllLevelLinkHrefs(idMenu: string, level = 1) {
 
   if (menuParent) {
     const handlePushArray = (
-      childrenMenu: IMenuObject[],
+      childrenMenu: IMenuData[],
       level: number,
       countLevel = 1,
       paramsPrev?: Record<string, string>
