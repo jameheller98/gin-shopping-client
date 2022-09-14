@@ -2,7 +2,7 @@ import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { memo, MouseEvent, useCallback } from 'react';
+import { memo, MouseEvent, useCallback, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { IMenuData } from '../../../libs/menu/interfaces';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
@@ -16,140 +16,149 @@ import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
 
 export type TMenu = {
   arrMenu: IMenuData[];
+  excludeMenu?: IMenuData['id'][];
 } & React.ComponentPropsWithoutRef<'ul'>;
 
 // eslint-disable-next-line react/display-name
-const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
-  const router = useRouter();
-  const [openDrawer, setOpenDrawer] = useRecoilState(
-    openDrawerState('menuSideBar')
-  );
-  const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
-  const [arrIdMenuOpen, setArrIdMenuOpen] = useRecoilState(arrIdMenuOpenState);
-  const menuData = useRecoilValue(menuDataState);
-  const transitionTextClass = classNames({
-    'opacity-100 translate-x-0': openDrawer,
-    'opacity-0 -translate-x-4': !openDrawer,
-  });
-
-  useIsomorphicLayoutEffect(() => {
-    const idsMenuActiveQuery = findArrObjMenuActive(
-      menuData,
-      router.asPath.split('/').filter((path) => Boolean(path)),
-      'id'
-    ) as string[];
-    const menuActive = arrMenu.find(
-      (menu) => menu.href === router.asPath.replace(/\?(.*)/g, '')
+const Menu: React.FC<TMenu> = memo(
+  ({ arrMenu, excludeMenu = ['19', '20'], className, ...ulProps }) => {
+    const arrMenuFilterExclude = useRef(
+      arrMenu.filter((menu) => !excludeMenu.includes(menu.id))
     );
-
-    if (menuActive) setIdMenuActive(menuActive.id);
-
-    if (router.query.productId) setIdMenuActive('0');
-
-    setArrIdMenuOpen(
-      idsMenuActiveQuery.slice(0, idsMenuActiveQuery.length - 1)
+    const router = useRouter();
+    const [openDrawer, setOpenDrawer] = useRecoilState(
+      openDrawerState('menuSideBar')
     );
-  }, [arrMenu, menuData, router, setIdMenuActive, setArrIdMenuOpen]);
-
-  const handleClickItem = (
-    event: MouseEvent<HTMLSpanElement>,
-    idMenu: string,
-    hasLink: boolean
-  ) => {
-    event.stopPropagation();
-    if (hasLink) setIdMenuActive(idMenu);
-    setOpenDrawer(false);
-  };
-
-  const handleToggleMenuItems = useCallback(
-    (idMenu: IMenuData['id']) => {
-      if (arrIdMenuOpen.includes(idMenu)) {
-        setArrIdMenuOpen(
-          arrIdMenuOpen.filter((idMenuItem) => idMenuItem !== idMenu)
-        );
-      } else {
-        setArrIdMenuOpen(arrIdMenuOpen.concat(idMenu));
-      }
-    },
-    [arrIdMenuOpen, setArrIdMenuOpen]
-  );
-
-  const handleActiveMenuItem = (idMenu: string) => {
-    const activeParentMenuItemClass = classNames({
-      'before:scale-y-1': idMenuActive === idMenu,
-      'before:scale-y-0': idMenuActive !== idMenu,
+    const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
+    const [arrIdMenuOpen, setArrIdMenuOpen] =
+      useRecoilState(arrIdMenuOpenState);
+    const menuData = useRecoilValue(menuDataState);
+    const transitionTextClass = classNames({
+      'opacity-100 translate-x-0': openDrawer,
+      'opacity-0 -translate-x-4': !openDrawer,
     });
 
-    return `before:absolute before:top-0 before:w-[2px] before:bg-slate-600 before:h-6 ${activeParentMenuItemClass}`;
-  };
+    useIsomorphicLayoutEffect(() => {
+      const idsMenuActiveQuery = findArrObjMenuActive(
+        menuData,
+        router.asPath.split('/').filter((path) => Boolean(path)),
+        'id'
+      ) as string[];
+      const menuActive = arrMenuFilterExclude.current.find(
+        (menu) => menu.href === router.asPath.replace(/\?(.*)/g, '')
+      );
 
-  return (
-    <ul {...ulProps} className={`flex flex-col gap-5 relative ${className}`}>
-      {arrMenu.map(({ id, name, href, bgColorChild, children }, index) => {
-        const delaySequenceClass = classNames({
-          'delay-[300ms]': index === 0 || index === 4,
-          'delay-[400ms]': index === 1 || index === 3,
-          'delay-[500ms]': index === 2,
-        });
-        const LinkHref = (hasLink: boolean, href: string) => (
-          <a
-            href={href}
-            className={`pl-2 ${
-              idMenuActive !== id
-                ? 'pointer-events-auto'
-                : 'pointer-events-none'
-            }`}
-            onClick={(e) => {
-              if (idMenuActive !== id) handleClickItem(e, id, hasLink);
-            }}
-          >
-            {name}
-          </a>
-        );
+      if (menuActive) setIdMenuActive(menuActive.id);
 
-        return (
-          <li
-            key={id}
-            className={`w-full transition duration-200 ${handleActiveMenuItem(
-              id
-            )} ${delaySequenceClass} ${transitionTextClass}`}
-          >
-            {href.search(/#/g) >= 0 ? (
-              LinkHref(false, '#')
-            ) : (
-              <Link href={href}>{LinkHref(true, href)}</Link>
-            )}
-            {children.length > 0 &&
-              (arrIdMenuOpen.includes(id) ? (
-                <MinusSmallIcon
-                  className="h-6 w-6 ml-1 inline cursor-pointer"
-                  onClick={() => handleToggleMenuItems(id)}
-                />
-              ) : (
-                <PlusSmallIcon
-                  className="h-6 w-6 ml-1 inline cursor-pointer"
-                  onClick={() => handleToggleMenuItems(id)}
-                />
-              ))}
-            {children.length > 0 && (
-              <div
-                className={`overflow-hidden ${
-                  arrIdMenuOpen.includes(id)
-                    ? 'animate-trans-sub-menu-in'
-                    : 'animate-trans-sub-menu-out'
+      if (router.query.productId) setIdMenuActive('0');
+
+      setArrIdMenuOpen(
+        idsMenuActiveQuery.slice(0, idsMenuActiveQuery.length - 1)
+      );
+    }, [menuData, router, setIdMenuActive, setArrIdMenuOpen]);
+
+    const handleClickItem = (
+      event: MouseEvent<HTMLSpanElement>,
+      idMenu: string,
+      hasLink: boolean
+    ) => {
+      event.stopPropagation();
+      if (hasLink) setIdMenuActive(idMenu);
+      setOpenDrawer(false);
+    };
+
+    const handleToggleMenuItems = useCallback(
+      (idMenu: IMenuData['id']) => {
+        if (arrIdMenuOpen.includes(idMenu)) {
+          setArrIdMenuOpen(
+            arrIdMenuOpen.filter((idMenuItem) => idMenuItem !== idMenu)
+          );
+        } else {
+          setArrIdMenuOpen(arrIdMenuOpen.concat(idMenu));
+        }
+      },
+      [arrIdMenuOpen, setArrIdMenuOpen]
+    );
+
+    const handleActiveMenuItem = (idMenu: string) => {
+      const activeParentMenuItemClass = classNames({
+        'before:scale-y-1': idMenuActive === idMenu,
+        'before:scale-y-0': idMenuActive !== idMenu,
+      });
+
+      return `before:absolute before:top-0 before:w-[2px] before:bg-slate-600 before:h-6 ${activeParentMenuItemClass}`;
+    };
+
+    return (
+      <ul {...ulProps} className={`flex flex-col gap-5 relative ${className}`}>
+        {arrMenuFilterExclude.current.map(
+          ({ id, name, href, bgColorChild, children }, index) => {
+            const delaySequenceClass = classNames({
+              'delay-[300ms]': index === 0 || index === 4,
+              'delay-[400ms]': index === 1 || index === 3,
+              'delay-[500ms]': index === 2,
+            });
+            const LinkHref = (hasLink: boolean, href: string) => (
+              <a
+                href={href}
+                className={`pl-2 ${
+                  idMenuActive !== id
+                    ? 'pointer-events-auto'
+                    : 'pointer-events-none'
                 }`}
+                onClick={(e) => {
+                  if (idMenuActive !== id) handleClickItem(e, id, hasLink);
+                }}
               >
-                <Menu
-                  className={`ml-5 mt-5 p-5 ${bgColorChild}`}
-                  arrMenu={children}
-                />
-              </div>
-            )}
-          </li>
-        );
-      })}
-    </ul>
-  );
-});
+                {name}
+              </a>
+            );
+
+            return (
+              <li
+                key={id}
+                className={`w-full transition duration-200 ${handleActiveMenuItem(
+                  id
+                )} ${delaySequenceClass} ${transitionTextClass}`}
+              >
+                {href.search(/#/g) >= 0 ? (
+                  LinkHref(false, '#')
+                ) : (
+                  <Link href={href}>{LinkHref(true, href)}</Link>
+                )}
+                {children.length > 0 &&
+                  (arrIdMenuOpen.includes(id) ? (
+                    <MinusSmallIcon
+                      className="h-6 w-6 ml-1 inline cursor-pointer"
+                      onClick={() => handleToggleMenuItems(id)}
+                    />
+                  ) : (
+                    <PlusSmallIcon
+                      className="h-6 w-6 ml-1 inline cursor-pointer"
+                      onClick={() => handleToggleMenuItems(id)}
+                    />
+                  ))}
+                {children.length > 0 && (
+                  <div
+                    className={`overflow-hidden ${
+                      arrIdMenuOpen.includes(id)
+                        ? 'animate-trans-sub-menu-in'
+                        : 'animate-trans-sub-menu-out'
+                    }`}
+                  >
+                    <Menu
+                      className={`ml-5 mt-5 p-5 ${bgColorChild}`}
+                      arrMenu={children}
+                    />
+                  </div>
+                )}
+              </li>
+            );
+          }
+        )}
+      </ul>
+    );
+  }
+);
 
 export default Menu;

@@ -154,5 +154,13 @@
     "tagParam": "",
     "bgColorChild": "",
     "children": []
+  },
+  {
+    "id": "20",
+    "name": "REGISTER",
+    "href": "/register",
+    "tagParam": "",
+    "bgColorChild": "",
+    "children": []
   }
 ]

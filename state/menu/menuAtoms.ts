@@ -5,7 +5,6 @@ const idMenuActiveState = atom({
   key: 'IdMenuActiveState',
   default: '0',
 });
-
 const arrIdMenuOpenState = atom<IMenuData['id'][]>({
   key: 'ArrIdMenuOpenState',
   default: [],
