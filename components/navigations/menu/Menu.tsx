@@ -3,27 +3,19 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { memo, MouseEvent, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { IMenuData } from '../../../libs/menu/interfaces';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
 import {
   arrIdMenuOpenState,
   idMenuActiveState,
+  menuDataState,
 } from '../../../state/menu/menuAtoms';
 import { findArrObjMenuActive } from '../../../utils/menu/menuHelper';
-import { mockMenuProps } from './Menu.mocks';
-
-export interface IMenuObject {
-  id: string;
-  name: string;
-  href: string;
-  tagParam: string;
-  bgColorChild: string;
-  children: IMenuObject[];
-}
 
 export type TMenu = {
-  arrMenu: IMenuObject[];
+  arrMenu: IMenuData[];
 } & React.ComponentPropsWithoutRef<'ul'>;
 
 // eslint-disable-next-line react/display-name
@@ -32,17 +24,17 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
   const [openDrawer, setOpenDrawer] = useRecoilState(
     openDrawerState('menuSideBar')
   );
-
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
   const [arrIdMenuOpen, setArrIdMenuOpen] = useRecoilState(arrIdMenuOpenState);
+  const menuData = useRecoilValue(menuDataState);
   const transitionTextClass = classNames({
     'opacity-100 translate-x-0': openDrawer,
     'opacity-0 -translate-x-4': !openDrawer,
   });
 
   useIsomorphicLayoutEffect(() => {
-    const idMenuActiveQuery = findArrObjMenuActive(
-      mockMenuProps.base.arrMenu,
+    const idsMenuActiveQuery = findArrObjMenuActive(
+      menuData,
       router.asPath.split('/').filter((path) => Boolean(path)),
       'id'
     ) as string[];
@@ -54,8 +46,10 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
 
     if (router.query.productId) setIdMenuActive('0');
 
-    setArrIdMenuOpen(idMenuActiveQuery.slice(0, idMenuActiveQuery.length - 1));
-  }, [arrMenu, router, setIdMenuActive, setArrIdMenuOpen]);
+    setArrIdMenuOpen(
+      idsMenuActiveQuery.slice(0, idsMenuActiveQuery.length - 1)
+    );
+  }, [arrMenu, menuData, router, setIdMenuActive, setArrIdMenuOpen]);
 
   const handleClickItem = (
     event: MouseEvent<HTMLSpanElement>,
@@ -68,7 +62,7 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
   };
 
   const handleToggleMenuItems = useCallback(
-    (idMenu: IMenuObject['id']) => {
+    (idMenu: IMenuData['id']) => {
       if (arrIdMenuOpen.includes(idMenu)) {
         setArrIdMenuOpen(
           arrIdMenuOpen.filter((idMenuItem) => idMenuItem !== idMenu)
@@ -115,7 +109,7 @@ const Menu: React.FC<TMenu> = memo(({ arrMenu, className, ...ulProps }) => {
 
         return (
           <li
-            key={name}
+            key={id}
             className={`w-full transition duration-200 ${handleActiveMenuItem(
               id
             )} ${delaySequenceClass} ${transitionTextClass}`}

@@ -22,9 +22,7 @@ const cartManagerState = selector<ICartManagerState>({
         case 'addOne':
           return set(cartState, (cart) => {
             const cartExistIndex = cart.findIndex(
-              (item) =>
-                item.id === cartList[0].id &&
-                item.size.id === cartList[0].size.id
+              (item) => item.stockId === cartList[0].stockId
             );
 
             if (cartExistIndex > -1) {
@@ -44,11 +42,10 @@ const cartManagerState = selector<ICartManagerState>({
           });
         case 'removeOne':
           if (cart.length <= 1 && cart[0].amount <= 1) return reset(cartState);
+
           return set(cartState, (cart) => {
             const cartExistIndex = cart.findIndex(
-              (item) =>
-                item.id === cartList[0].id &&
-                item.size.id === cartList[0].size.id
+              (item) => item.stockId === cartList[0].stockId
             );
 
             if (cartExistIndex > -1) {
@@ -65,20 +62,13 @@ const cartManagerState = selector<ICartManagerState>({
                 ];
             }
 
-            return cart.filter(
-              (item) =>
-                item.id !== cartList[0].id ||
-                item.size.id !== cartList[0].size.id
-            );
+            return cart.filter((item) => item.stockId !== cartList[0].stockId);
           });
         case 'removeItem':
           if (cart.length <= 1) return reset(cartState);
+
           return set(cartState, (cart) => {
-            return cart.filter(
-              (item) =>
-                item.id !== cartList[0].id ||
-                item.size.id !== cartList[0].size.id
-            );
+            return cart.filter((item) => item.stockId !== cartList[0].stockId);
           });
         case 'removeAll':
           return reset(cartState);

@@ -1,9 +1,9 @@
-import { IMenuObject } from '../../components/navigations/menu/Menu';
+import { IMenuData } from '../../libs/menu/interfaces';
 
 const findObjMenu = (
-  arrMenu: IMenuObject[],
+  arrMenu: IMenuData[],
   idMenu: string
-): IMenuObject | null => {
+): IMenuData | null => {
   const menuFinded = arrMenu.find((menu) => menu.id === idMenu);
   if (arrMenu.length > 0 && !menuFinded) {
     return arrMenu.find((menu) => findObjMenu(menu.children, idMenu)) || null;
@@ -14,12 +14,12 @@ const findObjMenu = (
 
 const findLastObjMenu = (
   arrPath: string[],
-  menu: IMenuObject,
+  menu: IMenuData,
   arrMenuActive: any[],
-  fieldName: keyof IMenuObject | undefined,
+  fieldName: keyof IMenuData | undefined,
   count = 1
 ) => {
-  const currentPath = arrPath[count]?.replace(/\?(.*)/g, '');
+  const currentPath = arrPath[count]?.replace(/\?(.*)|#/g, '');
   const currentMenu = menu.children.find(
     (menu) => menu.href.replace(/^.*[a-z,0-9,A-Z]\//g, '') === currentPath
   );
@@ -32,12 +32,12 @@ const findLastObjMenu = (
 };
 
 const findArrObjMenuActive = (
-  arrMenu: IMenuObject[],
+  arrMenu: IMenuData[],
   arrPath: string[],
-  fieldName?: keyof IMenuObject
-): IMenuObject[] | string[] => {
+  fieldName?: keyof IMenuData
+): IMenuData[] | string[] => {
   const parent = arrMenu.find((menu) => menu.href.search(arrPath[0]) >= 0);
-  const arrMenuActive: IMenuObject[] = [];
+  const arrMenuActive: IMenuData[] = [];
   const arrFieldNameMenu: string[] = [];
 
   if (parent) {

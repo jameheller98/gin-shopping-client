@@ -1,14 +1,19 @@
 import { atom } from 'recoil';
-import { IMenuObject } from '../../components/navigations/menu/Menu';
+import { IMenuData } from '../../libs/menu/interfaces';
 
 const idMenuActiveState = atom({
   key: 'IdMenuActiveState',
   default: '0',
 });
 
-const arrIdMenuOpenState = atom<IMenuObject['id'][]>({
+const arrIdMenuOpenState = atom<IMenuData['id'][]>({
   key: 'ArrIdMenuOpenState',
   default: [],
 });
 
-export { idMenuActiveState, arrIdMenuOpenState };
+const menuDataState = atom<IMenuData[]>({
+  key: 'MenuDataState',
+  default: [],
+});
+
+export { idMenuActiveState, arrIdMenuOpenState, menuDataState };

@@ -5,34 +5,32 @@ import {
   IProductSize,
   IProductStock,
 } from '../../../libs/product/interfaces';
-import { productOrderState } from '../../../state/product/productAtoms';
+import { stockOrderIdState } from '../../../state/product/productAtoms';
 import Canvas from '../../utilities/canvas/Canvas';
 
 export type TProductCardSizeItem = {
   value: IProductSize['value'];
-  sizeId: IProductSize['id'];
   productId: IProductData['id'];
-  stockDetail: IProductStock;
-  handleOrderSize: (_sizeId: string) => void;
+  stockDetail?: IProductStock;
+  handleOrderSize: (_stockId: string) => void;
 } & React.ComponentPropsWithoutRef<'li'>;
 
 const ProductCardSizeItem: React.FC<TProductCardSizeItem> = ({
   value,
-  sizeId,
   productId,
   stockDetail,
   handleOrderSize,
   className,
   ...liProps
 }) => {
-  const productOrder = useRecoilValue(productOrderState(productId));
+  const stockOrderId = useRecoilValue(stockOrderIdState(productId));
   const isStockClassName = classnames({
-    ['opacity-100']: stockDetail.isStock,
-    ['opacity-50 pointer-events-none']: !stockDetail.isStock,
+    ['opacity-100']: stockDetail?.isStock,
+    ['opacity-50 pointer-events-none']: !stockDetail?.isStock,
   });
   const isActiveSizeClassName = classnames({
-    ['bg-slate-400 text-slate-50']: productOrder?.sizeId === sizeId,
-    ['bg-transparent text-slate-700']: productOrder?.sizeId !== sizeId,
+    ['bg-slate-400 text-slate-50']: stockOrderId === stockDetail?.id,
+    ['bg-transparent text-slate-700']: stockOrderId !== stockDetail?.id,
   });
 
   const draw = (ctx: CanvasRenderingContext2D) => {
@@ -48,9 +46,9 @@ const ProductCardSizeItem: React.FC<TProductCardSizeItem> = ({
     <li {...liProps}>
       <button
         className={`border-2 border-slate-300 w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold ${isActiveSizeClassName} ${isStockClassName} ${className}`}
-        onClick={() => handleOrderSize(sizeId)}
+        onClick={() => handleOrderSize(stockDetail?.id || '')}
       >
-        {!stockDetail.isStock && (
+        {!stockDetail?.isStock && (
           <Canvas width={40} height={40} draw={draw} className="absolute" />
         )}
         {value}

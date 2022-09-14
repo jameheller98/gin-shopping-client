@@ -28,7 +28,6 @@ const ProductCardSizeList: React.FC<TProductCardSizeList> = ({
             <ProductCardSizeItem
               key={id}
               value={value}
-              sizeId={id}
               productId={productId}
               stockDetail={stockDetail}
               handleOrderSize={handleOrderSize}

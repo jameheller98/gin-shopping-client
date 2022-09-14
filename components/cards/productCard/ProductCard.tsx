@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { TProductDetail } from '../../../pages/product/[sex]/[cat]/[productId]';
 import { cartManagerState } from '../../../state/cart/cartSelectors';
-import { productOrderState } from '../../../state/product/productAtoms';
+import { stockOrderIdState } from '../../../state/product/productAtoms';
 import ProductCardSize from './ProductCardSize';
 import ProductCardTitle from './ProductCardTitle';
 
@@ -18,29 +18,32 @@ const ProductCard: React.FC<TProductCard> = ({
   ...divProps
 }) => {
   const { id, name, price, imgSrc } = product;
-  const [productOrder, setProductOrder] = useRecoilState(productOrderState(id));
+  const [stockOrderId, setStockOrderId] = useRecoilState(stockOrderIdState(id));
   const setCartManager = useSetRecoilState(cartManagerState);
 
-  const handleOrderSize = (sizeId: string) => {
-    setProductOrder((productOrder) => ({ ...productOrder, sizeId }));
+  const handleOrderSize = (stockId: string) => {
+    setStockOrderId(stockId);
   };
 
   const handleAddProduct = () => {
     // eslint-disable-next-line no-unused-vars
-    const { sizeIds, ...restProduct } = product;
-    const size = productSizes.find((size) => size.id === productOrder?.sizeId);
+    const { sizeIds, id, ...restProduct } = product;
+    const stock = productStock.find((stock) => stock.id === stockOrderId);
+    const size = productSizes.find((size) => size.id === stock?.productSizeId);
 
-    if (size) {
+    if (size && stock) {
       const productOrderOne = [
         {
           ...restProduct,
           size,
           amount: 1,
+          stockId: stock.id,
+          productId: id,
         },
       ];
 
       setCartManager({ typeHandle: 'addOne', cartList: productOrderOne });
-      setProductOrder(null);
+      setStockOrderId('');
     }
   };
 
@@ -59,9 +62,9 @@ const ProductCard: React.FC<TProductCard> = ({
       />
       <button
         className={`self-end py-4 px-10 mt-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center ${
-          productOrder ? 'opacity-100 bg-slate-800' : 'opacity-30 bg-slate-400'
+          stockOrderId ? 'opacity-100 bg-slate-800' : 'opacity-30 bg-slate-400'
         }`}
-        disabled={!productOrder}
+        disabled={!stockOrderId}
         onClick={handleAddProduct}
       >
         <span>Add to cart</span>

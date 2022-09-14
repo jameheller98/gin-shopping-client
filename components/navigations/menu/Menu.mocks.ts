@@ -153,7 +153,7 @@ const base: TMenu = {
     {
       id: '19',
       name: 'LOGIN',
-      href: '/#',
+      href: '/login',
       tagParam: '',
       bgColorChild: '',
       children: [],

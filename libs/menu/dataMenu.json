@@ -1,0 +1,158 @@
+[
+  {
+    "id": "1",
+    "name": "HOME",
+    "href": "/",
+    "tagParam": "",
+    "bgColorChild": "",
+    "children": []
+  },
+  {
+    "id": "2",
+    "name": "PRODUCT",
+    "href": "/product",
+    "tagParam": "",
+    "bgColorChild": "bg-slate-100",
+    "children": [
+      {
+        "id": "3",
+        "name": "MEN",
+        "tagParam": "sex",
+        "href": "/product/men",
+        "bgColorChild": "bg-slate-200",
+        "children": [
+          {
+            "id": "4",
+            "name": "SHIRTS",
+            "href": "/product/men/shirts",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          },
+          {
+            "id": "5",
+            "name": "T-SHIRTS",
+            "href": "/product/men/t-shirts",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          },
+          {
+            "id": "6",
+            "name": "PANTS",
+            "href": "/product/men/pants",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "7",
+        "name": "WOMAN",
+        "href": "/product/woman",
+        "tagParam": "sex",
+        "bgColorChild": "bg-slate-200",
+        "children": [
+          {
+            "id": "8",
+            "name": "SHIRTS",
+            "href": "/product/woman/shirts",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          },
+          {
+            "id": "9",
+            "name": "T-SHIRTS",
+            "href": "/product/woman/t-shirts",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          },
+          {
+            "id": "10",
+            "name": "PANTS",
+            "href": "/product/woman/pants",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "11",
+        "name": "UNISEX",
+        "href": "/product/unisex",
+        "tagParam": "sex",
+        "bgColorChild": "bg-slate-200",
+        "children": [
+          {
+            "id": "12",
+            "name": "SHIRTS",
+            "href": "/product/unisex/shirts",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          },
+          {
+            "id": "13",
+            "name": "T-SHIRTS",
+            "href": "/product/unisex/t-shirts",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          },
+          {
+            "id": "14",
+            "name": "PANTS",
+            "href": "/product/unisex/pants",
+            "tagParam": "cat",
+            "bgColorChild": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "15",
+        "name": "ACCESSORIES",
+        "href": "/product/accessories",
+        "tagParam": "sex",
+        "bgColorChild": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "name": "FAQ",
+    "href": "/faq",
+    "tagParam": "",
+    "bgColorChild": "",
+    "children": []
+  },
+  {
+    "id": "17",
+    "name": "ABOUT",
+    "href": "/about",
+    "tagParam": "",
+    "bgColorChild": "",
+    "children": []
+  },
+  {
+    "id": "18",
+    "name": "CONTACT",
+    "href": "/contact",
+    "tagParam": "",
+    "bgColorChild": "",
+    "children": []
+  },
+  {
+    "id": "19",
+    "name": "LOGIN",
+    "href": "/login",
+    "tagParam": "",
+    "bgColorChild": "",
+    "children": []
+  }
+]

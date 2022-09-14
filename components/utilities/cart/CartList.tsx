@@ -12,10 +12,10 @@ const CartList: React.FC<TCartList> = ({ className, ...divProps }) => {
 
   return (
     <div {...divProps} className={`h-[45vh] overflow-auto ${className}`}>
-      {cartList?.map((cart, index) => (
-        <CartCard key={index} cart={cart} className="my-4" />
+      {cartList.map((cart) => (
+        <CartCard key={cart.stockId} cart={cart} className="my-4" />
       ))}
-      {cartList.length === 0 && (
+      {cartList.length <= 0 && (
         <div className="text-3xl h-full flex items-center p-5 text-center">
           <h1>
             <span> No item available</span>
