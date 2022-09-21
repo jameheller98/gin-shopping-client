@@ -92,7 +92,6 @@ const Register: NextPageWithLayout = () => {
     setLoading(true);
     setError(null);
     try {
-      await new Promise((resolver) => setTimeout(resolver, 1000));
       const response = await ApiUser.registerUser(data);
 
       console.log(response.msg);
