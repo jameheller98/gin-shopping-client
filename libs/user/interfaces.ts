@@ -5,6 +5,7 @@ interface LoginRequest {
 
 interface LoginResponse {
   jwt: string;
+  refreshToken: string;
 }
 
 interface RegisterRequest {
@@ -26,10 +27,22 @@ interface UserResponse {
   roles: string[];
 }
 
+interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+interface RefreshTokenReponse {
+  token: string;
+  refreshToken: string;
+  tokenType: string;
+}
+
 export type {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
   UserResponse,
+  RefreshTokenRequest,
+  RefreshTokenReponse,
 };

@@ -1,25 +1,31 @@
 import { atom } from 'recoil';
+import { UserResponse } from '../../libs/user/interfaces';
 
-const localStorage = typeof window !== `undefined` ? window.localStorage : null;
+const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
 const tokenState = atom({
   key: 'TokenState',
-  default: '',
+  default: { token: '', tokenRefresh: '' },
   effects: [
     ({ onSet, setSelf }) => {
-      const token = localStorage?.getItem('token');
+      const tokenState = localStorage?.getItem('tokenState');
 
-      if (token) {
-        setSelf(token);
+      if (tokenState) {
+        setSelf(JSON.parse(tokenState));
       }
 
-      onSet((newCartState, _, isReset) => {
+      onSet((newTokenState, _, isReset) => {
         isReset
-          ? localStorage?.removeItem('token')
-          : localStorage?.setItem('token', newCartState);
+          ? localStorage?.removeItem('tokenState')
+          : localStorage?.setItem('tokenState', JSON.stringify(newTokenState));
       });
     },
   ],
 });
 
-export { tokenState };
+const userState = atom<UserResponse | null>({
+  key: 'UserState',
+  default: null,
+});
+
+export { tokenState, userState };

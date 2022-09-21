@@ -85,8 +85,8 @@ const Register: NextPageWithLayout = () => {
   const token = useRecoilValue(tokenState);
 
   useEffect(() => {
-    if (token) router.push('/');
-  }, [token, router]);
+    if (token.token) router.push('/');
+  }, [token.token, router]);
 
   const onSubmit = async (data: any) => {
     setLoading(true);

@@ -14,15 +14,18 @@ const instanceAxios = axios.create({
 instanceAxios.interceptors.request.use(
   (config) => {
     if (config.headers) {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('tokenState');
 
-      config.headers.Authorization = token ? token : false;
+      if (token) {
+        const tokenCurrent = JSON.parse(token).token;
+
+        config.headers.Authorization = tokenCurrent ? tokenCurrent : false;
+      }
     }
 
     return config;
   },
   (err) => {
-    console.log(err);
     return Promise.reject(err);
   }
 );
@@ -32,7 +35,6 @@ instanceAxios.interceptors.response.use(
     return response.data;
   },
   (err) => {
-    console.log(err);
     return Promise.reject(err);
   }
 );

@@ -43,8 +43,8 @@ const Login: NextPageWithLayout = () => {
   const [token, setToken] = useRecoilState(tokenState);
 
   useEffect(() => {
-    if (token) router.push('/');
-  }, [token, router]);
+    if (token.token) router.push('/');
+  }, [token.token, router]);
 
   const onSubmit = async (data: LoginRequest) => {
     setLoading(true);
@@ -54,7 +54,10 @@ const Login: NextPageWithLayout = () => {
 
       router.push('/');
 
-      setToken('Bearer ' + response.jwt);
+      setToken({
+        token: 'Bearer ' + response.jwt,
+        tokenRefresh: response.refreshToken,
+      });
     } catch (err) {
       if (err instanceof AxiosError) setError(err);
     } finally {
