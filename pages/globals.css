@@ -20,6 +20,10 @@ a {
   text-decoration: none;
 }
 
+form {
+  -webkit-appearance: none;
+}
+
 * {
   box-sizing: border-box;
 }
