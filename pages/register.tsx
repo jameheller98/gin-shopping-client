@@ -121,6 +121,7 @@ const Register: NextPageWithLayout = () => {
             type="text"
             {...register('email')}
             placeholder="Email"
+            disabled={loading}
           />
           {errors.email && (
             <Tooltip
@@ -137,6 +138,7 @@ const Register: NextPageWithLayout = () => {
             type={showPass ? 'text' : 'password'}
             {...register('password')}
             placeholder="Password"
+            disabled={loading}
           />
           <Transition
             show={visibleInfoPass}
@@ -185,6 +187,7 @@ const Register: NextPageWithLayout = () => {
             type={showConfirmPass ? 'text' : 'password'}
             {...register('confirmPassword')}
             placeholder="ConfirmPassword"
+            disabled={loading}
           />
           {showConfirmPass ? (
             <EyeIcon
@@ -214,6 +217,7 @@ const Register: NextPageWithLayout = () => {
             type="text"
             {...register('firstName')}
             placeholder="First Name"
+            disabled={loading}
           />
           {errors.firstName && (
             <Tooltip
@@ -232,6 +236,7 @@ const Register: NextPageWithLayout = () => {
             type="text"
             {...register('lastName')}
             placeholder="Last Name"
+            disabled={loading}
           />
           {errors.lastName && (
             <Tooltip
@@ -248,6 +253,7 @@ const Register: NextPageWithLayout = () => {
         <CommonButton
           className="col-span-1 py-3 mt-4 col-start-2"
           type="submit"
+          disabled={loading}
         >
           Submit{' '}
           {loading && (
