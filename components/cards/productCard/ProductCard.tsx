@@ -4,6 +4,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { TProductDetail } from '../../../pages/product/[sex]/[cat]/[productId]';
 import { cartManagerState } from '../../../state/cart/cartSelectors';
 import { stockOrderIdState } from '../../../state/product/productAtoms';
+import CommonButton from '../../buttons/commonButton/CommonButton';
 import ProductCardSize from './ProductCardSize';
 import ProductCardTitle from './ProductCardTitle';
 
@@ -60,16 +61,14 @@ const ProductCard: React.FC<TProductCard> = ({
         handleOrderSize={handleOrderSize}
         className="self-start"
       />
-      <button
-        className={`self-end py-4 px-10 mt-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center ${
-          stockOrderId ? 'opacity-100 bg-slate-800' : 'opacity-30 bg-slate-400'
-        }`}
+      <CommonButton
+        className="self-end py-4 px-10 mt-10"
         disabled={!stockOrderId}
         onClick={handleAddProduct}
       >
         <span>Add to cart</span>
         <ShoppingCartIcon className="w-5 inline-block" />
-      </button>
+      </CommonButton>
     </div>
   );
 };

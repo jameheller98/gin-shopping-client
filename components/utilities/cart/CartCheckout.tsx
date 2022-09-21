@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import { cartTotalPriceState } from '../../../state/cart/cartSelectors';
+import CommonButton from '../../buttons/commonButton/CommonButton';
 
 export type TCartCheckout = {} & React.ComponentPropsWithoutRef<'div'>;
 
@@ -40,14 +41,9 @@ const CartCheckout: React.FC<TCartCheckout> = ({ className, ...divProps }) => {
           </span>
         </div>
       </div>
-      <button
-        className={`w-full py-4 px-10 text-slate-50 rounded-xl tracking-wide flex flex-row gap-2 items-center justify-center bg-slate-800 ${
-          cartTotalPrice ? 'opacity-100' : 'opacity-50'
-        }`}
-        disabled={!cartTotalPrice}
-      >
+      <CommonButton className="w-full py-4 px-10" disabled={!cartTotalPrice}>
         Checkout
-      </button>
+      </CommonButton>
     </div>
   );
 };

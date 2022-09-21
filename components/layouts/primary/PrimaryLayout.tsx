@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Footer from '../../navigations/footer/Footer';
-import Navbar from '../../navigations/navbar/Navbar';
 import Sidebar from '../../navigations/sidebar/Sidebar';
 import BreadCrumb from '../../utilities/breadcrumb/BreadCrumb';
 
@@ -10,6 +9,10 @@ const Header = dynamic(() => import('../../navigations/header/Header'), {
 });
 
 const Cart = dynamic(() => import('../../utilities/cart/Cart'), {
+  ssr: false,
+});
+
+const Navbar = dynamic(() => import('../../navigations/navbar/Navbar'), {
   ssr: false,
 });
 

@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from 'recoil';
 import dataMenu from '../../../libs/menu/dataMenu.json';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
@@ -9,6 +14,7 @@ import {
   idMenuActiveState,
   menuDataState,
 } from '../../../state/menu/menuAtoms';
+import { tokenState } from '../../../state/user/UserAtoms';
 import Menu from '../menu/Menu';
 
 export type TNavbar = {} & React.ComponentPropsWithoutRef<'nav'>;
@@ -22,6 +28,8 @@ const Navbar: React.FC<TNavbar> = memo(({ className, ...navProps }) => {
   const setMenuData = useSetRecoilState(menuDataState);
   const setOpenDrawer = useSetRecoilState(openDrawerState('menuSideBar'));
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
+  const token = useRecoilValue(tokenState);
+  const resetToken = useResetRecoilState(tokenState);
 
   useIsomorphicLayoutEffect(() => {
     setMenuData(dataMenu);
@@ -38,24 +46,37 @@ const Navbar: React.FC<TNavbar> = memo(({ className, ...navProps }) => {
     setIdMenuActive(menuId);
   };
 
+  const handleLogout = () => {
+    resetToken();
+    setOpenDrawer(false);
+  };
+
   return (
     <nav {...navProps} className={`mb-14 ${className}`}>
       <Menu arrMenu={dataMenu} />
       <hr className="border-t-2 border-slate-400 my-5 mx-14" />
       <ul className="flex flex-row gap-9 justify-center">
-        {menuLoginLogout.map(({ id, name, href }) => (
-          <li
-            key={id}
-            className={`py-1 border-2 ${
-              idMenuActive === id
-                ? 'px-4 border-slate-400 pointer-events-none'
-                : 'border-transparent pointer-events-auto'
-            }`}
-            onClick={() => handleClickMenu(id)}
-          >
-            <Link href={href}>{name}</Link>
+        {token ? (
+          <li>
+            <button className="px-2 py-1" onClick={handleLogout}>
+              LOG OUT
+            </button>
           </li>
-        ))}
+        ) : (
+          menuLoginLogout.map(({ id, name, href }) => (
+            <li
+              key={id}
+              className={`py-1 border-2 ${
+                idMenuActive === id
+                  ? 'px-4 border-slate-400 pointer-events-none'
+                  : 'border-transparent pointer-events-auto'
+              }`}
+              onClick={() => handleClickMenu(id)}
+            >
+              <Link href={href}>{name}</Link>
+            </li>
+          ))
+        )}
       </ul>
     </nav>
   );
