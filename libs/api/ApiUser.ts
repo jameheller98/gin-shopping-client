@@ -2,10 +2,10 @@ import { AxiosResponse } from 'axios';
 import {
   LoginRequest,
   LoginResponse,
+  MessageResponse,
   RefreshTokenReponse,
   RefreshTokenRequest,
   RegisterRequest,
-  RegisterResponse,
   UserResponse,
 } from '../user/interfaces';
 import apiClient from './ApiClient';
@@ -25,7 +25,7 @@ class ApiUser {
 
   static registerUser(
     data: RegisterRequest
-  ): Promise<AxiosResponse<RegisterResponse>['data']> {
+  ): Promise<AxiosResponse<MessageResponse>['data']> {
     return ApiUser.apiClient.post('/auth/register', data);
   }
 
@@ -34,8 +34,8 @@ class ApiUser {
   ): Promise<AxiosResponse<RefreshTokenReponse>['data']> {
     return ApiUser.apiClient.post('/auth/refresh-token', data);
   }
-  static logout(): Promise<AxiosResponse<RegisterResponse>['data']> {
-    return ApiUser.apiClient.post('/auth/logout', {});
+  static logout(): Promise<AxiosResponse<MessageResponse>['data']> {
+    return ApiUser.apiClient.post('/auth/logout', null);
   }
 }
 

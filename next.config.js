@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const withPWA = require('next-pwa');
 
-const settings = {
-  reactStrictMode: true,
+const settingsPWA = {
   pwa: {
     dest: 'public',
     register: true,
@@ -10,9 +9,20 @@ const settings = {
   },
 };
 
+const settings = {
+  reactStrictMode: true,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
+  },
+};
+
 module.exports =
   process.env.NODE_ENV === 'development'
-    ? {
-        reactStrictMode: true,
-      }
-    : withPWA(settings);
+    ? settings
+    : withPWA({ reactStrictMode: false, ...settingsPWA, ...settings });

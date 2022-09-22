@@ -4,8 +4,8 @@ interface LoginRequest {
 }
 
 interface LoginResponse {
-  jwt: string;
-  refreshToken: string;
+  token: RefreshTokenReponse;
+  user: UserResponse;
 }
 
 interface RegisterRequest {
@@ -15,7 +15,7 @@ interface RegisterRequest {
   lastName: string;
 }
 
-interface RegisterResponse {
+interface MessageResponse {
   msg: string;
 }
 
@@ -41,7 +41,7 @@ export type {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
-  RegisterResponse,
+  MessageResponse,
   UserResponse,
   RefreshTokenRequest,
   RefreshTokenReponse,

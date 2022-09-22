@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import ApiUser from './ApiUser';
 
 const instanceAxios = axios.create({
   baseURL:
@@ -15,11 +16,14 @@ instanceAxios.interceptors.request.use(
   (config) => {
     if (config.headers) {
       const token = localStorage.getItem('tokenState');
+      const user = localStorage.getItem('userState');
 
-      if (token) {
+      if (token && user) {
         const tokenCurrent = JSON.parse(token).token;
+        const userId = JSON.parse(user).id;
 
         config.headers.Authorization = tokenCurrent ? tokenCurrent : false;
+        config.headers.userId = userId ? userId : false;
       }
     }
 
@@ -34,7 +38,33 @@ instanceAxios.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  (err) => {
+  async (err) => {
+    const config = err.config;
+
+    if (err.response && err.response.status === 401 && !config._retry) {
+      config._retry = true;
+      const token = localStorage.getItem('tokenState');
+
+      try {
+        if (token) {
+          let res = await ApiUser.refreshToken(JSON.parse(token).tokenRefresh);
+
+          if (res) {
+            localStorage.setItem(
+              'tokenState',
+              JSON.stringify({
+                token: res.tokenType + ' ' + res.token,
+                tokenRefresh: res.refreshToken,
+              })
+            );
+          }
+
+          return instanceAxios(config);
+        }
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    }
     return Promise.reject(err);
   }
 );
