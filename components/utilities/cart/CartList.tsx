@@ -19,7 +19,7 @@ const CartList: React.FC<TCartList> = ({ className, ...divProps }) => {
         <CartCard key={cart.stockId} cart={cart} className="my-4" />
       ))}
       {cartList.length <= 0 && (
-        <div className="text-3xl h-full flex items-center p-5 text-center">
+        <div className="text-3xl h-full flex items-center p-5 justify-center">
           <h1>
             <span> No item available</span>
             <br />

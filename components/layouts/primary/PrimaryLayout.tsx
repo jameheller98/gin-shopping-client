@@ -51,7 +51,7 @@ const PrimaryLayout: React.FC<TPrimaryLayout> = ({ children }) => {
           />
         )}
         {width >= 768 && openDrawer && (
-          <div className="absolute bg-white z-[3] right-5 top-20 w-[400px] shadow-[0_0_0_4px] shadow-slate-400 rounded-md p-5">
+          <div className="fixed bg-white z-[3] right-5 top-20 w-[400px] shadow-[0_0_0_4px] shadow-slate-400 rounded-md p-5">
             <XMarkIcon
               className={`w-7 h-7 cursor-pointer float-left`}
               onClick={() => setOpenDrawer(false)}
