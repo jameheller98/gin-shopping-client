@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { memo, Suspense } from 'react';
+import { memo, Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
   useRecoilState,
@@ -12,6 +12,7 @@ import ApiUser from '../../../libs/api/ApiUser';
 import dataMenu from '../../../libs/menu/dataMenu.json';
 import { openDrawerState } from '../../../state/drawer/drawerAtoms';
 import useIsomorphicLayoutEffect from '../../../state/hooks/useIsomorphicLayoutEffect';
+import useWindowSize from '../../../state/hooks/useWindowSize';
 import {
   idMenuActiveState,
   menuDataState,
@@ -29,12 +30,14 @@ const Navbar: React.FC<TNavbar> = memo(({ className, ...navProps }) => {
   const menuLoginLogout = dataMenu.filter(
     ({ id }) => id === '19' || id === '20'
   );
+  const [loading, setLoadinng] = useState(false);
   const setMenuData = useSetRecoilState(menuDataState);
   const [idMenuActive, setIdMenuActive] = useRecoilState(idMenuActiveState);
   const setOpenDrawer = useSetRecoilState(openDrawerState('menuSideBar'));
   const token = useRecoilValue(tokenState);
   const resetToken = useResetRecoilState(tokenState);
   const resetUser = useResetRecoilState(userState);
+  const { width } = useWindowSize();
 
   useIsomorphicLayoutEffect(() => {
     setMenuData(dataMenu);
@@ -47,11 +50,12 @@ const Navbar: React.FC<TNavbar> = memo(({ className, ...navProps }) => {
   }, [router]);
 
   const handleClickMenu = (menuId: string) => {
-    setOpenDrawer(false);
+    width < 1200 && setOpenDrawer(false);
     setIdMenuActive(menuId);
   };
 
   const handleLogout = async () => {
+    setLoadinng(true);
     try {
       await ApiUser.logout();
     } catch (err) {
@@ -59,15 +63,20 @@ const Navbar: React.FC<TNavbar> = memo(({ className, ...navProps }) => {
     } finally {
       resetToken();
       resetUser();
-      setOpenDrawer(false);
+      width < 1200 && setOpenDrawer(false);
+      setLoadinng(false);
     }
   };
 
   return (
-    <nav {...navProps} className={`mb-14 ${className}`}>
-      <Menu arrMenu={dataMenu} />
-      <hr className="border-t-2 border-slate-400 my-5 mx-14" />
-
+    <nav
+      {...navProps}
+      className={`mb-14 lg:mb-0 lg:flex lg:justify-between ${className}`}
+    >
+      <Menu className="lg:flex-row" arrMenu={dataMenu} />
+      {width < 1200 && (
+        <hr className="border-t-2 border-slate-400 my-5 mx-14" />
+      )}
       <ul className="flex flex-row gap-9 justify-center">
         {token.token ? (
           <li>
@@ -83,7 +92,7 @@ const Navbar: React.FC<TNavbar> = memo(({ className, ...navProps }) => {
               </Suspense>
             </ErrorBoundary>
             <button className="px-2 py-1" onClick={handleLogout}>
-              LOG OUT
+              LOG OUT {loading && <Spinner />}
             </button>
           </li>
         ) : (

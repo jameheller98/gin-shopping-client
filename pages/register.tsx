@@ -106,7 +106,7 @@ const Register: NextPageWithLayout = () => {
   };
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col sm:mx-[120px] md:mx-[200px] lg:mx-[400px]">
       <h1 className="text-3xl font-medium tracking-wider mt-16 text-slate-900 ml-14">
         Register
       </h1>

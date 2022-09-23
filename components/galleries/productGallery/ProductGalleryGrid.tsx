@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { memo, ReactNode, useRef } from 'react';
+import useWindowSize from '../../../state/hooks/useWindowSize';
 import { GalleryGrid } from '../../../utils/common/commonClass';
 import { TProductGallery } from './ProductGallery';
 import ProductGalleryBox, { TProductGalleryBox } from './ProductGalleryBox';
@@ -10,8 +11,15 @@ export type TProductGalleryGrid = {} & TProductGallery &
 // eslint-disable-next-line react/display-name
 const ProductGalleryGrid: React.FC<TProductGalleryGrid> = memo(
   ({ className, products, options, ...divProps }) => {
+    const { width } = useWindowSize();
     const galleryGrid = useRef(new GalleryGrid(1, 0, 3));
     galleryGrid.current.resetProperty();
+    const gridClassName = classNames({
+      ['80px']: width < 768,
+      ['160px']: width >= 768 && width < 1024,
+      ['180px']: width >= 1024 && width < 1280,
+      ['200px']: width > 1280,
+    });
 
     const OptionComponent = (side: 'left' | 'right', node: ReactNode) => {
       if (node)
@@ -32,11 +40,11 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = memo(
     return (
       <div
         {...divProps}
-        className={`grid grid-cols-3 gap-3 ${className}`}
+        className={`grid grid-cols-3 gap-3 md:gap-10 sm:gap-5 lg:gap-20 ${className}`}
         style={{
           gridTemplateRows: `repeat(${galleryGrid.current.calTotalRow(
             products.length
-          )},80px)`,
+          )},${gridClassName})`,
         }}
       >
         {OptionComponent('left', options?.left)}

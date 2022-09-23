@@ -49,7 +49,7 @@ const ProductDetail: NextPageWithLayout<TProductDetail> = ({
           product={product}
           productSizes={productSizes}
           productStock={productStock}
-          className="mx-10 mt-5"
+          className="mx-10 mt-5 md:mx-16 md:mt-10 lg:mr-[30rem]"
         />
       ) : (
         <>Sorry the product is not available!</>

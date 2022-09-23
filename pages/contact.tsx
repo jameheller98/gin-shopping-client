@@ -21,7 +21,7 @@ const Contact: NextPageWithLayout = () => {
         className="mt-2"
       />
       <Transition show={isVisible}>
-        <address className="px-5 text-lg flex flex-col gap-3">
+        <address className="px-5 text-lg flex flex-col gap-3 justify-center items-center">
           <ItemAddress
             title="Phone"
             icon={<PhoneIcon className="w-5 inline-block" />}

@@ -8,6 +8,7 @@ import PrimaryLayout from '../../components/layouts/primary/PrimaryLayout';
 import Carousel from '../../components/utilities/carousel/Carousel';
 import dataProduct from '../../libs/product/dataProduct.json';
 import { IProductData } from '../../libs/product/interfaces';
+import useWindowSize from '../../state/hooks/useWindowSize';
 import { NextPageWithLayout } from '../page';
 
 export interface IProduct {
@@ -27,25 +28,29 @@ export const getServerSideProps = async () => {
 };
 
 const Product: NextPageWithLayout<IProduct> = ({ dataProduct }) => {
+  const { width } = useWindowSize();
+
   return (
     <section className="flex flex-col">
-      <HotCard
-        srcImg="/product/card/denim-cloth.jpg"
-        textButton="Shopping now"
-        themeCard="light"
-        directionTransition="origin-center"
-        paddingSide={0}
-        className="mt-0"
-      />
+      <div className="sm:flex sm:mx-auto sm:w-[600px]">
+        <HotCard
+          srcImg="/product/card/denim-cloth.jpg"
+          textButton="Shopping now"
+          themeCard="light"
+          directionTransition="origin-center"
+          paddingSide={0}
+          className="mt-0"
+        />
+      </div>
       <Carousel
         keyCarousel="product_carousel_1"
         arrImgSrc={arrImgSrc}
-        width={480}
-        height={480}
+        width={900}
+        height={900}
         numberItems={2}
         ratioDisplayImgBothSide={0}
-        className="mt-6"
-        distanceBetweenImgs={20}
+        className="mt-6 sm:mx-10 lg:mx-36"
+        distanceBetweenImgs={width > 1024 ? 50 : 20}
       />
       <TitleCard title="New arrival" />
       <ProductGallery
@@ -56,13 +61,13 @@ const Product: NextPageWithLayout<IProduct> = ({ dataProduct }) => {
               <TypingEffect
                 {...mockTypingEffectProps.base}
                 positionDelayTyping={1}
-                className="text-lg"
+                className="text-lg lg:text-2xl"
               />
             </Link>
           ),
           right: (
             <Link href="/product/woman" passHref>
-              <TypingEffect text="Woman" className="text-lg" />
+              <TypingEffect text="Woman" className="text-lg lg:text-2xl" />
             </Link>
           ),
         }}

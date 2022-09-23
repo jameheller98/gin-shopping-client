@@ -54,7 +54,7 @@ const HotCard: React.FC<THotCard> = ({
     <article
       {...articleProps}
       ref={hotCardRef}
-      className={`m-auto w-screen relative overflow-hidden before:content before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-slate-600 before:z-[1] before:transition-transform before:duration-500 ease-in-out ${themeClassName} ${
+      className={`m-auto w-screen relative overflow-hidden sm:w-full before:content before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-slate-600 before:z-[1] before:transition-transform before:duration-500 ease-in-out ${themeClassName} ${
         isVisible ? 'before:translate-y-0' : 'before:-translate-y-full'
       } ${className}`}
     >

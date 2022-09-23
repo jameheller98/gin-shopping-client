@@ -49,20 +49,25 @@ const ProductCard: React.FC<TProductCard> = ({
   };
 
   return (
-    <div {...divProps} className={`flex flex-col items-center ${className}`}>
-      <ProductCardTitle name={name} price={price} />
-      <div className="flex mt-4 rounded-3xl overflow-hidden">
-        <Image src={imgSrc[0]} alt={imgSrc[0]} width="350" height="525" />
+    <div
+      {...divProps}
+      className={`flex flex-col items-center md:grid md:grid-cols-2 md:grid-rows-[80px_100px_auto] md:gap-10 ${className}`}
+    >
+      <ProductCardTitle className="order-2" name={name} price={price} />
+      <div className="flex mt-4 order-1 justify-center row-span-3">
+        <div className="flex rounded-3xl overflow-hidden">
+          <Image src={imgSrc[0]} alt={imgSrc[0]} width="350" height="525" />
+        </div>
       </div>
       <ProductCardSize
         productId={id}
         productSizes={productSizes}
         productStock={productStock}
         handleOrderSize={handleOrderSize}
-        className="self-start"
+        className="self-start order-3"
       />
       <CommonButton
-        className="self-end py-4 px-10 mt-10"
+        className="self-end py-4 px-10 mt-10 order-4"
         disabled={!stockOrderId}
         onClick={handleAddProduct}
       >

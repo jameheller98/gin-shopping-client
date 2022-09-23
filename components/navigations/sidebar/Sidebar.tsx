@@ -57,7 +57,7 @@ const Sidebar: React.FC<TSidebar> = memo(
       <>
         <div
           {...divProps}
-          className={`h-screen p-4 fixed top-0 z-[4] bg-white transition duration-300 overflow-auto ${
+          className={`h-screen p-4 fixed top-0 z-[5] bg-white transition duration-300 overflow-auto ${
             directionAnimate === 'left' ? 'w-9/12 left-0' : 'w-10/12 right-0'
           } ${handleTransitionDrawerClass(
             directionAnimate === 'left' ? 'left' : 'right'
@@ -72,7 +72,7 @@ const Sidebar: React.FC<TSidebar> = memo(
           {contentSideBar}
         </div>
         <div
-          className={`h-screen fixed top-0 z-[3] bg-black bg-opacity-40 transition duration-300 ${
+          className={`h-screen fixed top-0 z-[4] bg-black bg-opacity-40 transition duration-300 ${
             directionAnimate === 'left' ? 'right-0 w-3/12' : 'left-0 w-2/12'
           } ${handleTransitionDrawerClass(
             directionAnimate === 'left' ? 'right' : 'left'

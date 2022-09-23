@@ -18,7 +18,9 @@ const ProductCardSize: React.FC<TProductCardSize> = ({
 }) => {
   return (
     <section {...sectionProps} className={`text-center ${className}`}>
-      <h2 className="text-base text-left mt-6 mb-3 font-bold">Select size:</h2>
+      <h2 className="text-base text-left mt-6 mb-3 font-bold md:font-medium">
+        Select size:
+      </h2>
       <ProductCardSizeList
         productId={productId}
         productSizes={productSizes}

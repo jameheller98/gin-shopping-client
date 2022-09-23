@@ -14,7 +14,7 @@ const CartCard: React.FC<TCartCard> = ({
   const { imgSrc } = cart;
   return (
     <section {...sectionProps} className={`flex flex-row gap-5 ${className}`}>
-      <div className="rounded-xl overflow-hidden w-1/2 h-[24vh]">
+      <div className="rounded-xl overflow-hidden w-1/2 h-[24vh] md:h-[20vh] md:w-[150px]">
         <Image src={imgSrc[0]} alt={imgSrc[0]} width="350" height="525" />
       </div>
       <CartCardContent className="w-1/2" cart={cart} />

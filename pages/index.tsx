@@ -11,18 +11,25 @@ import { NextPageWithLayout } from './page';
 
 const Home: NextPageWithLayout = () => {
   return (
-    <section className="flex flex-col">
-      <Carousel {...mockCarouselProps.base} />
-      <TitleCard {...mockTitleCardProps.base} />
-      <HotCard {...mockHotCardProps.base} className="mt-4 mb-6" />
-      <HotCard
-        srcImg="/home/card/accessories.jpg"
-        directionTransition="origin-top-right"
-        textButton="Accessories"
-        href="/product/accessories"
-        className="mt-4"
+    <section className="flex flex-col sm:grid sm:grid-cols-2">
+      <Carousel
+        className="lg:mx-52 sm:col-span-2"
+        {...mockCarouselProps.base}
       />
-      <TitleCard title="New arrival" />
+      <TitleCard className="sm:col-span-2" {...mockTitleCardProps.base} />
+      <div className="sm:flex sm:mx-10 lg:mx-20">
+        <HotCard {...mockHotCardProps.base} className="mt-4 mb-6 sm:mb-0" />
+      </div>
+      <div className="sm:flex sm:mx-10 lg:mx-20">
+        <HotCard
+          srcImg="/home/card/accessories.jpg"
+          directionTransition="origin-top-right"
+          textButton="Accessories"
+          href="/product/accessories"
+          className="mt-4"
+        />
+      </div>
+      <TitleCard className="sm:col-span-2" title="New arrival" />
       <NewArrivalCard
         {...mockNewArrivalCardProps.base}
         className="mt-4 mx-5 mb-2 pr-1"

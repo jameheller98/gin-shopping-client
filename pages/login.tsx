@@ -70,7 +70,7 @@ const Login: NextPageWithLayout = () => {
   };
 
   return (
-    <section className="flex flex-col w-screen">
+    <section className="flex flex-col sm:mx-[120px] md:mx-[200px] lg:[400px]">
       <h1 className="text-3xl font-medium tracking-wider mt-16 text-slate-900 ml-14">
         Login
       </h1>

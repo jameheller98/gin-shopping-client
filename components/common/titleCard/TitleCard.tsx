@@ -21,8 +21,12 @@ const TitleCard: React.FC<TTitleCard> = ({
   const isVisible = !!entry?.isIntersecting;
 
   return (
-    <div className="w-full" ref={refTitleCard}>
-      <Transition {...divProps} show={isVisible} className={`${className}`}>
+    <div
+      {...divProps}
+      className={`w-full md:w-1/2 md:mx-auto md:my-10 ${className}`}
+      ref={refTitleCard}
+    >
+      <Transition show={isVisible}>
         {posHorizal === 'top' && (
           <Transition.Child
             as="div"

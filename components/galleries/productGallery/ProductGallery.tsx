@@ -17,7 +17,10 @@ const ProductGallery: React.FC<TProductGallery> = ({
   ...divProps
 }) => {
   return (
-    <div {...divProps} className={`p-3 ${className}`}>
+    <div
+      {...divProps}
+      className={`p-3 md:px-20 sm:px-10 lg:px-32 ${className}`}
+    >
       <ProductGalleryGrid products={products} options={options} />
     </div>
   );

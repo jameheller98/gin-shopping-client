@@ -23,13 +23,15 @@ const Sex: NextPageWithLayout<{ listProduct: IProductData[] }> = ({
   listProduct,
 }) => {
   return (
-    <section className="flex flex-col p-5">
+    <section className="flex flex-col p-5 sm:p-8 md:p-12">
       {listProduct.length > 0 ? (
         <SexGallery listProduct={listProduct} />
       ) : (
-        <div className="text-3xl h-[50vh] flex flex-col gap-5 items-center justify-center">
-          <span>No item available </span>
-          <WrenchScrewdriverIcon className="w-10" />
+        <div>
+          <div className="text-3xl h-[50vh] flex flex-col gap-5 items-center justify-center">
+            <span>No item available </span>
+            <WrenchScrewdriverIcon className="w-10" />
+          </div>
         </div>
       )}
     </section>

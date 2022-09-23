@@ -16,6 +16,7 @@ const About: NextPageWithLayout = () => {
     <section>
       <Transition show={isVisible}>
         <Transition.Child
+          className="text-center md:mx-40 lg:mx-52"
           enter="transition-transform duration-1000"
           enterFrom="scale-0"
           enterTo="scale-1"
@@ -28,8 +29,10 @@ const About: NextPageWithLayout = () => {
             priority
           />
         </Transition.Child>
+
         <TitleCard title="About GIN" posHorizal="bottom" className="mt-2" />
         <Transition.Child
+          className="text-center md:mx-40 lg:mx-52"
           enter="transition-opacity duration-500 delay-1000"
           enterFrom="opacity-0"
           enterTo="opacity-1"

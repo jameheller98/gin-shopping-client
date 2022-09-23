@@ -32,9 +32,11 @@ const Category: NextPageWithLayout<{ listProduct: IProductData[] }> = ({
       {listProduct.length > 0 ? (
         <SexGallery listProduct={listProduct} />
       ) : (
-        <div className="text-3xl h-[50vh] flex flex-col gap-5 items-center justify-center">
-          <span>No item available </span>
-          <WrenchScrewdriverIcon className="w-10" />
+        <div>
+          <div className="text-3xl h-[50vh] flex flex-col gap-5 items-center justify-center">
+            <span>No item available </span>
+            <WrenchScrewdriverIcon className="w-10" />
+          </div>
         </div>
       )}
     </section>

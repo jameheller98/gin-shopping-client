@@ -9,8 +9,8 @@ const base: TCarousel = {
     '/home/slide/girl-skirt.jpg',
     '/home/slide/women-halter-top.jpg',
   ],
-  width: 720,
-  height: 480,
+  width: 1200,
+  height: 800,
 };
 
 export const mockCarouselProps = {

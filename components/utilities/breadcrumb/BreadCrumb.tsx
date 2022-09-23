@@ -26,7 +26,7 @@ const BreadCrumb: React.FC<TBreadCrumb> = ({ className, ...divProps }) => {
   return arrPath.length > 1 ? (
     <div
       {...divProps}
-      className={`py-1 bg-slate-200 bg-opacity-60 w-screen flex items-center justify-center ${className}`}
+      className={`py-1 bg-slate-200 bg-opacity-60 w-full flex items-center justify-center ${className}`}
     >
       {menuActive.length > 0 &&
         arrPathFinal.map((path, idx) => (
