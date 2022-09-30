@@ -16,6 +16,7 @@ const CarouselDisplayItemFake = forwardRef<
     className,
     ...divProps
   } = props;
+
   return (
     <div
       {...divProps}

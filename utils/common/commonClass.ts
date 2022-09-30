@@ -1,5 +1,3 @@
-import { MouseEvent } from 'react';
-
 class GalleryGrid {
   private countNumberRowPresent = 1;
   private countNumberItemIsSet = 0;
@@ -68,108 +66,70 @@ class GalleryGrid {
   }
 }
 
-interface IShape {
-  x: number;
-  y: number;
-  startX: number;
-  startY: number;
-  isDragging: boolean;
-  ctx: CanvasRenderingContext2D | null;
-  draw: (_ctx: CanvasRenderingContext2D) => void;
-}
+class CalendarCentral {
+  handleDatesOfMonth(year: number, month: number) {
+    const date = new Date(year, month, 1);
+    const dates = [];
 
-abstract class Shape implements IShape {
-  x = 0;
-  y = 0;
-  startX = 0;
-  startY = 0;
-  ctx = null;
-  isDragging = false;
+    while (date.getMonth() === month) {
+      dates.push(new Date(date));
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
-  abstract draw(_ctx: CanvasRenderingContext2D): void;
-
-  abstract down(_event: MouseEvent<HTMLCanvasElement>): void;
-
-  abstract move(
-    _event: MouseEvent<HTMLCanvasElement>,
-    _ctx: CanvasRenderingContext2D,
-    _widthCanvas?: number,
-    _heightCanvas?: number
-  ): void;
-
-  abstract up(_event: MouseEvent<HTMLCanvasElement>): void;
-}
-
-class Rect extends Shape {
-  width = 0;
-  height = 0;
-
-  constructor(x: number, y: number, width: number, height: number) {
-    super(x, y);
-    this.width = width;
-    this.height = height;
-  }
-
-  draw(
-    ctx: CanvasRenderingContext2D,
-    widthCanvas?: number,
-    heightCanvas?: number
-  ) {
-    if (widthCanvas && heightCanvas)
-      ctx.clearRect(0, 0, widthCanvas, heightCanvas);
-    ctx.lineWidth = 4;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.lineDashOffset = 10;
-    ctx.setLineDash([15]);
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
-  }
-
-  hitBox() {
-    if (
-      this.startX >= this.x &&
-      this.startX <= this.x + this.width &&
-      this.startY >= this.y &&
-      this.startY <= this.y + this.height
-    ) {
-      return true;
+      date.setUTCDate(date.getUTCDate() + 1);
     }
-    return false;
+
+    return dates;
   }
 
-  down(event: MouseEvent<HTMLCanvasElement>) {
-    this.startX = event.nativeEvent.offsetX;
-    this.startY = event.nativeEvent.offsetY;
-    this.isDragging = this.hitBox();
-  }
-
-  move(
-    event: MouseEvent<HTMLCanvasElement>,
-    ctx: CanvasRenderingContext2D,
-    widthCanvas?: number,
-    heightCanvas?: number
+  handleFillDatesOfMonth(
+    year: number,
+    month: number,
+    datesOfMonth: Array<Date>
   ) {
-    if (!this.isDragging) return;
+    const dateStart = new Date(year, month, 1);
+    const dateEnd = new Date(year, month, datesOfMonth.length);
+    const datesBeforeDateStart = [];
+    const datesAfterDateEnd = [];
 
-    const mouseX = event.nativeEvent.offsetX;
-    const mouseY = event.nativeEvent.offsetY;
-    const dx = mouseX - this.startX;
-    const dy = mouseY - this.startY;
-    this.startX = mouseX;
-    this.startY = mouseY;
-    this.x += dx;
-    this.y += dy;
-    this.draw(ctx, widthCanvas, heightCanvas);
+    while (dateStart.getUTCDay() > 0) {
+      dateStart.setUTCDate(dateStart.getUTCDate() - 1);
+
+      datesBeforeDateStart.push(new Date(dateStart));
+    }
+
+    let rowNeedForTable = this.handleRowNeedForTable(
+      datesBeforeDateStart.length,
+      datesAfterDateEnd.length,
+      datesOfMonth.length
+    );
+
+    while (dateEnd.getUTCDay() < 6 || rowNeedForTable < 6) {
+      dateEnd.setUTCDate(dateEnd.getUTCDate() + 1);
+
+      datesAfterDateEnd.push(new Date(dateEnd));
+
+      rowNeedForTable = this.handleRowNeedForTable(
+        datesBeforeDateStart.length,
+        datesAfterDateEnd.length,
+        datesOfMonth.length
+      );
+    }
+
+    return [
+      ...datesBeforeDateStart.reverse(),
+      ...datesOfMonth,
+      ...datesAfterDateEnd,
+    ];
   }
 
-  up(event: MouseEvent<HTMLCanvasElement>) {
-    this.isDragging = false;
+  handleRowNeedForTable(
+    lengthDatesBefore: number,
+    lengthDatesAfter: number,
+    lengthDatesMonth: number
+  ) {
+    return Math.ceil(
+      (lengthDatesBefore + lengthDatesAfter + lengthDatesMonth) / 7
+    );
   }
 }
 
-export { GalleryGrid, Shape, Rect };
+export { GalleryGrid, CalendarCentral };

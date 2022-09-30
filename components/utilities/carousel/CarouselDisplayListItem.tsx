@@ -43,6 +43,7 @@ const CarouselDisplayListItem = forwardRef<
     percentDisplayImgBothSide,
     amountCloneImgSrc,
   } = propsImg;
+
   const {
     handleTransitionEnd,
     handleStartSlide,
@@ -64,7 +65,7 @@ const CarouselDisplayListItem = forwardRef<
           percentDisplayImgCenter * (amountCloneImgSrc + currentPage - 1) * -1 +
           percentDisplayImgBothSide / 2
         }% - ${distanceBetweenImgs * amountCloneImgSrc}px + ${
-          2 * distanceEachImgShouldMinus
+          amountCloneImgSrc * distanceEachImgShouldMinus
         }px))`,
         gap: distanceBetweenImgs,
       }}

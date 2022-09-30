@@ -187,7 +187,7 @@ const Register: NextPageWithLayout = () => {
             }`}
             type={showConfirmPass ? 'text' : 'password'}
             {...register('confirmPassword')}
-            placeholder="ConfirmPassword"
+            placeholder="Confirm password"
             disabled={loading}
           />
           {showConfirmPass ? (
@@ -246,6 +246,13 @@ const Register: NextPageWithLayout = () => {
             />
           )}
         </label>
+        {/* <label className="col-span-2 flex gap-2">
+          <button className="flex" type="button">
+            <CalendarDaysIcon className="h-6 pl-2 inline" /> :
+          </button>
+          <span className="text-slate-400">Birthday</span>
+          <input type="date" />
+        </label> */}
         {error && (
           <div className="col-span-2 text-red-500">
             * Email is already taken

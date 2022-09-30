@@ -1,30 +1,7 @@
-import { MouseEvent, useEffect, useRef } from 'react';
-import { Shape } from '../../utils/common/commonClass';
+import { useEffect, useRef } from 'react';
 
-const useCanvas = (
-  draw: (_context: CanvasRenderingContext2D) => void,
-  shapeObj?: Shape
-) => {
+const useCanvas = (draw: (_context: CanvasRenderingContext2D) => void) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const handleMouseDown = (event: MouseEvent<HTMLCanvasElement>) => {
-    shapeObj?.down(event);
-  };
-
-  const handleMouseMove = (event: MouseEvent<HTMLCanvasElement>) => {
-    const ctx = canvasRef.current?.getContext('2d')!;
-
-    shapeObj?.move(
-      event,
-      ctx,
-      canvasRef.current?.clientWidth,
-      canvasRef.current?.clientHeight
-    );
-  };
-
-  const handleMouseUp = (event: MouseEvent<HTMLCanvasElement>) => {
-    shapeObj?.up(event);
-  };
 
   useEffect(() => {
     const { current: currentCanvas } = canvasRef;
@@ -36,7 +13,7 @@ const useCanvas = (
     }
   }, [draw]);
 
-  return { canvasRef, handleMouseDown, handleMouseMove, handleMouseUp };
+  return { canvasRef };
 };
 
 export default useCanvas;

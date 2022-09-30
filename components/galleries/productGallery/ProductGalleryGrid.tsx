@@ -63,7 +63,7 @@ const ProductGalleryGrid: React.FC<TProductGalleryGrid> = memo(
             <ProductGalleryBox
               key={product.id}
               product={product}
-              gridColumnStart={idx === 0 ? 2 : undefined}
+              gridColumnStart={idx === 0 ? 2 : idx === 1 ? 3 : undefined}
               gridRowStart={gridRowStart}
               gridRowEnd={gridRowEnd}
               positionScale={positionItemClassName}
