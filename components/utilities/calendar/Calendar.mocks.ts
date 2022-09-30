@@ -1,8 +1,6 @@
 import { TCalendar } from './Calendar';
 
-const base: TCalendar = {
-  sampleTextProp: 'Hello world!',
-};
+const base: TCalendar = {};
 
 export const mockCalendarProps = {
   base,
